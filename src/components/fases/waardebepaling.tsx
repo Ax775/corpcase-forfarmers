@@ -79,7 +79,7 @@ export function Waardebepaling({
       {beelden.length === 0 ? (
         <Leeg>Er liggen nog geen use cases op tafel.</Leeg>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-3 lg:grid lg:grid-cols-2 lg:items-start lg:gap-3 lg:space-y-0">
           {beelden.map((beeld) => (
             <li key={beeld.usecase.id}>
               <Waarderen state={state} identiteit={identiteit} doe={doe} beeld={beeld} />

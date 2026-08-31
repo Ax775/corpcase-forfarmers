@@ -22,6 +22,7 @@ import {
   onvolledigeBusinessCases,
   portfolio,
 } from "@/lib/sessie/afgeleid";
+import { telwoord } from "@/lib/tekst/meervoud";
 import {
   formatteerBandbreedte,
   formatteerEuro,
@@ -301,7 +302,7 @@ export default function RapportPagina() {
                 {allocatie && (allocatie.geld_eur > 0 || allocatie.capaciteit_mensmaanden > 0) ? (
                   <p className="mt-2 text-xs tabular-nums text-inkt-zacht">
                     Toegekend: {formatteerEuro(allocatie.geld_eur)} en{" "}
-                    {allocatie.capaciteit_mensmaanden} mensmaanden.
+                    {telwoord(allocatie.capaciteit_mensmaanden, "mensmaand", "mensmaanden")}.
                   </p>
                 ) : null}
 

@@ -68,7 +68,7 @@ export default function SpelerPagina() {
       className="flex flex-1 flex-col"
     >
       <Sessiebalk state={state} identiteit={identiteit} sessieId={sessieId} doe={doe} />
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6 lg:max-w-5xl">
         {fout ? (
           <div className="mb-4">
             <Melding toon="risico">{fout}</Melding>

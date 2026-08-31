@@ -13,12 +13,18 @@ import type { KwadrantId } from "@/lib/waarde/berekening";
 export function Matrix({
   beelden,
   hoogte = 320,
+  hoogteCss,
   geselecteerd,
   onKies,
   donker = false,
 }: {
   beelden: UsecaseBeeld[];
   hoogte?: number;
+  /**
+   * Overschrijft `hoogte` met een CSS-waarde, zodat de matrix kan meeschalen met het scherm.
+   * Bedoeld voor de beamer: daar is een vaste pixelhoogte zonde van een groot scherm.
+   */
+  hoogteCss?: string;
   geselecteerd?: string | null;
   onKies?: (usecaseId: string) => void;
   /** Donkere variant voor de beamer, waar de zaal vaak verduisterd is. */
@@ -51,7 +57,7 @@ export function Matrix({
       ) : null}
       <div
         className={`relative w-full rounded-kaart border ${vlak}`}
-        style={{ height: hoogte }}
+        style={{ height: hoogteCss ?? hoogte }}
       >
         {/* Kwadrantscheiding op het midden van de schaal. */}
         <div className={`absolute inset-x-0 top-1/2 h-px ${lijn}`} />

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { FASES, FASE_LABELS, type Fase } from "@/lib/supabase/types";
 import { klantlensVoorOrganisatie, rolNaam, speelmodus } from "@/lib/content";
+import { telwoord } from "@/lib/tekst/meervoud";
 import { opslag } from "@/lib/sessie/api";
 import { useAanwezigheid, useSessie } from "@/lib/sessie/gebruik";
 import {
@@ -99,7 +100,7 @@ export default function BeheerPagina() {
       accentSecundair={organisatie(state.sessie.organisatie_id).thema.accent_secundair}
       className="flex-1"
     >
-    <main className="mx-auto w-full max-w-4xl px-4 py-6">
+    <main className="mx-auto w-full max-w-4xl px-4 py-6 lg:max-w-6xl">
       <Kop
         boven="Facilitator"
         titel={state.sessie.titel}
@@ -132,7 +133,16 @@ export default function BeheerPagina() {
         </div>
       ) : null}
 
-      <section className="mt-6">
+
+      {/*
+        Op een laptop is dit het scherm dat de hele sessie openstaat, en daar is één kolom
+        zonde: de facilitator scrolt dan tussen de fasebesturing en het beeld van waar het
+        hapert. Vanaf lg staan besturing en situatiebeeld naast elkaar, zodat allebei in
+        beeld blijven. Op een telefoon blijft het één stapel, in dezelfde volgorde.
+      */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start">
+        <div className="space-y-6">
+      <section>
         <Kaart className="p-4">
           <h2 className="display text-lg text-inkt">Meedoen</h2>
           <p
@@ -160,7 +170,7 @@ export default function BeheerPagina() {
       </section>
 
       {ikBenFacilitator ? (
-        <section className="mt-6">
+        <section>
           <Kaart className="p-4">
             <h2 className="display text-lg text-inkt">Beheertoegang</h2>
             <p className="mt-1.5 text-xs leading-relaxed text-inkt-zacht">
@@ -213,7 +223,7 @@ export default function BeheerPagina() {
         </section>
       ) : null}
 
-      <section className="mt-6">
+      <section>
         <h2 className="display text-lg text-inkt">Fase</h2>
         <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
           {FASES.map((fase, index) => {
@@ -246,8 +256,11 @@ export default function BeheerPagina() {
           </div>
         ) : null}
       </section>
+        </div>
 
-      <section className="mt-6">
+        <div className="space-y-6">
+
+      <section>
         <h2 className="display text-lg text-inkt">Wie is er</h2>
         <ul className="mt-2 space-y-1.5">
           {state.deelnemers.map((deelnemer) => {
@@ -278,8 +291,8 @@ export default function BeheerPagina() {
                  * krappe kolom duwde de rolnaam toen woord voor woord uit elkaar.
                  */}
                 <div className="flex flex-wrap items-center gap-1.5 sm:shrink-0 sm:justify-end">
-                  <Etiket>{selecties} signalen</Etiket>
-                  <Etiket>{ingebracht} use cases</Etiket>
+                  <Etiket>{telwoord(selecties, "signaal", "signalen")}</Etiket>
+                  <Etiket>{telwoord(ingebracht, "use case", "use cases")}</Etiket>
                   {afgeweken ? (
                     <Etiket toon={voorop ? "aandacht" : "neutraal"}>
                       {voorop ? (
@@ -298,7 +311,7 @@ export default function BeheerPagina() {
         </ul>
       </section>
 
-      <section className="mt-6">
+      <section>
         <h2 className="display text-lg text-inkt">Waar het hapert</h2>
         <div className="mt-2 space-y-2">
           {gedekt.domeinenOngedekt.length > 6 ? (
@@ -357,6 +370,8 @@ export default function BeheerPagina() {
           ) : null}
         </div>
       </section>
+        </div>
+      </div>
     </main>
     </Thema>
   );

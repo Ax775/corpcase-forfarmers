@@ -291,14 +291,19 @@ export function Cijfer({
       {label ? (
         <p className={`text-xs leading-snug ${labelkleur}`}>{label}</p>
       ) : null}
-      <p className={`cijfer mt-1 ${formaten[formaat]} ${kleuren[toon]}`}>
+      {/*
+        De onderruimte compenseert precies de krappe regelhoogte van `.cijfer` (0.85). Zonder haar
+        is de regelbox korter dan de cijfers zelf en kruipt de toelichting eronder — op de beamer
+        liep de zin dwars door de teamscore heen. In `em` zodat het meeschaalt met elk formaat.
+      */}
+      <p className={`cijfer mt-1 pb-[0.15em] ${formaten[formaat]} ${kleuren[toon]}`}>
         {weerTeGeven}
         {achtervoegsel ? (
           <span className="ml-1 align-baseline text-base font-normal">{achtervoegsel}</span>
         ) : null}
       </p>
       {toelichting ? (
-        <p className={`mt-1 max-w-[22rem] text-[11px] leading-snug ${labelkleur}`}>{toelichting}</p>
+        <p className={`mt-2 max-w-[22rem] text-[11px] leading-snug ${labelkleur}`}>{toelichting}</p>
       ) : null}
     </div>
   );

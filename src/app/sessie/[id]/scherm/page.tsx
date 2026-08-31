@@ -65,7 +65,7 @@ export default function SchermPagina() {
        * waar je van vier meter naar kijkt. Onder de kop valt de tint alleen achter inkt en
        * inkt-zacht, en die halen daar 13,5 en 6,7.
        */}
-      <Cirkel hoek="rechtsboven" formaat={0.32} toon="zacht" vanBoven={140} />
+      <Cirkel hoek="rechtsboven" formaat={0.19} toon="zacht" vanBoven={60} />
 
       <header className="relative flex items-baseline justify-between gap-6">
         <div>
@@ -87,7 +87,7 @@ export default function SchermPagina() {
         <section>
           <h2 className="display text-2xl text-inkt">Waarde tegen haalbaarheid</h2>
           <div className="mt-3">
-            <Matrix beelden={beelden} hoogte={420} donker />
+            <Matrix beelden={beelden} hoogteCss="min(56vh, 620px)" donker />
           </div>
         </section>
 
