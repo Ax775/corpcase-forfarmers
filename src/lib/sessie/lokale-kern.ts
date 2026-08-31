@@ -183,7 +183,7 @@ function voegDeelnemerToe(
     sessie_id: dossier.sessie.id,
     naam,
     rol_id: rolId,
-    rolopdracht_id: rolopdrachtVoorRol(rolId)?.id ?? null,
+    rolopdracht_id: rolopdrachtVoorRol(dossier.sessie.organisatie_id, rolId)?.id ?? null,
     token: maakToken(),
     is_facilitator: isFacilitatorRol,
     laatst_gezien_op: nu(),

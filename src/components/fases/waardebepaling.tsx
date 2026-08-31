@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { speelmodus, usecase as bibliotheekKaart, waardeModel } from "@/lib/content";
+import {
+  speelmodus,
+  usecase as bibliotheekKaart,
+  waardemodelVoorOrganisatie,
+} from "@/lib/content";
+import type { Dimensie } from "@/lib/content/schemas";
 import { opslag } from "@/lib/sessie/api";
 import { alleBeelden, type UsecaseBeeld } from "@/lib/sessie/afgeleid";
 import { driversUitBibliotheek, formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
@@ -98,6 +103,7 @@ function Waarderen({
   doe: (actie: () => Promise<unknown>) => Promise<void>;
   beeld: UsecaseBeeld;
 }) {
+  const waardeModel = waardemodelVoorOrganisatie(state.sessie.organisatie_id);
   const [open, setOpen] = useState(false);
   const waardering = beeld.waardering;
   const modus: Waardemodus = waardering?.modus ?? "scorekaart";
@@ -162,7 +168,11 @@ function Waarderen({
           </div>
 
           {modus === "scorekaart" ? (
-            <Scorekaart waardering={waardering} bewaar={bewaar} />
+            <Scorekaart
+              dimensies={waardeModel.scorekaart_dimensies}
+              waardering={waardering}
+              bewaar={bewaar}
+            />
           ) : (
             <BusinessCaseInvoer state={state} beeld={beeld} bewaar={bewaar} />
           )}
@@ -224,16 +234,18 @@ function Samenvatting({ beeld }: { beeld: UsecaseBeeld }) {
 }
 
 function Scorekaart({
+  dimensies,
   waardering,
   bewaar,
 }: {
+  dimensies: Dimensie[];
   waardering: UsecaseBeeld["waardering"];
   bewaar: (velden: { scorekaart: Record<string, number> }) => Promise<void>;
 }) {
   const scores = waardering?.scorekaart ?? {};
   return (
     <div className="space-y-3">
-      {waardeModel.scorekaart_dimensies.map((d) => (
+      {dimensies.map((d) => (
         <div key={d.id}>
           <p className="text-xs font-medium text-inkt">{d.naam}</p>
           <p className="mt-0.5 text-[11px] leading-snug text-inkt-licht">{d.vraag}</p>
@@ -320,11 +332,12 @@ function BusinessCaseInvoer({
     kosten?: { eenmalig: number; jaarlijks: number; capaciteit: number };
   }) => Promise<void>;
 }) {
+  const waardeModel = waardemodelVoorOrganisatie(state.sessie.organisatie_id);
   const waardering = beeld.waardering;
   const drivers = waardering?.drivers ?? [];
   const kosten = waardering?.kosten ?? { eenmalig: 0, jaarlijks: 0, capaciteit: 0 };
   const kaart = beeld.usecase.bibliotheek_id
-    ? bibliotheekKaart(beeld.usecase.bibliotheek_id)
+    ? bibliotheekKaart(state.sessie.organisatie_id, beeld.usecase.bibliotheek_id)
     : undefined;
 
   async function startVanuitBibliotheek() {
@@ -344,7 +357,7 @@ function BusinessCaseInvoer({
     const definitie = waardeModel.drivertypes.find((d) => d.id === type);
     if (!definitie) return;
 
-    // Wat we uit het corporatieprofiel weten, staat meteen ingevuld; de rest is aan het team.
+    // Wat we uit het organisatieprofiel weten, staat meteen ingevuld; de rest is aan het team.
     const waarden: Record<string, number | null> = {};
     for (const veld of definitie.velden) {
       const uitProfiel = veld.uitgangspunt

@@ -7,8 +7,14 @@ import {
   type KwadrantId,
   type Positie,
 } from "@/lib/waarde/berekening";
+import type { Berekeningen } from "@/lib/waarde/berekening";
 import type { DrivertypeId } from "@/lib/content/schemas";
-import { cora, personasVoorOrganisatie, speelmodus, usecase as bibliotheekKaart } from "@/lib/content";
+import {
+  personasVoorOrganisatie,
+  profielVoorOrganisatie,
+  speelmodus,
+  usecase as bibliotheekKaart,
+} from "@/lib/content";
 import {
   FASES,
   type DeelnemerRij,
@@ -49,13 +55,20 @@ function driversVoorBerekening(waardering: WaarderingRij | null) {
 export function businessCaseVan(
   waardering: WaarderingRij | null,
   onzekerheidPct: number,
+  berekeningen: Berekeningen,
 ): BusinessCase | null {
   if (!waardering || waardering.drivers.length === 0) return null;
   return berekenBusinessCase(
     driversVoorBerekening(waardering),
     waardering.kosten,
+    berekeningen,
     onzekerheidPct,
   );
+}
+
+/** De rekenregels van de sector waar de organisatie van deze sessie onder valt. */
+function berekeningenVan(state: SessieState): Berekeningen {
+  return profielVoorOrganisatie(state.sessie.organisatie_id).berekeningen;
 }
 
 /**
@@ -66,8 +79,9 @@ export function businessCaseVan(
  */
 export function hoogsteNettoBaat(state: SessieState): number | null {
   let hoogste: number | null = null;
+  const berekeningen = berekeningenVan(state);
   for (const waardering of state.waarderingen) {
-    const bc = businessCaseVan(waardering, state.sessie.onzekerheid_pct);
+    const bc = businessCaseVan(waardering, state.sessie.onzekerheid_pct, berekeningen);
     const netto = bc?.netto_baat?.verwacht;
     if (typeof netto === "number" && (hoogste === null || netto > hoogste)) hoogste = netto;
   }
@@ -90,7 +104,11 @@ function volledigheidVan(waardering: WaarderingRij | null): number {
 
 export function beeldVan(state: SessieState, usecase: SessieUsecaseRij): UsecaseBeeld {
   const waardering = state.waarderingen.find((w) => w.usecase_id === usecase.id) ?? null;
-  const businessCase = businessCaseVan(waardering, state.sessie.onzekerheid_pct);
+  const businessCase = businessCaseVan(
+    waardering,
+    state.sessie.onzekerheid_pct,
+    berekeningenVan(state),
+  );
 
   const positie = bepaalPositie({
     businessCase,
@@ -149,13 +167,15 @@ export type Dekking = {
 };
 
 /**
- * Welke CORA-domeinen en huurderspersona's het team heeft geraakt.
+ * Welke domeinen en klantpersona's het team heeft geraakt.
  *
  * Dit is de tegenkracht tegen het bekende patroon dat een MT alleen praat over de onderwerpen
- * waar het toch al mee bezig is.
+ * waar het toch al mee bezig is. Welk domeinmodel dat is — CORA bij een corporatie, de
+ * vakgebieden bij een voerproducent — komt uit het sectorprofiel.
  */
 export function dekking(state: SessieState): Dekking {
   const personas = personasVoorOrganisatie(state.sessie.organisatie_id);
+  const domeinen = profielVoorOrganisatie(state.sessie.organisatie_id).domeinen.domeinen;
   const geraakteDomeinen = new Set(state.usecases.map((u) => u.domein));
 
   const geraaktePersonas = new Set<string>();
@@ -166,13 +186,15 @@ export function dekking(state: SessieState): Dekking {
   }
   // Een use case uit de bibliotheek draagt zijn persona's mee.
   for (const u of state.usecases) {
-    const kaart = u.bibliotheek_id ? bibliotheekKaart(u.bibliotheek_id) : undefined;
+    const kaart = u.bibliotheek_id
+      ? bibliotheekKaart(state.sessie.organisatie_id, u.bibliotheek_id)
+      : undefined;
     for (const persona of kaart?.personas ?? []) geraaktePersonas.add(persona);
   }
 
   return {
-    domeinenGedekt: cora.domeinen.filter((d) => geraakteDomeinen.has(d.id)).map((d) => d.id),
-    domeinenOngedekt: cora.domeinen.filter((d) => !geraakteDomeinen.has(d.id)).map((d) => d.id),
+    domeinenGedekt: domeinen.filter((d) => geraakteDomeinen.has(d.id)).map((d) => d.id),
+    domeinenOngedekt: domeinen.filter((d) => !geraakteDomeinen.has(d.id)).map((d) => d.id),
     personasGeraakt: personas.filter((k) => geraaktePersonas.has(k.id)).map((k) => k.id),
     personasGemist: personas.filter((k) => !geraaktePersonas.has(k.id)).map((k) => k.id),
   };
@@ -192,9 +214,12 @@ export type Teamscore = {
 export function teamscore(state: SessieState): Teamscore {
   const beelden = alleBeelden(state);
   const gedekt = dekking(state);
+  const profiel = profielVoorOrganisatie(state.sessie.organisatie_id);
+  const domeinen = profiel.domeinen.domeinen;
+  const lens = profiel.sector.klantlens;
 
   const domeinPunten = gedekt.domeinenGedekt.length * 3;
-  const domeinMax = cora.domeinen.length * 3;
+  const domeinMax = domeinen.length * 3;
 
   const personaAantal = gedekt.personasGeraakt.length + gedekt.personasGemist.length;
   const personaPunten = gedekt.personasGeraakt.length * 4;
@@ -229,14 +254,14 @@ export function teamscore(state: SessieState): Teamscore {
       label: "Breedte",
       punten: domeinPunten,
       maximum: domeinMax,
-      toelichting: `${gedekt.domeinenGedekt.length} van de ${cora.domeinen.length} CORA-domeinen geraakt`,
+      toelichting: `${gedekt.domeinenGedekt.length} van de ${domeinen.length} ${profiel.sector.domeinmodel.naam} geraakt`,
     },
     {
       id: "personas",
-      label: "Huurdersblik",
+      label: lens.blik,
       punten: personaPunten,
       maximum: personaMax,
-      toelichting: `${gedekt.personasGeraakt.length} van de ${personaAantal} huurderstypen in beeld`,
+      toelichting: `${gedekt.personasGeraakt.length} van de ${personaAantal} ${lens.meervoud} in beeld`,
     },
     {
       id: "onderbouwing",
@@ -336,6 +361,7 @@ export type OpdrachtOordeel = { gehaald: boolean; toelichting: string };
  */
 export function beoordeelRolopdracht(state: SessieState, controle: string): OpdrachtOordeel {
   const inPortfolio = portfolio(state);
+  const sector = profielVoorOrganisatie(state.sessie.organisatie_id).sector;
 
   switch (controle) {
     case "elke_usecase_heeft_thema": {
@@ -349,13 +375,24 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
       };
     }
 
-    case "minimaal_twee_hoge_huurderswaarde": {
+    case "minimaal_twee_hoge_klantwaarde": {
       const raakt = inPortfolio.filter(
-        (b) => (b.waardering?.kwalitatief.huurderswaarde ?? 0) >= 4,
+        (b) => (b.waardering?.kwalitatief[sector.kernwaarde_dimensie] ?? 0) >= 4,
       );
       return {
         gehaald: raakt.length >= 2,
-        toelichting: `${raakt.length} use ${raakt.length === 1 ? "case raakt" : "cases raken"} de bewoner direct merkbaar.`,
+        toelichting: `${raakt.length} use ${raakt.length === 1 ? "case raakt" : "cases raken"} de klant direct merkbaar.`,
+      };
+    }
+
+    case "minimaal_een_hoge_duurzaamheid": {
+      const raakt = inPortfolio.filter((b) => (b.waardering?.kwalitatief.duurzaamheid ?? 0) >= 4);
+      return {
+        gehaald: raakt.length >= 1,
+        toelichting:
+          raakt.length >= 1
+            ? `${raakt.length} use ${raakt.length === 1 ? "case draagt" : "cases dragen"} aantoonbaar bij aan de voetafdruk of aan circulaire grondstoffen.`
+            : "Geen enkele use case in het portfolio scoort hoog op duurzaamheid.",
       };
     }
 
@@ -391,9 +428,10 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
     }
 
     case "privacy_aandachtspunt_vastgelegd": {
+      const trefwoorden = sector.persoonsgegevens_trefwoorden.map((w) => w.toLowerCase());
       const raaktPersoonsgegevens = inPortfolio.filter((b) =>
         b.usecase.benodigde_data.some((d) =>
-          /relatie|persoon|huurder|betaal|contract|verbruik|dossier|inschrijving/i.test(d),
+          trefwoorden.some((w) => d.toLowerCase().includes(w)),
         ),
       );
       const zonder = raaktPersoonsgegevens.filter(

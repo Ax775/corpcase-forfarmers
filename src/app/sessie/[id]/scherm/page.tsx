@@ -2,7 +2,12 @@
 
 import { useParams } from "next/navigation";
 import { FASE_LABELS } from "@/lib/supabase/types";
-import { cora, domein as coraDomein, organisatie, speelmodus } from "@/lib/content";
+import {
+  domein as domeinKaart,
+  domeinenVoorOrganisatie,
+  organisatie,
+  speelmodus,
+} from "@/lib/content";
 import { useSessie } from "@/lib/sessie/gebruik";
 import { alleBeelden, budgetStand, dekking, teamscore } from "@/lib/sessie/afgeleid";
 import { formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
@@ -144,12 +149,12 @@ export default function SchermPagina() {
               <div
                 className="h-full rounded-full bg-accent"
                 style={{
-                  width: `${(gedekt.domeinenGedekt.length / cora.domeinen.length) * 100}%`,
+                  width: `${(gedekt.domeinenGedekt.length / domeinenVoorOrganisatie(state.sessie.organisatie_id).domeinen.length) * 100}%`,
                 }}
               />
             </div>
             <p className="mt-2 text-sm text-inkt-zacht">
-              {gedekt.domeinenGedekt.length} van {cora.domeinen.length} domeinen ·{" "}
+              {gedekt.domeinenGedekt.length} van {domeinenVoorOrganisatie(state.sessie.organisatie_id).domeinen.length} domeinen ·{" "}
               {gedekt.personasGeraakt.length} van{" "}
               {gedekt.personasGeraakt.length + gedekt.personasGemist.length} huurderstypen
             </p>
@@ -158,7 +163,7 @@ export default function SchermPagina() {
                 Nog niet geraakt:{" "}
                 {gedekt.domeinenOngedekt
                   .slice(0, 5)
-                  .map((id) => coraDomein(id)?.naam)
+                  .map((id) => domeinKaart(state.sessie.organisatie_id, id)?.naam)
                   .filter(Boolean)
                   .join(", ")}
                 {gedekt.domeinenOngedekt.length > 5 ? "…" : ""}

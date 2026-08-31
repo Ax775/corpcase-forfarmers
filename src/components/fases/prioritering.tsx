@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { realiteitschecks, speelmodus } from "@/lib/content";
+import { realiteitschecksVoorOrganisatie, speelmodus } from "@/lib/content";
+import type { Realiteitscheck } from "@/lib/content/schemas";
 import { opslag } from "@/lib/sessie/api";
 import { alleBeelden, budgetStand, type UsecaseBeeld } from "@/lib/sessie/afgeleid";
 import { formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
@@ -350,11 +351,13 @@ function Realiteitschecks({
 
   const gekozenChecks = useMemo(() => {
     const zaad = [...state.sessie.id].reduce((som, teken) => som + teken.charCodeAt(0), 0);
-    const gesorteerd = [...realiteitschecks.checks].sort((a, b) => a.id.localeCompare(b.id));
+    const gesorteerd = [...realiteitschecksVoorOrganisatie(state.sessie.organisatie_id).checks].sort(
+      (a, b) => a.id.localeCompare(b.id),
+    );
     return Array.from({ length: modus.aantal_realiteitschecks }, (_, i) => {
       return gesorteerd[(zaad + i * 3) % gesorteerd.length];
     });
-  }, [state.sessie.id, modus.aantal_realiteitschecks]);
+  }, [state.sessie.id, state.sessie.organisatie_id, modus.aantal_realiteitschecks]);
 
   if (gekozenChecks.length === 0) return null;
 
@@ -386,7 +389,7 @@ function Check({
   state: SessieState;
   identiteit: BewaardeIdentiteit;
   doe: (actie: () => Promise<unknown>) => Promise<void>;
-  check: (typeof realiteitschecks.checks)[number];
+  check: Realiteitscheck;
 }) {
   const bestaand = state.besluiten.find((b) => b.check_id === check.id);
   const [motivatie, setMotivatie] = useState(bestaand?.motivatie ?? "");

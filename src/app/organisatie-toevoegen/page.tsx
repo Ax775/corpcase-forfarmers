@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { allePersonaSignalen } from "@/lib/content";
+import { allePersonaSignalen, klantlens, sectoren } from "@/lib/content";
 import { contrast, leidPaletAf, PAPIER } from "@/lib/thema/kleur";
 import {
   bouwIndexSnippet,
@@ -22,12 +22,12 @@ import { Thema } from "@/components/thema";
 import { DownloadIcoon } from "@/components/icoon";
 
 /**
- * Onboardingwizard voor een nieuwe corporatie.
+ * Onboardingwizard voor een nieuwe organisatie binnen een bestaande sector.
  *
  * Content leeft in `content/` en wordt met de app meegebouwd — met opzet zonder database, zie de
  * toelichting bovenaan supabase/schema.sql. Deze pagina schrijft dus niets weg: hij vult een
  * formulier gevalideerd tegen dezelfde zod-schema's als `npm run content:check`, en levert aan
- * het eind drie downloadbare bestanden plus de twee regels om in src/lib/content/index.ts te
+ * het eind drie downloadbare bestanden plus de regels om in src/lib/content/index.ts te
  * plakken. Dat is het verschil tussen "een developer schrijft JSON met de hand" en "vul een
  * formulier in, commit drie bestanden en twee regels" — niet "geen code aanraken": dat zou de
  * garantie breken dat er geen drift kan ontstaan tussen wat de app kent en wat er in content/
@@ -71,7 +71,8 @@ const legePersonaKaart = (): PersonaKaartFormulier => ({
 const legFormulier = (): OrganisatieFormulier => ({
   id: "",
   naam: "",
-  type: "Woningcorporatie",
+  type: "",
+  sector: sectoren[0].id,
   pitch: "",
   accent: "#E8524A",
   themaToelichting: "",
@@ -81,7 +82,7 @@ const legFormulier = (): OrganisatieFormulier => ({
   jaarverslagTitel: "",
   jaarverslagBron: "",
   jaarverslagGeverifieerd: false,
-  steden: [],
+  werkgebied: [],
   kengetallen: [],
   strategischeThemas: [],
   onderscheidendeKenmerken: [],
@@ -117,7 +118,7 @@ function downloadJson(bestandsnaam: string, waarde: unknown): void {
 export default function OrganisatieToevoegenPagina() {
   const [form, setForm] = useState<OrganisatieFormulier>(legFormulier());
   const [idHandmatig, setIdHandmatig] = useState(false);
-  const [stedenTekst, setStedenTekst] = useState("");
+  const [werkgebiedTekst, setWerkgebiedTekst] = useState("");
   const [kenmerkenTekst, setKenmerkenTekst] = useState("");
   const [jaarverslagKaarten, setJaarverslagKaarten] = useState<JaarverslagKaartFormulier[]>([]);
   const [personaKaarten, setPersonaKaarten] = useState<PersonaKaartFormulier[]>([]);
@@ -143,7 +144,7 @@ export default function OrganisatieToevoegenPagina() {
 
   const organisatieJson = bouwOrganisatieJson({
     ...form,
-    steden: regelsNaarLijst(stedenTekst),
+    werkgebied: regelsNaarLijst(werkgebiedTekst),
     onderscheidendeKenmerken: regelsNaarLijst(kenmerkenTekst),
   });
   const jaarverslagJson = bouwJaarverslagJson(form.id, jaarverslagKaarten);
@@ -151,20 +152,23 @@ export default function OrganisatieToevoegenPagina() {
   const resultaat = valideerFormulier(organisatieJson, jaarverslagJson, personasJson);
 
   const bestaandePersonaConcepten = [...new Set(allePersonaSignalen.map((k) => k.id))].sort();
+  // De klantlens heet per sector anders: huurder bij een corporatie, veehouder bij een voerproducent.
+  const lens = klantlens(form.sector);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-10">
       <Link href="/" className="text-sm text-inkt-licht hover:text-accent-diep">
         ← Terug
       </Link>
-      <h1 className="display mt-4 text-3xl text-inkt">Nieuwe corporatie toevoegen</h1>
+      <h1 className="display mt-4 text-3xl text-inkt">Nieuwe organisatie toevoegen</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-inkt-zacht">
-        Vult drie contentbestanden — het profiel, de jaarverslagsignalen en de huurderssignalen —
+        Vult drie contentbestanden — het profiel, de jaarverslagsignalen en de klantsignalen —
         gevalideerd tegen dezelfde regels als <code>npm run content:check</code>. Onderaan staat
-        wat je daarna nog moet doen: de bestanden in <code>content/</code> zetten en twee regels
+        wat je daarna nog moet doen: de bestanden in <code>content/</code> zetten en drie regels
         in <code>src/lib/content/index.ts</code> plakken, dan committen en deployen. De
-        use-casebibliotheek zelf is generiek en hoeft niet opnieuw — die geldt voor elke
-        corporatie.
+        use-casebibliotheek, de domeinen en het waardemodel komen uit de sector die je hieronder
+        kiest en hoeven niet opnieuw. Een héle nieuwe bedrijfstak is meer werk: die vraagt een
+        eigen map onder <code>content/sectoren/</code>.
       </p>
 
       {/* ------------------------------------------------------------------ Profiel */}
@@ -193,14 +197,33 @@ export default function OrganisatieToevoegenPagina() {
             </Veld>
           </div>
 
-          <Veld label="Type" hint="Zoals het in de pitch en het rapport verschijnt.">
-            <input
-              className={invoerStijl}
-              value={form.type}
-              onChange={(e) => werkForm({ type: e.target.value })}
-              placeholder="Woningcorporatie"
-            />
-          </Veld>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Veld label="Type" hint="Zoals het in de pitch en het rapport verschijnt.">
+              <input
+                className={invoerStijl}
+                value={form.type}
+                onChange={(e) => werkForm({ type: e.target.value })}
+                placeholder="Woningcorporatie"
+              />
+            </Veld>
+
+            <Veld
+              label="Sector"
+              hint="Bepaalt de domeinen, de waardedrivers, de rollen en de use-casebibliotheek."
+            >
+              <select
+                className={invoerStijl}
+                value={form.sector}
+                onChange={(e) => werkForm({ sector: e.target.value })}
+              >
+                {sectoren.map((sector) => (
+                  <option key={sector.id} value={sector.id}>
+                    {sector.naam}
+                  </option>
+                ))}
+              </select>
+            </Veld>
+          </div>
 
           <Veld label="Pitch" hint="Twee, drie zinnen: wie ze zijn en wat hen onderscheidt.">
             <textarea
@@ -210,11 +233,11 @@ export default function OrganisatieToevoegenPagina() {
             />
           </Veld>
 
-          <Veld label="Steden" hint="Eén per regel.">
+          <Veld label="Werkgebied" hint="Eén per regel: steden, regio's of landen.">
             <textarea
               className={`${invoerStijl} min-h-[4rem]`}
-              value={stedenTekst}
-              onChange={(e) => setStedenTekst(e.target.value)}
+              value={werkgebiedTekst}
+              onChange={(e) => setWerkgebiedTekst(e.target.value)}
               placeholder={"Amsterdam\nRotterdam"}
             />
           </Veld>
@@ -581,9 +604,9 @@ export default function OrganisatieToevoegenPagina() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------------------ Huurderssignalen */}
+      {/* ------------------------------------------------------------------ Klantsignalen */}
       <section className="mt-10">
-        <h2 className="display text-xl text-inkt">Huurderssignalen (persona&apos;s)</h2>
+        <h2 className="display text-xl text-inkt">{lens.enkelvoud}ssignalen (persona&apos;s)</h2>
         <p className="mt-1 text-sm leading-relaxed text-inkt-zacht">
           Elk profiel is een bewoner die spelers bij &quot;Verkennen&quot; tegenkomen. Minimaal één.
           Hergebruik bij voorkeur een bestaand concept-id — dan blijft de generieke
@@ -754,8 +777,8 @@ export default function OrganisatieToevoegenPagina() {
               </pre>
               <p className="mt-1.5 text-xs text-inkt-licht">
                 Daarna: <code>npm run content:check</code> om te bevestigen dat alles nog
-                samenhangt, committen en pushen. De use-casebibliotheek zelf hoeft niet aangepast —
-                die is generiek voor elke corporatie.
+                samenhangt, committen en pushen. De use-casebibliotheek, de domeinen en het
+                waardemodel hoeven niet aangepast — die komen uit de sector.
               </p>
             </div>
           </div>

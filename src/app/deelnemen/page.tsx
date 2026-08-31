@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { opslag } from "@/lib/sessie/api";
 import { bewaarIdentiteit } from "@/lib/sessie/identiteit";
-import { rollen } from "@/lib/content";
+import { organisatie, rollenVoorOrganisatie } from "@/lib/content";
+import type { SessieRij } from "@/lib/supabase/types";
 import { normaliseerCode } from "@/lib/sessie/codes";
 import { Knop, Melding, Veld, invoerStijl } from "@/components/basis";
 import { Cirkel } from "@/components/decoratie";
@@ -15,12 +16,55 @@ function Formulier() {
   const zoekparameters = useSearchParams();
   const [code, setCode] = useState(zoekparameters.get("code") ?? "");
   const [naam, setNaam] = useState("");
-  const [rolId, setRolId] = useState(rollen.rollen[1].id);
+  const [rolId, setRolId] = useState<string | null>(null);
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState<string | null>(null);
+  /**
+   * De gevonden sessie wordt bewaard mét de code waarvoor hij gevonden is.
+   *
+   * Dat koppel is nodig: als de deelnemer zijn code aanpast, hoort de vorige sessie niet nog even
+   * te blijven staan terwijl de nieuwe wordt opgehaald. Door beide samen op te slaan is een
+   * verouderde uitkomst niet te onderscheiden van geen uitkomst, en hoeft het effect de state
+   * niet synchroon leeg te maken.
+   */
+  const [gevonden, setGevonden] = useState<{ code: string; sessie: SessieRij | null } | null>(null);
+  const genormaliseerd = normaliseerCode(code);
+  const codeCompleet = genormaliseerd.length === 6;
+
+  /**
+   * Zoek de sessie op zodra de code compleet is.
+   *
+   * Dat moet: rollen zijn sectorgebonden, dus welke rollen er te kiezen zijn hangt af van de
+   * organisatie waarvoor deze sessie draait. Het levert de deelnemer meteen bevestiging op dat
+   * hij de goede code heeft, nog voordat hij op Meedoen drukt.
+   */
+  useEffect(() => {
+    if (!codeCompleet) return;
+
+    let actueel = true;
+    void opslag
+      .zoekSessie(genormaliseerd)
+      .then((uitkomst) => {
+        if (actueel) setGevonden({ code: genormaliseerd, sessie: uitkomst });
+      })
+      .catch(() => {
+        if (actueel) setGevonden({ code: genormaliseerd, sessie: null });
+      });
+
+    return () => {
+      actueel = false;
+    };
+  }, [genormaliseerd, codeCompleet]);
+
+  const sessie = gevonden?.code === genormaliseerd ? gevonden.sessie : null;
+  const org = sessie ? organisatie(sessie.organisatie_id) : null;
+  const rollen = org ? rollenVoorOrganisatie(org.id) : null;
+  // Afleiden in plaats van bijhouden: bij een andere code kan een eerder gekozen rol niet blijven staan.
+  const gekozenRol =
+    rollen && rolId && rollen.rollen.some((r) => r.id === rolId) ? rolId : rollen?.rollen[1]?.id ?? null;
 
   async function meedoen() {
-    if (normaliseerCode(code).length !== 6) {
+    if (!codeCompleet) {
       setFout("Een sessiecode bestaat uit zes tekens.");
       return;
     }
@@ -28,11 +72,15 @@ function Formulier() {
       setFout("Vul je naam in, dan weten de anderen wie er meedoet.");
       return;
     }
+    if (!gekozenRol) {
+      setFout("We konden geen sessie vinden met deze code. Controleer hem bij de facilitator.");
+      return;
+    }
 
     setBezig(true);
     setFout(null);
     try {
-      const toegang = await opslag.neemDeel({ code, naam: naam.trim(), rolId });
+      const toegang = await opslag.neemDeel({ code, naam: naam.trim(), rolId: gekozenRol });
       bewaarIdentiteit(toegang.sessie.id, {
         ...toegang.identiteit,
         deelnemerId: toegang.deelnemer.id,
@@ -84,15 +132,29 @@ function Formulier() {
           />
         </Veld>
 
-        <Veld label="Jouw rol" hint="Bepaalt door welke bril je kijkt en welke privé-opdracht je krijgt.">
-          <select className={invoerStijl} value={rolId} onChange={(e) => setRolId(e.target.value)}>
-            {rollen.rollen.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.naam}
-              </option>
-            ))}
-          </select>
-        </Veld>
+        {rollen && org ? (
+          <Veld
+            label="Jouw rol"
+            hint={`Je doet mee aan een sessie voor ${org.naam}. Je rol bepaalt door welke bril je kijkt en welke privé-opdracht je krijgt.`}
+          >
+            <select
+              className={invoerStijl}
+              value={gekozenRol ?? ""}
+              onChange={(e) => setRolId(e.target.value)}
+            >
+              {rollen.rollen.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.naam}
+                </option>
+              ))}
+            </select>
+          </Veld>
+        ) : (
+          <p className="text-xs leading-relaxed text-inkt-licht">
+            Zodra de code klopt, verschijnt hier voor welke organisatie je meespeelt en welke rol
+            je kunt kiezen.
+          </p>
+        )}
 
         {fout ? <Melding toon="risico">{fout}</Melding> : null}
 

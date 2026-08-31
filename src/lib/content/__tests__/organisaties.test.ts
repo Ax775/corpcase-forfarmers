@@ -12,10 +12,11 @@ function organisatie(id: string, accent: string) {
     id,
     naam: `Testcorporatie ${id}`,
     type: "Woningcorporatie",
+    sector: "woningcorporatie",
     pitch: "Testfixture, geen echte corporatie.",
     thema: { accent, bron: "test", geverifieerd: false },
     jaarverslag: { jaar: 2024, titel: "Testjaarverslag", bron: "test", geverifieerd: false },
-    steden: ["Teststad"],
+    werkgebied: ["Teststad"],
     kengetallen: [],
     strategische_themas: [],
     onderscheidende_kenmerken: [],
@@ -44,7 +45,7 @@ function jaarverslag(organisatieId: string, kaartId: string) {
 function personas(organisatieId: string, kaartId: string) {
   return {
     organisatie_id: organisatieId,
-    lens: "huurder" as const,
+    lens: "klant" as const,
     toelichting: "test",
     kaarten: [
       {

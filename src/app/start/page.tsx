@@ -5,16 +5,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { opslag } from "@/lib/sessie/api";
 import { bewaarIdentiteit } from "@/lib/sessie/identiteit";
-import { organisaties, rollen, speelmodi } from "@/lib/content";
-import { Kaart, Knop, Melding, Veld, invoerStijl } from "@/components/basis";
+import { organisatie, organisaties, rollenVoorOrganisatie, speelmodi } from "@/lib/content";
+import { Knop, Melding, Veld, invoerStijl } from "@/components/basis";
 import { Cirkel } from "@/components/decoratie";
 import { Thema } from "@/components/thema";
 
+const standaardTitel = (naam: string) => `Use-casesessie ${naam}`;
+
 export default function StartPagina() {
   const router = useRouter();
-  const org = organisaties[0];
 
-  const [titel, setTitel] = useState(`Use-casesessie ${org.naam}`);
+  const [orgId, setOrgId] = useState(organisaties[0].id);
+  const org = organisatie(orgId);
+  const rollen = rollenVoorOrganisatie(orgId);
+
+  const [titel, setTitel] = useState(standaardTitel(organisaties[0].naam));
   const [modusId, setModusId] = useState("halve-dag");
   const [naam, setNaam] = useState("");
   const [speeltMee, setSpeeltMee] = useState(true);
@@ -23,6 +28,19 @@ export default function StartPagina() {
   const [fout, setFout] = useState<string | null>(null);
 
   const modus = speelmodi.modi.find((m) => m.id === modusId)!;
+
+  /**
+   * Elke sector heeft eigen rollen, dus een rol van de vorige organisatie kan hier niet blijven
+   * staan. Afleiden in plaats van bijhouden: dan kan de keuze niet stilzwijgend ongeldig worden.
+   */
+  const gekozenRol = rollen.rollen.some((r) => r.id === rolId) ? rolId : rollen.rollen[0].id;
+
+  function kiesOrganisatie(nieuwId: string) {
+    const vorige = organisatie(orgId);
+    setOrgId(nieuwId);
+    // De titel volgt de organisatie, tenzij de facilitator hem zelf heeft aangepast.
+    if (titel === standaardTitel(vorige.naam)) setTitel(standaardTitel(organisatie(nieuwId).naam));
+  }
 
   async function starten() {
     if (!naam.trim()) {
@@ -34,10 +52,10 @@ export default function StartPagina() {
     try {
       const toegang = await opslag.maakSessie({
         titel: titel.trim() || `Use-casesessie ${org.naam}`,
-        organisatieId: org.id,
+        organisatieId: orgId,
         speelmodusId: modusId,
         facilitatorNaam: naam.trim(),
-        facilitatorRolId: speeltMee ? rolId : null,
+        facilitatorRolId: speeltMee ? gekozenRol : null,
       });
       bewaarIdentiteit(toegang.sessie.id, {
         ...toegang.identiteit,
@@ -73,11 +91,36 @@ export default function StartPagina() {
           />
         </Veld>
 
-        <Veld label="Corporatie">
-          <Kaart className="p-3">
-            <p className="text-sm font-medium text-inkt">{org.naam}</p>
-            <p className="mt-1 text-xs leading-relaxed text-inkt-zacht">{org.pitch}</p>
-          </Kaart>
+        <Veld
+          label="Voor welke organisatie?"
+          hint="Bepaalt het jaarverslag, de klanten, de domeinen en het waardemodel waarmee je speelt."
+        >
+          <div className="space-y-2">
+            {organisaties.map((o) => (
+              <label
+                key={o.id}
+                className={`keuze flex cursor-pointer items-start gap-3 rounded-kaart border p-3 transition-colors ${
+                  orgId === o.id
+                    ? "border-accent bg-accent-zacht"
+                    : "border-rand bg-vlak hover:border-rand-sterk"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="organisatie"
+                  className="mt-1"
+                  checked={orgId === o.id}
+                  onChange={() => kiesOrganisatie(o.id)}
+                />
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-inkt">{o.naam}</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-inkt-zacht">
+                    {o.pitch}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
         </Veld>
 
         <Veld label="Hoeveel tijd heb je?" hint="Bepaalt het aantal kaarten, de timers en hoe diep je doorrekent.">
@@ -170,7 +213,11 @@ export default function StartPagina() {
             label="Jouw rol"
             hint="Bepaalt door welke bril je kijkt en welke privé-opdracht je krijgt."
           >
-            <select className={invoerStijl} value={rolId} onChange={(e) => setRolId(e.target.value)}>
+            <select
+              className={invoerStijl}
+              value={gekozenRol}
+              onChange={(e) => setRolId(e.target.value)}
+            >
               {rollen.rollen.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.naam}

@@ -1,0 +1,14 @@
+{
+  "toelichting": "Privé-opdracht per rol. Alleen zichtbaar voor de speler zelf, tot de onthulling in de opbrengstfase. Doel: perspectieven borgen die anders stil wegvallen, zonder rollenspel.",
+  "onthulling": "Bij de opbrengst wordt elke opdracht getoond met de vraag: is dit gelukt, en zo nee, wat zegt dat over ons portfolio?",
+  "opdrachten": [
+    { "id": "vro-bestuurder", "rol": "bestuurder", "opdracht": "Zorg dat elke use case in het eindportfolio herleidbaar is tot een signaal uit ons eigen jaarverslag of onze strategie.", "controle": "elke_usecase_heeft_thema" },
+    { "id": "vro-commercieel", "rol": "commercieel-directeur", "opdracht": "Zorg dat minstens twee use cases in het eindportfolio de veehouder op zijn erf direct merkbaar raken.", "controle": "minimaal_twee_hoge_klantwaarde" },
+    { "id": "vro-supplychain", "rol": "directeur-supplychain", "opdracht": "Zorg dat er iets in het portfolio zit dat binnen zes maanden in een fabriek of op de planning kan landen, niet alleen meerjarige trajecten.", "controle": "minimaal_een_horizon_nu" },
+    { "id": "vro-nutritie", "rol": "manager-nutritie", "opdracht": "Zorg dat geen enkele use case het portfolio in gaat zonder benoemde databron.", "controle": "elke_usecase_heeft_databron" },
+    { "id": "vro-cfo", "rol": "cfo", "opdracht": "Zorg dat minstens de helft van het portfolio is doorgerekend, niet alleen op gevoel gescoord.", "controle": "helft_doorgerekend" },
+    { "id": "vro-informatiemanager", "rol": "informatiemanager", "opdracht": "Zorg dat elke use case die klant- of bedrijfsgegevens gebruikt een expliciet vastgelegde aanname of aandachtspunt heeft.", "controle": "privacy_aandachtspunt_vastgelegd" },
+    { "id": "vro-duurzaamheid", "rol": "duurzaamheidsmanager", "opdracht": "Zorg dat er minstens één use case in het portfolio staat die aantoonbaar bijdraagt aan de voetafdruk of aan circulaire grondstoffen.", "controle": "minimaal_een_hoge_duurzaamheid" },
+    { "id": "vro-klant", "rol": "klantvertegenwoordiger", "opdracht": "Zorg dat elke use case die klant- of dierdata gebruikt uitlegbaar is aan de boer van wie die data komt.", "controle": "privacy_aandachtspunt_vastgelegd" }
+  ]
+}

@@ -1,7 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { alleSignalen, rol, speelmodus, type SignaalKaart } from "@/lib/content";
+import {
+  alleSignalen,
+  klantlensVoorOrganisatie,
+  rol,
+  speelmodus,
+  type SignaalKaart,
+} from "@/lib/content";
 import { opslag } from "@/lib/sessie/api";
 import type { SessieState } from "@/lib/supabase/types";
 import type { BewaardeIdentiteit } from "@/lib/sessie/identiteit";
@@ -9,12 +15,16 @@ import { Etiket, Hoofdregel, Kaart, Knop, Kop, Melding } from "@/components/basi
 
 const PER_PORTIE = 12;
 
-const LENS_LABELS: Record<SignaalKaart["lens"], string> = {
+/**
+ * Het label van de klantlens verschilt per sector — een corporatie heeft huurders, een
+ * voerproducent veehouders — en komt daarom uit het sectorprofiel in plaats van uit deze tabel.
+ */
+const lensLabels = (klant: string): Record<SignaalKaart["lens"], string> => ({
   jaarverslag: "Jaarverslag",
-  huurder: "Huurder",
+  klant,
   uitdaging: "Uitdaging",
   domein: "Domein",
-};
+});
 
 /**
  * Fase 1: door welke ogen kijk je?
@@ -37,8 +47,9 @@ export function Verkennen({
   // waarin niemand nog kiest; per portie van twaalf blijft het een gesprek.
   const [portie, setPortie] = useState(1);
   const modus = speelmodus(state.sessie.speelmodus);
+  const LENS_LABELS = lensLabels(klantlensVoorOrganisatie(state.sessie.organisatie_id).enkelvoud);
   const ik = state.deelnemers.find((d) => d.id === identiteit.deelnemerId);
-  const mijnRol = ik ? rol(ik.rol_id) : undefined;
+  const mijnRol = ik ? rol(state.sessie.organisatie_id, ik.rol_id) : undefined;
 
   const signalen = useMemo(
     () => alleSignalen(state.sessie.organisatie_id),
@@ -122,7 +133,7 @@ export function Verkennen({
       </div>
 
       <div className="scroll-x flex gap-1.5 pb-1">
-        {(["alle", "jaarverslag", "huurder", "uitdaging", "domein"] as const).map((l) => (
+        {(["alle", "jaarverslag", "klant", "uitdaging", "domein"] as const).map((l) => (
           <button
             key={l}
             type="button"

@@ -27,8 +27,8 @@ export function Lobby({
   const org = organisatie(state.sessie.organisatie_id);
   const modus = speelmodus(state.sessie.speelmodus);
   const ik = state.deelnemers.find((d) => d.id === identiteit.deelnemerId);
-  const mijnRol = ik ? rol(ik.rol_id) : undefined;
-  const opdracht = ik ? rolopdrachtVoorRol(ik.rol_id) : undefined;
+  const mijnRol = ik ? rol(state.sessie.organisatie_id, ik.rol_id) : undefined;
+  const opdracht = ik ? rolopdrachtVoorRol(state.sessie.organisatie_id, ik.rol_id) : undefined;
 
   return (
     <div className="relative">

@@ -12,6 +12,10 @@ import {
  * meegebouwd, met opzet zonder database — zie de toelichting bovenaan supabase/schema.sql. De
  * wizard verkort dus het pad van "een developer schrijft JSON met de hand" naar "vul een
  * formulier in, commit drie bestanden en twee regels", niet naar "geen code aanraken".
+ *
+ * De wizard voegt een organisatie toe aan een bestáánde sector. Een nieuwe bedrijfstak is meer
+ * werk: die vraagt een eigen map onder content/sectoren/ met een domeinmodel, waardedrivers,
+ * uitdagingen, rollen en een use-casebibliotheek.
  */
 
 export type KengetalFormulier = {
@@ -30,6 +34,8 @@ export type OrganisatieFormulier = {
   id: string;
   naam: string;
   type: string;
+  /** Verwijst naar een map in content/sectoren/: bepaalt domeinen, drivers, rollen en vocabulaire. */
+  sector: string;
   pitch: string;
   accent: string;
   themaToelichting: string;
@@ -39,7 +45,7 @@ export type OrganisatieFormulier = {
   jaarverslagTitel: string;
   jaarverslagBron: string;
   jaarverslagGeverifieerd: boolean;
-  steden: string[];
+  werkgebied: string[];
   kengetallen: KengetalFormulier[];
   strategischeThemas: ThemaFormulier[];
   onderscheidendeKenmerken: string[];
@@ -70,7 +76,7 @@ export type PersonaKaartFormulier = {
   signaal: string;
 };
 
-/** Van "DUWO Rotterdam" naar "duwo-rotterdam": hetzelfde patroon als de bestaande content-id's. */
+/** Van "ForFarmers Polen" naar "forfarmers-polen": hetzelfde patroon als de bestaande content-id's. */
 export function slugify(tekst: string): string {
   return tekst
     .toLowerCase()
@@ -97,6 +103,7 @@ export function bouwOrganisatieJson(f: OrganisatieFormulier) {
     id: f.id,
     naam: f.naam,
     type: f.type,
+    sector: f.sector,
     pitch: f.pitch,
     thema: {
       accent: f.accent,
@@ -110,7 +117,7 @@ export function bouwOrganisatieJson(f: OrganisatieFormulier) {
       bron: f.jaarverslagBron,
       geverifieerd: f.jaarverslagGeverifieerd,
     },
-    steden: f.steden,
+    werkgebied: f.werkgebied,
     kengetallen: f.kengetallen.map(naarKengetal),
     strategische_themas: f.strategischeThemas,
     onderscheidende_kenmerken: f.onderscheidendeKenmerken,
@@ -144,8 +151,8 @@ export function bouwJaarverslagJson(organisatieId: string, kaarten: JaarverslagK
 export function bouwPersonasJson(organisatieId: string, kaarten: PersonaKaartFormulier[]) {
   return {
     organisatie_id: organisatieId,
-    lens: "huurder" as const,
-    toelichting: `Huurderspersona's van ${organisatieId}, elk met een profiel, een reis en concrete frustraties.`,
+    lens: "klant" as const,
+    toelichting: `Klantpersona's van ${organisatieId}, elk met een profiel, een reis en concrete frustraties.`,
     kaarten: kaarten.map((k) => ({
       id: k.id,
       titel: k.titel,
@@ -164,10 +171,10 @@ export function bouwIndexSnippet(organisatieId: string): string {
   return [
     `import ${naam}Json from "@content/organisaties/${organisatieId}.json";`,
     `import ${naam}JaarverslagJson from "@content/signalen/${organisatieId}-jaarverslag.json";`,
-    `import ${naam}PersonasJson from "@content/signalen/${organisatieId}-personas.json";`,
+    `import ${naam}KlantenJson from "@content/signalen/${organisatieId}-klanten.json";`,
     "",
     `// In ORGANISATIE_BRONNEN, als extra element van de array:`,
-    `{ organisatie: ${naam}Json, jaarverslag: ${naam}JaarverslagJson, personas: ${naam}PersonasJson },`,
+    `{ organisatie: ${naam}Json, jaarverslag: ${naam}JaarverslagJson, personas: ${naam}KlantenJson },`,
   ].join("\n");
 }
 

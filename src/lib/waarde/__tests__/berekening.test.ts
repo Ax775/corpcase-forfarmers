@@ -6,11 +6,18 @@ import {
   berekenBudgetStand,
   berekenBusinessCase,
   berekenDriver,
-  BEREKENINGEN,
   gemiddeldeScore,
   STANDAARD_BANDBREEDTE_PCT,
 } from "../berekening";
-import { waardeModel } from "@/lib/content";
+import { berekeningenVoorSector, waardemodelVoorSector } from "@/lib/content";
+
+/**
+ * De rekenregels komen uit het sectorprofiel. Deze tests draaien op de woningcorporatie-sector,
+ * met dezelfde verwachte uitkomsten als toen de formules nog in TypeScript stonden: dat is precies
+ * de regressie die bewijst dat de omzetting naar uitvoerbare formules niets veranderd heeft.
+ */
+const rekenregels = berekeningenVoorSector("woningcorporatie");
+const waardeModel = waardemodelVoorSector("woningcorporatie");
 
 describe("berekenDriver", () => {
   it("rekent een tijdsbesparing door", () => {
@@ -19,7 +26,7 @@ describe("berekenDriver", () => {
     const uitkomst = berekenDriver({
       type: "tijdsbesparing",
       waarden: { volume_per_jaar: 10000, minuten_per_geval: 6, reductie_pct: 25, uurtarief: 60 },
-    });
+    }, rekenregels);
     expect(uitkomst.status).toBe("berekend");
     if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(15000);
   });
@@ -34,7 +41,7 @@ describe("berekenDriver", () => {
         reductie_pct: 10,
         dagopbrengst: 15,
       },
-    });
+    }, rekenregels);
     expect(uitkomst.status).toBe("berekend");
     if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(270000);
   });
@@ -43,7 +50,7 @@ describe("berekenDriver", () => {
     const uitkomst = berekenDriver({
       type: "tijdsbesparing",
       waarden: { volume_per_jaar: 10000, minuten_per_geval: 6, reductie_pct: null, uurtarief: 60 },
-    });
+    }, rekenregels);
     expect(uitkomst.status).toBe("onbekend");
     if (uitkomst.status === "onbekend") expect(uitkomst.ontbrekende_velden).toEqual(["reductie_pct"]);
   });
@@ -52,7 +59,7 @@ describe("berekenDriver", () => {
     const uitkomst = berekenDriver({
       type: "dervingsreductie",
       waarden: { huidige_post_per_jaar: Number.NaN, reductie_pct: Number.POSITIVE_INFINITY },
-    });
+    }, rekenregels);
     expect(uitkomst.status).toBe("onbekend");
     if (uitkomst.status === "onbekend") {
       expect(uitkomst.ontbrekende_velden).toEqual(["huidige_post_per_jaar", "reductie_pct"]);
@@ -89,6 +96,7 @@ describe("berekenBusinessCase", () => {
         { type: "dervingsreductie", waarden: { huidige_post_per_jaar: 100000, reductie_pct: 10 } },
       ],
       kosten,
+      rekenregels,
     );
     expect(bc.volledig).toBe(true);
     expect(bc.bruto_baat?.verwacht).toBeCloseTo(25000);
@@ -107,6 +115,7 @@ describe("berekenBusinessCase", () => {
         { type: "dervingsreductie", waarden: { huidige_post_per_jaar: 100000 } },
       ],
       kosten,
+      rekenregels,
     );
     expect(bc.volledig).toBe(false);
     expect(bc.ontbrekende_velden).toContain("dervingsreductie.reductie_pct");
@@ -114,7 +123,7 @@ describe("berekenBusinessCase", () => {
   });
 
   it("geeft geen bedrag terug als geen enkele driver compleet is", () => {
-    const bc = berekenBusinessCase([{ type: "tijdsbesparing", waarden: {} }], kosten);
+    const bc = berekenBusinessCase([{ type: "tijdsbesparing", waarden: {} }], kosten, rekenregels);
     expect(bc.bruto_baat).toBeNull();
     expect(bc.netto_baat).toBeNull();
     expect(bc.terugverdientijd_maanden).toBeNull();
@@ -124,6 +133,7 @@ describe("berekenBusinessCase", () => {
     const bc = berekenBusinessCase(
       [{ type: "dervingsreductie", waarden: { huidige_post_per_jaar: 50000, reductie_pct: 10 } }],
       kosten,
+      rekenregels,
     );
     expect(bc.netto_baat!.verwacht).toBeLessThan(0);
     expect(bc.terugverdientijd_maanden).toBeNull();
@@ -133,6 +143,7 @@ describe("berekenBusinessCase", () => {
     const bc = berekenBusinessCase(
       [{ type: "extra_opbrengst", waarden: { extra_eenheden: 100, jaaropbrengst_per_eenheid: 1200 } }],
       { eenmalig: 100000, jaarlijks: 20000, capaciteit: 2 },
+      rekenregels,
     );
     // bruto 120.000, netto 100.000, eenmalig 100.000 => 12 maanden
     expect(bc.terugverdientijd_maanden).toBeCloseTo(12);
@@ -197,17 +208,23 @@ describe("gemiddeldeScore", () => {
   });
 });
 
-describe("content en rekenmotor blijven in de pas", () => {
-  it("elk drivertype in de content heeft dezelfde velden als de implementatie", () => {
+describe("de formule in de content is de implementatie", () => {
+  it("elk drivertype levert een rekenregel op met precies zijn eigen velden", () => {
     for (const dt of waardeModel.drivertypes) {
-      const berekening = BEREKENINGEN[dt.id];
-      expect(berekening, `geen implementatie voor ${dt.id}`).toBeDefined();
+      const berekening = rekenregels[dt.id];
+      expect(berekening, `geen rekenregel voor ${dt.id}`).toBeDefined();
       expect(dt.velden.map((v) => v.id).sort()).toEqual([...berekening.velden].sort());
     }
   });
 
-  it("de rekenmotor bevat geen drivertypes die de content niet kent", () => {
+  it("er ontstaan geen rekenregels die de content niet kent", () => {
     const contentIds = waardeModel.drivertypes.map((d) => d.id).sort();
-    expect(Object.keys(BEREKENINGEN).sort()).toEqual(contentIds);
+    expect(Object.keys(rekenregels).sort()).toEqual(contentIds);
+  });
+
+  it("elke sector brengt zijn eigen drivertypes mee", () => {
+    const voer = Object.keys(berekeningenVoorSector("diervoeding"));
+    expect(voer).toContain("formuleringsmarge");
+    expect(voer).not.toContain("leegstandsreductie");
   });
 });

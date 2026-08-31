@@ -10,6 +10,10 @@ import type { DrivertypeId, Usecase } from "@/lib/content/schemas";
  *    toont, is gevaarlijker dan geen business case.
  * 2. Een uitkomst is altijd een bandbreedte (laag / verwacht / hoog). Eén hard getal suggereert een
  *    precisie die er niet is en kost geloofwaardigheid aan de bestuurstafel.
+ *
+ * De module is bewust vrij van content: de rekenregels komen als `Berekeningen` binnen, opgebouwd
+ * uit het sectorprofiel (`berekeningenVoorSector`). Zo weet de motor niets van huurders of
+ * veehouders, en kan een sector zijn eigen drivers meebrengen zonder één regel TypeScript.
  */
 
 export const STANDAARD_BANDBREEDTE_PCT = 30;
@@ -25,47 +29,25 @@ export type DriverUitkomst =
   | { status: "berekend"; type: DrivertypeId; jaarlijkse_baat: number }
   | { status: "onbekend"; type: DrivertypeId; ontbrekende_velden: string[] };
 
-type Berekening = { velden: readonly string[]; bereken: (w: Record<string, number>) => number };
-
 /**
- * De implementaties horen één-op-één bij de drivertypes in content/waarde/drivers.json.
- * `drivers.test.ts` bewaakt dat die twee niet uit elkaar lopen.
+ * Eén uitvoerbaar drivertype: welke velden de speler invult, en hoe daar een bedrag uit komt.
+ * De `bereken` komt uit de formuletekst in het sectorprofiel; zie src/lib/waarde/formule.ts.
  */
-export const BEREKENINGEN: Record<DrivertypeId, Berekening> = {
-  tijdsbesparing: {
-    velden: ["volume_per_jaar", "minuten_per_geval", "reductie_pct", "uurtarief"],
-    bereken: (w) =>
-      w.volume_per_jaar * (w.minuten_per_geval / 60) * (w.reductie_pct / 100) * w.uurtarief,
-  },
-  leegstandsreductie: {
-    velden: ["mutaties_per_jaar", "leegstandsdagen_per_mutatie", "reductie_pct", "dagopbrengst"],
-    bereken: (w) =>
-      w.mutaties_per_jaar *
-      w.leegstandsdagen_per_mutatie *
-      (w.reductie_pct / 100) *
-      w.dagopbrengst,
-  },
-  dervingsreductie: {
-    velden: ["huidige_post_per_jaar", "reductie_pct"],
-    bereken: (w) => w.huidige_post_per_jaar * (w.reductie_pct / 100),
-  },
-  vermeden_kosten: {
-    velden: ["gevallen_per_jaar", "kosten_per_geval", "reductie_pct"],
-    bereken: (w) => w.gevallen_per_jaar * w.kosten_per_geval * (w.reductie_pct / 100),
-  },
-  extra_opbrengst: {
-    velden: ["extra_eenheden", "jaaropbrengst_per_eenheid"],
-    bereken: (w) => w.extra_eenheden * w.jaaropbrengst_per_eenheid,
-  },
+export type Berekening = {
+  velden: readonly string[];
+  bereken: (w: Record<string, number>) => number;
 };
+
+/** De drivertypes van één sector, op id. Gebouwd door `berekeningenVoorSector`. */
+export type Berekeningen = Record<string, Berekening>;
 
 function isBruikbaar(waarde: unknown): waarde is number {
   return typeof waarde === "number" && Number.isFinite(waarde);
 }
 
 /** Rekent één driver door, of meldt precies welke velden ontbreken. */
-export function berekenDriver(invoer: DriverInvoer): DriverUitkomst {
-  const berekening = BEREKENINGEN[invoer.type];
+export function berekenDriver(invoer: DriverInvoer, berekeningen: Berekeningen): DriverUitkomst {
+  const berekening = berekeningen[invoer.type];
   if (!berekening) {
     return { status: "onbekend", type: invoer.type, ontbrekende_velden: ["onbekend drivertype"] };
   }
@@ -78,7 +60,15 @@ export function berekenDriver(invoer: DriverInvoer): DriverUitkomst {
   const compleet = Object.fromEntries(
     berekening.velden.map((veld) => [veld, invoer.waarden[veld] as number]),
   );
-  return { status: "berekend", type: invoer.type, jaarlijkse_baat: berekening.bereken(compleet) };
+  const baat = berekening.bereken(compleet);
+
+  // Dezelfde regel als bij een ontbrekend veld: liever "onbekend" dan een getal dat niets betekent.
+  // Een deling door nul levert Infinity op, en die zou anders als bedrag op het scherm belanden.
+  if (!Number.isFinite(baat)) {
+    return { status: "onbekend", type: invoer.type, ontbrekende_velden: ["ongeldige uitkomst"] };
+  }
+
+  return { status: "berekend", type: invoer.type, jaarlijkse_baat: baat };
 }
 
 export type Kosten = { eenmalig: number; jaarlijks: number; capaciteit: number };
@@ -117,9 +107,10 @@ export function bandbreedte(verwacht: number, onzekerheidPct = STANDAARD_BANDBRE
 export function berekenBusinessCase(
   drivers: DriverInvoer[],
   kosten: Kosten,
+  berekeningen: Berekeningen,
   onzekerheidPct = STANDAARD_BANDBREEDTE_PCT,
 ): BusinessCase {
-  const uitkomsten = drivers.map(berekenDriver);
+  const uitkomsten = drivers.map((d) => berekenDriver(d, berekeningen));
   const berekend = uitkomsten.filter(
     (u): u is Extract<DriverUitkomst, { status: "berekend" }> => u.status === "berekend",
   );

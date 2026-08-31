@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import {
   alleSignalen,
-  bibliotheek,
-  cora,
-  domein as coraDomein,
+  domein as domeinKaart,
+  domeinenVoorOrganisatie,
+  usecasesVoorOrganisatie,
   rol,
   speelmodus,
   usecase as bibliotheekKaart,
@@ -34,6 +34,7 @@ export function Identificatie({
   doe: (actie: () => Promise<unknown>) => Promise<void>;
 }) {
   const [tab, setTab] = useState<"portfolio" | "bibliotheek" | "eigen">("portfolio");
+  const cora = domeinenVoorOrganisatie(state.sessie.organisatie_id);
   const modus = speelmodus(state.sessie.speelmodus);
   const beelden = alleBeelden(state);
   const gedekt = dekking(state);
@@ -48,7 +49,12 @@ export function Identificatie({
         onder="Kies uit de bibliotheek of schrijf er zelf een. Koppel er altijd het signaal aan waar hij uit voortkomt."
       />
 
-      <Dekkingsmeter gedekt={gedekt.domeinenGedekt.length} totaal={cora.domeinen.length} ongedekt={gedekt.domeinenOngedekt} />
+      <Dekkingsmeter
+        organisatieId={state.sessie.organisatie_id}
+        gedekt={gedekt.domeinenGedekt.length}
+        totaal={cora.domeinen.length}
+        ongedekt={gedekt.domeinenOngedekt}
+      />
 
       {vol ? (
         <Melding>
@@ -108,15 +114,19 @@ export function Identificatie({
 }
 
 function Dekkingsmeter({
+  organisatieId,
   gedekt,
   totaal,
   ongedekt,
 }: {
+  organisatieId: string;
   gedekt: number;
   totaal: number;
   ongedekt: string[];
 }) {
-  const namen = ongedekt.map((id) => coraDomein(id)?.naam).filter(Boolean) as string[];
+  const namen = ongedekt
+    .map((id) => domeinKaart(organisatieId, id)?.naam)
+    .filter(Boolean) as string[];
   return (
     <Kaart className="p-4">
       <div className="flex items-baseline justify-between gap-3">
@@ -158,7 +168,8 @@ function Bibliotheek({
 }) {
   const [zoek, setZoek] = useState("");
   const ik = state.deelnemers.find((d) => d.id === identiteit.deelnemerId);
-  const mijnRol = ik ? rol(ik.rol_id) : undefined;
+  const bibliotheek = usecasesVoorOrganisatie(state.sessie.organisatie_id);
+  const mijnRol = ik ? rol(state.sessie.organisatie_id, ik.rol_id) : undefined;
 
   const gekozenSignalen = useMemo(
     () => new Set(state.selecties.map((s) => s.signaal_id)),
@@ -191,10 +202,10 @@ function Bibliotheek({
       })
       .sort((a, b) => b.score - a.score)
       .slice(0, 24);
-  }, [zoek, mijnRol, gekozenSignalen, state.usecases]);
+  }, [zoek, mijnRol, gekozenSignalen, state.usecases, bibliotheek.usecases]);
 
   async function kies(id: string) {
-    const kaart = bibliotheekKaart(id);
+    const kaart = bibliotheekKaart(state.sessie.organisatie_id, id);
     if (!kaart) return;
     const onderbouwing = [...kaart.personas, ...kaart.uitdagingen].filter((s) =>
       gekozenSignalen.has(s),
@@ -236,7 +247,7 @@ function Bibliotheek({
                 <h3 className="text-sm font-medium leading-snug text-inkt">
                   {kaart.titel}
                 </h3>
-                <Etiket>{coraDomein(kaart.domein)?.naam ?? kaart.domein}</Etiket>
+                <Etiket>{domeinKaart(state.sessie.organisatie_id, kaart.domein)?.naam ?? kaart.domein}</Etiket>
               </div>
               <p className="mt-1.5 text-sm leading-relaxed text-inkt-zacht">
                 {kaart.probleem}
@@ -276,7 +287,12 @@ function EigenKaart({
   const [titel, setTitel] = useState("");
   const [probleem, setProbleem] = useState("");
   const [oplossing, setOplossing] = useState("");
-  const [domeinId, setDomeinId] = useState(cora.domeinen[3].id);
+  const cora = domeinenVoorOrganisatie(state.sessie.organisatie_id);
+  // Begin bij het eerste primaire domein: dat is waar het werk van de organisatie zelf zit,
+  // en een betere gok dan de sturende domeinen bovenaan de lijst.
+  const [domeinId, setDomeinId] = useState(
+    (cora.domeinen.find((d) => d.soort === "primair") ?? cora.domeinen[0]).id,
+  );
   const [signaalIds, setSignaalIds] = useState<string[]>([]);
 
   const signalen = alleSignalen(state.sessie.organisatie_id);
@@ -401,7 +417,7 @@ export function UsecaseKaart({
       <div className="px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-sm font-medium leading-snug text-inkt">{usecase.titel}</h3>
-          <Etiket>{coraDomein(usecase.domein)?.naam ?? usecase.domein}</Etiket>
+          <Etiket>{domeinKaart(state.sessie.organisatie_id, usecase.domein)?.naam ?? usecase.domein}</Etiket>
         </div>
 
         {usecase.probleem && !compact ? (

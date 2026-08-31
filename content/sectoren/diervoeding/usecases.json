@@ -1,0 +1,329 @@
+{
+  "toelichting": "Bibliotheek van AI- en datatoepassingen voor een producent van diervoeding. Elke kaart benoemt het probleem, een oplossingsrichting, de benodigde data en de aandachtspunten. De voorgevulde driverwaarden zijn aannames op ordegrootte: ze bestaan om het gesprek te starten, het invullen van de echte waarde ís de oefening.",
+  "waarschuwing": "Volwassenheid zegt iets over de techniek, niet over de haalbaarheid hier. Een bewezen toepassing kan alsnog stranden op data die niet ontsloten is, op een cluster dat niet meedoet, of op een boer die niet wil dat er in zijn stal wordt meegekeken.",
+  "usecases": [
+    {
+      "id": "ff-uc-01",
+      "titel": "Herformuleren zodra de grondstofprijs beweegt",
+      "domein": "formulering",
+      "probleem": "Recepturen worden periodiek herzien, terwijl grondstofprijzen dagelijks bewegen. Tussen twee herzieningen ligt marge op straat, en bij een prijsschok duurt het te lang voor de receptuur meebeweegt.",
+      "oplossingsrichting": "Een optimalisatiemodel dat dagelijks doorrekent welke recepturen bij de actuele prijzen en beschikbaarheid goedkoper kunnen binnen dezelfde nutritionele specificatie, en de nutritionist een voorstel voorlegt in plaats van een opdracht.",
+      "themas": ["scherpe-prijzen", "onderscheidend"],
+      "personas": ["ffp-melkvee", "ffp-varkens", "ffp-groot"],
+      "uitdagingen": ["vu-grondstofvolatiliteit", "vu-marge-per-ton"],
+      "benodigde_data": ["Actuele grondstofprijzen en posities", "Nutritionele matrix per grondstof", "Receptuurspecificaties", "Beschikbaarheid en logistieke kosten per locatie"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "De nutritionist blijft aan zet: het model stelt voor, een mens keurt goed. Anders verdwijnt de vakinhoudelijke toets uit het proces.",
+        "Te vaak wisselen van receptuur geeft onrust in de stal en klachten van klanten; begrens de wijzigingsfrequentie.",
+        "Een besparing per ton is pas echt als de nutritionele prestatie gelijk blijft — meet dat na, niet alleen vooraf."
+      ],
+      "drivers": [
+        { "type": "formuleringsmarge", "waarden": { "volume_ton": 10600000, "aandeel_volume_pct": 40, "besparing_per_ton": 0.6 } }
+      ],
+      "kosten": { "eenmalig": 450000, "jaarlijks": 180000, "capaciteit": 9 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 4, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 3, "juridisch_ethisch": 5 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 3, "duurzaamheid": 3, "compliance": 2, "risicoreductie": 3 }
+    },
+    {
+      "id": "ff-uc-02",
+      "titel": "Reststromen sneller inpassen in receptuur",
+      "domein": "duurzaamheid-keten",
+      "probleem": "Co-producten uit de voedingsindustrie zijn goedkoper en circulairder, maar wisselen sterk in samenstelling en beschikbaarheid. Die variatie maakt inpassen in receptuur traag en voorzichtig.",
+      "oplossingsrichting": "Analysewaarden van binnenkomende reststromen direct koppelen aan de formulering, zodat een partij binnen een dag inzetbaar is met een aangepaste receptuur in plaats van na een week overleg.",
+      "themas": ["duurzame-oplossingen", "scherpe-prijzen"],
+      "personas": ["ffp-biologisch", "ffp-melkvee"],
+      "uitdagingen": ["vu-reststromen", "vu-scope3"],
+      "benodigde_data": ["Analyseresultaten laboratorium", "Beschikbaarheidsmeldingen leveranciers", "Nutritionele matrix", "Receptuurspecificaties"],
+      "volwassenheid": "opkomend",
+      "aandachtspunten": [
+        "Voederveiligheid gaat voor: een snellere doorlooptijd mag geen enkele borgingsstap overslaan.",
+        "Klanten willen weten wat er in hun voer zit; wisselende samenstelling vraagt om actievere communicatie.",
+        "Reken de CO2-winst apart door, anders wordt duurzaamheid een bijvangst die niemand meet."
+      ],
+      "drivers": [
+        { "type": "formuleringsmarge", "waarden": { "volume_ton": 10600000, "aandeel_volume_pct": 12, "besparing_per_ton": 1.4 } }
+      ],
+      "kosten": { "eenmalig": 320000, "jaarlijks": 120000, "capaciteit": 7 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 3, "juridisch_ethisch": 4 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 3, "duurzaamheid": 5, "compliance": 4, "risicoreductie": 2 }
+    },
+    {
+      "id": "ff-uc-03",
+      "titel": "Ritplanning die rekening houdt met silovoorraad",
+      "domein": "logistiek",
+      "probleem": "Bulkritten worden gepland op bestellingen en ervaring van de planner. Daardoor rijden wagens halfvol, of komen ze op een moment dat de silo nog niet leeg is.",
+      "oplossingsrichting": "Een planningsmodel dat vraagvoorspelling per erf combineert met silo-inhoud, beladingsgraad en rijtijden, en de planner een voorstel geeft dat hij kan aanpassen.",
+      "themas": ["scherpe-prijzen", "dicht-bij-de-boer"],
+      "personas": ["ffp-melkvee", "ffp-pluimvee-integratie", "ffp-groot"],
+      "uitdagingen": ["vu-transportkosten"],
+      "benodigde_data": ["Orderhistorie per klant", "Silocapaciteit en niveaumeting", "Voertuig- en chauffeurscapaciteit", "Rijtijden en venstertijden"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Zonder niveaumeting op het erf blijft het voorspellen; begin bij klanten waar die meting er al is.",
+        "De planner heeft kennis die niet in het systeem staat: laat hem overrulen en leg vast waarom.",
+        "Een volle wagen is niet altijd de beste rit; leveringszekerheid weegt bij de boer zwaarder dan efficiency."
+      ],
+      "drivers": [
+        { "type": "transportbesparing", "waarden": { "ritten_per_jaar": 380000, "kosten_per_rit": 250, "reductie_pct": 6 } }
+      ],
+      "kosten": { "eenmalig": 600000, "jaarlijks": 220000, "capaciteit": 12 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 2, "juridisch_ethisch": 5 },
+      "kwalitatief_indicatie": { "klantwaarde": 4, "medewerkerswaarde": 4, "duurzaamheid": 4, "compliance": 2, "risicoreductie": 3 }
+    },
+    {
+      "id": "ff-uc-04",
+      "titel": "Verloopsignalen bij klanten vroeg zichtbaar maken",
+      "domein": "verkoop-advies",
+      "probleem": "Een vertrekkende klant kondigt zich zelden aan. Het volume zakt geleidelijk, bestellingen worden kleiner en het contact verwatert, maar de overstap is vaak al besloten voordat de buitendienst het merkt.",
+      "oplossingsrichting": "Een signaalmodel dat afwijkingen in bestelgedrag, contactfrequentie en betaalgedrag combineert tot een attentielijst voor de accountmanager, met de reden erbij zodat het gesprek ergens over gaat.",
+      "themas": ["dicht-bij-de-boer", "onderscheidend"],
+      "personas": ["ffp-stoppend", "ffp-melkvee", "ffp-groot"],
+      "uitdagingen": ["vu-klantverloop", "vu-krimpende-veestapel"],
+      "benodigde_data": ["Orderhistorie per klant", "Contactmomenten uit CRM", "Betaalgedrag en openstaande posten", "Bedrijfstype en omvang"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Een dalend volume kan ook afbouwen naar pensioen betekenen; het model moet dat onderscheid niet claimen te kennen.",
+        "De lijst is een gespreksopener, geen verkoopopdracht. Een boer die als 'risico' benaderd wordt, voelt dat.",
+        "Klantgegevens gebruiken voor gedragsvoorspelling vraagt een heldere grondslag en uitlegbaarheid richting de klant."
+      ],
+      "drivers": [
+        { "type": "volumebehoud", "waarden": { "klanten_met_verloopsignaal": 900, "volume_per_klant_ton": 372, "marge_per_ton": 58, "behoud_pct": 12 } }
+      ],
+      "kosten": { "eenmalig": 260000, "jaarlijks": 95000, "capaciteit": 6 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 4, "technische_complexiteit": 4, "verandervermogen": 3, "afhankelijkheden": 4, "juridisch_ethisch": 3 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 4, "duurzaamheid": 1, "compliance": 2, "risicoreductie": 4 }
+    },
+    {
+      "id": "ff-uc-05",
+      "titel": "Erfbezoek voorbereiden met een automatische bedrijfsschets",
+      "domein": "verkoop-advies",
+      "probleem": "Een specialist bereidt een bezoek voor door zelf gegevens bij elkaar te zoeken uit orders, analyses en aantekeningen. Dat kost tijd voor elk bezoek, en bij vervanging begint de collega van voren af aan.",
+      "oplossingsrichting": "Een gegenereerde samenvatting per klant: recente leveringen, analyseresultaten, openstaande punten, eerdere adviezen en wat er sinds vorig bezoek veranderde — als voorbereiding op de telefoon.",
+      "themas": ["dicht-bij-de-boer", "onderscheidend"],
+      "personas": ["ffp-melkvee", "ffp-varkens", "ffp-groot"],
+      "uitdagingen": ["vu-erfkennis"],
+      "benodigde_data": ["Orderhistorie", "Bezoekverslagen uit CRM", "Analyseresultaten", "Openstaande meldingen en klachten"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "De samenvatting moet herleidbaar zijn naar de bron; een adviseur die een verzonnen cijfer noemt, verliest de klant.",
+        "Bezoekverslagen bevatten persoonlijke observaties over klanten; bepaal vooraf wat wel en niet in een samenvatting hoort.",
+        "Dit werkt alleen als de buitendienst ook verslag blijft leggen. Maak het schrijven lichter, niet zwaarder."
+      ],
+      "drivers": [
+        { "type": "tijdsbesparing", "waarden": { "volume_per_jaar": 150000, "minuten_per_geval": 25, "reductie_pct": 40, "uurtarief": 65 } }
+      ],
+      "kosten": { "eenmalig": 220000, "jaarlijks": 110000, "capaciteit": 5 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 4, "verandervermogen": 4, "afhankelijkheden": 4, "juridisch_ethisch": 3 },
+      "kwalitatief_indicatie": { "klantwaarde": 4, "medewerkerswaarde": 5, "duurzaamheid": 1, "compliance": 2, "risicoreductie": 2 }
+    },
+    {
+      "id": "ff-uc-06",
+      "titel": "Meertalige assistent in het klantportaal",
+      "domein": "klantbeheer",
+      "probleem": "Klanten stellen dezelfde vragen over leveringen, facturen, contracten en productspecificaties, in vier landen en meerdere talen, vaak buiten kantoortijden omdat ze overdag in de stal staan.",
+      "oplossingsrichting": "Een assistent in het portaal die vragen beantwoordt op basis van de eigen kennisbank en de gegevens van de ingelogde klant, met een duidelijke overdracht naar een mens wanneer het niet lukt.",
+      "themas": ["dicht-bij-de-boer", "onderscheidend"],
+      "personas": ["ffp-melkvee", "ffp-varkens", "ffp-pluimvee-integratie"],
+      "uitdagingen": ["vu-decentrale-it"],
+      "benodigde_data": ["Kennisbank en productspecificaties", "Orderstatus en leverhistorie", "Contractgegevens", "Factuurstatus"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Antwoorden moeten herleidbaar zijn naar een bron; geen vrij fabulerende assistent bij vragen over voersamenstelling.",
+        "Alleen gegevens van de ingelogde klant tonen, en dat aantoonbaar afdwingen.",
+        "Escalatie naar een mens moet altijd binnen één klik bereikbaar zijn — zeker bij een probleem in de stal."
+      ],
+      "drivers": [
+        { "type": "tijdsbesparing", "waarden": { "volume_per_jaar": 500000, "minuten_per_geval": 5, "reductie_pct": 22, "uurtarief": 65 } }
+      ],
+      "kosten": { "eenmalig": 380000, "jaarlijks": 160000, "capaciteit": 7 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 4, "verandervermogen": 3, "afhankelijkheden": 3, "juridisch_ethisch": 3 },
+      "kwalitatief_indicatie": { "klantwaarde": 4, "medewerkerswaarde": 4, "duurzaamheid": 1, "compliance": 2, "risicoreductie": 2 }
+    },
+    {
+      "id": "ff-uc-07",
+      "titel": "Tracering van grondstof tot erf binnen het uur",
+      "domein": "kwaliteit-lab",
+      "probleem": "Bij een verdachte partij moet duidelijk zijn welke grondstof in welke batch zat en op welk erf die terechtkwam. Nu vraagt dat handwerk over meerdere systemen, en elke verloren dag vergroot de terugroepactie.",
+      "oplossingsrichting": "Een traceringsvoorziening die grondstofpartij, productiebatch, order en aflevering aan elkaar knoopt, met één zoekopdracht van partij naar erven en terug.",
+      "themas": ["scherpe-prijzen", "dicht-bij-de-boer"],
+      "personas": ["ffp-melkvee", "ffp-varkens", "ffp-pluimvee-integratie", "ffp-biologisch"],
+      "uitdagingen": ["vu-voederveiligheid", "vu-datakwaliteit"],
+      "benodigde_data": ["Grondstofontvangsten en partijnummers", "Productiebatches", "Orders en afleverbonnen", "Analyseresultaten"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "De waarde zit in de zeldzame ernstige gebeurtenis; reken niet alleen met de dagelijkse tijdwinst.",
+        "Vier clusters met eigen systemen betekent vier keer koppelen voordat het groepsbreed werkt.",
+        "Oefen het scenario. Een traceervoorziening die pas bij een echte recall voor het eerst gebruikt wordt, faalt op dat moment."
+      ],
+      "drivers": [
+        { "type": "afkeur_reductie", "waarden": { "productie_ton": 10600000, "afkeur_pct": 0.5, "kosten_per_ton": 180, "reductie_pct": 15 } },
+        { "type": "tijdsbesparing", "waarden": { "volume_per_jaar": 2500, "minuten_per_geval": 45, "reductie_pct": 60, "uurtarief": 65 } }
+      ],
+      "kosten": { "eenmalig": 700000, "jaarlijks": 190000, "capaciteit": 14 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 2, "verandervermogen": 3, "afhankelijkheden": 2, "juridisch_ethisch": 5 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 3, "duurzaamheid": 2, "compliance": 5, "risicoreductie": 5 }
+    },
+    {
+      "id": "ff-uc-08",
+      "titel": "Grondstofanalyse met nabij-infraroodmeting en beeldherkenning",
+      "domein": "kwaliteit-lab",
+      "probleem": "Analyses in het laboratorium kosten tijd, terwijl een vrachtwagen bij de losplaats staat. Bij twijfel wordt een partij aangenomen op vertrouwen of geweigerd op onderbuikgevoel.",
+      "oplossingsrichting": "Metingen bij ontvangst automatisch beoordelen tegen de specificatie en de historie van die leverancier, met een direct oordeel: aannemen, apart zetten of weigeren.",
+      "themas": ["scherpe-prijzen", "duurzame-oplossingen"],
+      "personas": ["ffp-melkvee", "ffp-biologisch"],
+      "uitdagingen": ["vu-voederveiligheid", "vu-reststromen"],
+      "benodigde_data": ["Meetwaarden bij ontvangst", "Specificaties per grondstof", "Leveranciershistorie", "Laboratoriumuitslagen"],
+      "volwassenheid": "opkomend",
+      "aandachtspunten": [
+        "Een model dat te vaak weigert, kost leveringszekerheid; een model dat te weinig weigert, kost veiligheid. Bepaal vooraf welke kant je op wilt leunen.",
+        "Modellen moeten per grondstof en per seizoen worden geijkt; dat is doorlopend werk, geen project.",
+        "Het oordeel moet uitlegbaar zijn aan de leverancier die zijn vracht terugkrijgt."
+      ],
+      "drivers": [
+        { "type": "afkeur_reductie", "waarden": { "productie_ton": 10600000, "afkeur_pct": 0.5, "kosten_per_ton": 180, "reductie_pct": 20 } }
+      ],
+      "kosten": { "eenmalig": 540000, "jaarlijks": 170000, "capaciteit": 10 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 2, "verandervermogen": 3, "afhankelijkheden": 3, "juridisch_ethisch": 4 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 3, "duurzaamheid": 3, "compliance": 4, "risicoreductie": 5 }
+    },
+    {
+      "id": "ff-uc-09",
+      "titel": "Voorspellend onderhoud op perslijnen",
+      "domein": "productie",
+      "probleem": "Een onverwachte storing aan een perslijn legt de productie stil en verstoort de leveringen van die dag. Onderhoud gebeurt nu op vaste intervallen, niet op de werkelijke toestand van de machine.",
+      "oplossingsrichting": "Sensordata uit de perslijnen gebruiken om afwijkend gedrag vroeg te herkennen en onderhoud in te plannen voordat het stilstand wordt.",
+      "themas": ["scherpe-prijzen"],
+      "personas": ["ffp-pluimvee-integratie", "ffp-groot"],
+      "uitdagingen": ["vu-fabrieksrendement"],
+      "benodigde_data": ["Sensordata perslijnen", "Onderhoudshistorie", "Storingsmeldingen", "Productieplanning"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Werkt alleen op locaties waar de besturing data ontsluit; inventariseer dat voordat je een groepsbrede business case rekent.",
+        "De onderhoudsmonteur moet het signaal vertrouwen. Begin op één lijn en laat het zich bewijzen.",
+        "Stilstandkosten verschillen sterk per locatie; reken niet met één gemiddelde over 41 fabrieken."
+      ],
+      "drivers": [
+        { "type": "vermeden_kosten", "waarden": { "gevallen_per_jaar": 320, "kosten_per_geval": 9500, "reductie_pct": 30 } }
+      ],
+      "kosten": { "eenmalig": 480000, "jaarlijks": 150000, "capaciteit": 11 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 2, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 2, "juridisch_ethisch": 5 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 4, "duurzaamheid": 3, "compliance": 2, "risicoreductie": 4 }
+    },
+    {
+      "id": "ff-uc-10",
+      "titel": "Fabrieken met elkaar vergelijken op energie per ton",
+      "domein": "productie",
+      "probleem": "Energieverbruik, doorzet en persrendement verschillen tussen locaties zonder dat altijd duidelijk is waarom. Best practices reizen langzaam tussen 41 fabrieken.",
+      "oplossingsrichting": "Een vergelijking die corrigeert voor productmix en volume, zodat een verschil tussen locaties iets zegt over de werkwijze en niet over het assortiment — met de vraag wat de beste locatie anders doet.",
+      "themas": ["scherpe-prijzen", "duurzame-oplossingen"],
+      "personas": ["ffp-groot"],
+      "uitdagingen": ["vu-fabrieksrendement", "vu-datakwaliteit"],
+      "benodigde_data": ["Energieverbruik per locatie", "Productievolumes en productmix", "Machine-instellingen", "Onderhoudshistorie"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Zonder correctie voor productmix wordt dit een ranglijst die locaties tegen elkaar opzet in plaats van van elkaar laat leren.",
+        "Definities van doorzet en verbruik verschillen per cluster; die gelijktrekken is het echte werk.",
+        "Koppel de uitkomst aan de CO2-rapportage, anders wordt dit twee keer gebouwd."
+      ],
+      "drivers": [
+        { "type": "vermeden_kosten", "waarden": { "gevallen_per_jaar": 41, "kosten_per_geval": 42000, "reductie_pct": 25 } }
+      ],
+      "kosten": { "eenmalig": 240000, "jaarlijks": 80000, "capaciteit": 6 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 4, "verandervermogen": 3, "afhankelijkheden": 4, "juridisch_ethisch": 5 },
+      "kwalitatief_indicatie": { "klantwaarde": 1, "medewerkerswaarde": 3, "duurzaamheid": 5, "compliance": 3, "risicoreductie": 2 }
+    },
+    {
+      "id": "ff-uc-11",
+      "titel": "CO2-voetafdruk per partij in plaats van per jaar",
+      "domein": "duurzaamheid-keten",
+      "probleem": "Klanten en ketenpartners vragen om de voetafdruk van het voer dat zij afnemen, per partij. Nu wordt er gerapporteerd op jaargemiddelden, en dat is voor hun eigen verantwoording te grof.",
+      "oplossingsrichting": "De voetafdruk meerekenen in de receptuur, zodat elke geleverde partij een onderbouwd cijfer meekrijgt dat de klant in zijn eigen rapportage kan gebruiken.",
+      "themas": ["duurzame-oplossingen", "onderscheidend"],
+      "personas": ["ffp-biologisch", "ffp-pluimvee-integratie", "ffp-groot"],
+      "uitdagingen": ["vu-scope3"],
+      "benodigde_data": ["Herkomst en transportafstand per grondstof", "Emissiefactoren", "Receptuur per partij", "Afleverbonnen"],
+      "volwassenheid": "opkomend",
+      "aandachtspunten": [
+        "Emissiefactoren verschillen per methodiek; leg vast welke je volgt en waarom, want de klant wordt erop gecontroleerd.",
+        "Een cijfer per partij is een belofte: het moet ook kloppen als de receptuur die week wijzigde.",
+        "Dit is niet alleen rapportage. Zodra de voetafdruk in de formulering meeweegt, verandert de receptuur."
+      ],
+      "drivers": [
+        { "type": "volumebehoud", "waarden": { "klanten_met_verloopsignaal": 700, "volume_per_klant_ton": 372, "marge_per_ton": 58, "behoud_pct": 10 } }
+      ],
+      "kosten": { "eenmalig": 520000, "jaarlijks": 200000, "capaciteit": 12 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 2, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 2, "juridisch_ethisch": 4 },
+      "kwalitatief_indicatie": { "klantwaarde": 4, "medewerkerswaarde": 2, "duurzaamheid": 5, "compliance": 5, "risicoreductie": 3 }
+    },
+    {
+      "id": "ff-uc-12",
+      "titel": "Vroegsignalering van kredietrisico bij klanten",
+      "domein": "financien",
+      "probleem": "Voer wordt geleverd voordat er betaald is, aan bedrijven in een volatiele markt. Als een betaalachterstand zichtbaar wordt in het incassoproces, loopt de openstaande post vaak al maanden op.",
+      "oplossingsrichting": "Betaalgedrag, bestelpatroon en externe signalen combineren tot een vroege attentie, zodat het gesprek over een betaalregeling eerder plaatsvindt dan het gesprek over een incasso.",
+      "themas": ["scherpe-prijzen"],
+      "personas": ["ffp-stoppend", "ffp-varkens"],
+      "uitdagingen": ["vu-kredietrisico"],
+      "benodigde_data": ["Betaalgedrag en openstaande posten", "Orderhistorie", "Kredietlimieten", "Externe kredietinformatie"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Een signaal is geen oordeel over een bedrijf; wie de lijst als zwarte lijst gebruikt, beschadigt klantrelaties.",
+        "Externe kredietinformatie inkopen en combineren met eigen data vraagt een grondslag en een bewaartermijn.",
+        "Vroeger contact is ook menselijker: een boer in de knel is beter geholpen met een regeling dan met een aanmaning."
+      ],
+      "drivers": [
+        { "type": "vermeden_kosten", "waarden": { "gevallen_per_jaar": 260, "kosten_per_geval": 14000, "reductie_pct": 25 } }
+      ],
+      "kosten": { "eenmalig": 200000, "jaarlijks": 90000, "capaciteit": 5 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 4, "technische_complexiteit": 4, "verandervermogen": 4, "afhankelijkheden": 4, "juridisch_ethisch": 3 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 3, "duurzaamheid": 1, "compliance": 3, "risicoreductie": 5 }
+    },
+    {
+      "id": "ff-uc-13",
+      "titel": "Herplannen binnen uren bij een dierziekte-uitbraak",
+      "domein": "logistiek",
+      "probleem": "Een vervoersverbod zet van de ene dag op de andere hele gebieden op slot. Ritplanning, afzet en klantcontact moeten dan binnen uren om, terwijl de informatie versnipperd binnenkomt.",
+      "oplossingsrichting": "Een scenariovoorziening die bij een afgekondigd gebied direct laat zien welke klanten, ritten en batches geraakt worden, en een herplanning voorstelt inclusief de klanten die gebeld moeten worden.",
+      "themas": ["ketenintegratie", "dicht-bij-de-boer"],
+      "personas": ["ffp-pluimvee-integratie", "ffp-varkens"],
+      "uitdagingen": ["vu-dierziekten", "vu-transportkosten"],
+      "benodigde_data": ["Klantlocaties en diersoort", "Ritplanning", "Officiële gebiedsafbakeningen", "Batch- en leverhistorie"],
+      "volwassenheid": "opkomend",
+      "aandachtspunten": [
+        "De waarde zit in zeldzame gebeurtenissen met grote impact; een gemiddelde jaarbaat onderschat dit stelselmatig.",
+        "Gebiedsafbakeningen komen van de overheid in wisselende formaten; die inlezen is het broze deel.",
+        "Oefen dit met de crisisorganisatie, anders is het een knop die niemand durft te gebruiken."
+      ],
+      "drivers": [
+        { "type": "vermeden_kosten", "waarden": { "gevallen_per_jaar": 12, "kosten_per_geval": 145000, "reductie_pct": 30 } }
+      ],
+      "kosten": { "eenmalig": 340000, "jaarlijks": 110000, "capaciteit": 8 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 3, "verandervermogen": 3, "afhankelijkheden": 3, "juridisch_ethisch": 4 },
+      "kwalitatief_indicatie": { "klantwaarde": 5, "medewerkerswaarde": 4, "duurzaamheid": 1, "compliance": 3, "risicoreductie": 5 }
+    },
+    {
+      "id": "ff-uc-14",
+      "titel": "Vakkennis ontsluiten voor de buitendienst",
+      "domein": "hrm",
+      "probleem": "Wat een ervaren voerspecialist weet, staat verspreid over handboeken, oude adviezen en hoofden. Bij vertrek of vakantie begint een collega bij die klant opnieuw, en nieuwe medewerkers zoeken lang naar het juiste antwoord.",
+      "oplossingsrichting": "Een doorzoekbare kennisvoorziening over producten, rantsoenen en veelvoorkomende situaties, die antwoordt met bronvermelding en die de specialist onderweg op zijn telefoon raadpleegt.",
+      "themas": ["dicht-bij-de-boer", "onderscheidend"],
+      "personas": ["ffp-melkvee", "ffp-varkens"],
+      "uitdagingen": ["vu-erfkennis", "vu-vakmanschap"],
+      "benodigde_data": ["Productdocumentatie en specificaties", "Vakinhoudelijke handboeken", "Historische adviezen", "Veelgestelde vragen uit de buitendienst"],
+      "volwassenheid": "bewezen",
+      "aandachtspunten": [
+        "Antwoorden zonder bron zijn hier gevaarlijk: een verkeerd voeradvies kost de klant geld en dieren.",
+        "De bron moet actueel gehouden worden; een kennisbank die veroudert is erger dan geen kennisbank.",
+        "Meertaligheid is geen extra: de buitendienst werkt in vier landen."
+      ],
+      "drivers": [
+        { "type": "tijdsbesparing", "waarden": { "volume_per_jaar": 120000, "minuten_per_geval": 12, "reductie_pct": 35, "uurtarief": 65 } }
+      ],
+      "kosten": { "eenmalig": 210000, "jaarlijks": 95000, "capaciteit": 5 },
+      "haalbaarheid_indicatie": { "databeschikbaarheid": 3, "technische_complexiteit": 4, "verandervermogen": 4, "afhankelijkheden": 5, "juridisch_ethisch": 4 },
+      "kwalitatief_indicatie": { "klantwaarde": 3, "medewerkerswaarde": 5, "duurzaamheid": 1, "compliance": 2, "risicoreductie": 3 }
+    }
+  ]
+}

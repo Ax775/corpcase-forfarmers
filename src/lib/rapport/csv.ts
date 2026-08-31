@@ -1,4 +1,4 @@
-import { domein as coraDomein, organisatie, rolNaam } from "@/lib/content";
+import { domein as domeinKaart, organisatie, rolNaam } from "@/lib/content";
 import { alleBeelden, portfolio } from "@/lib/sessie/afgeleid";
 import type { SessieState } from "@/lib/supabase/types";
 
@@ -57,7 +57,7 @@ export function genereerRapportCsv(state: SessieState): string {
     const allocatie = state.allocaties.find((a) => a.usecase_id === beeld.usecase.id);
     csv += regel([
       beeld.usecase.titel,
-      coraDomein(beeld.usecase.domein)?.naam ?? beeld.usecase.domein,
+      domeinKaart(state.sessie.organisatie_id, beeld.usecase.domein)?.naam ?? beeld.usecase.domein,
       beeld.usecase.status,
       beeld.waardering?.modus ?? "",
       beeld.positie?.waarde ?? "",
@@ -134,7 +134,7 @@ export function genereerRapportCsv(state: SessieState): string {
   csv += regel(["Deelnemers"]);
   csv += regel(["Naam", "Rol"]);
   for (const deelnemer of state.deelnemers) {
-    csv += regel([deelnemer.naam, rolNaam(deelnemer.rol_id)]);
+    csv += regel([deelnemer.naam, rolNaam(state.sessie.organisatie_id, deelnemer.rol_id)]);
   }
 
   return csv;

@@ -2,6 +2,7 @@
   "id": "duwo",
   "naam": "DUWO",
   "type": "Studentenhuisvester (toegelaten instelling)",
+  "sector": "woningcorporatie",
   "pitch": "Grootste studentenhuisvester van Nederland. Werkt voor studenten en promovendi in negen steden, met een groot aandeel internationale bewoners en een uitzonderlijk hoge mutatiegraad.",
   "thema": {
     "accent": "#E8524A",
@@ -15,7 +16,7 @@
     "bron": "https://storage-customers.zig365.nl/duwo-ksp-web-hupo-portal-p-pub/user_upload/Jaarverslagen/Jaarverslag%202024%20PDF.pdf",
     "geverifieerd": false
   },
-  "steden": [
+  "werkgebied": [
     "Amsterdam",
     "Amstelveen",
     "Delft",

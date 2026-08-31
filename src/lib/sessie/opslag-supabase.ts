@@ -103,6 +103,7 @@ export async function maakSessie(invoer: NieuweSessie): Promise<Toegang> {
 
   const deelnemer = await voegDeelnemerToe({
     sessieId: sessie.id,
+    organisatieId: org.id,
     naam: invoer.facilitatorNaam,
     rolId: invoer.facilitatorRolId,
     isFacilitator: true,
@@ -118,13 +119,14 @@ export async function maakSessie(invoer: NieuweSessie): Promise<Toegang> {
 
 async function voegDeelnemerToe(args: {
   sessieId: string;
+  organisatieId: string;
   naam: string;
   rolId: string | null;
   isFacilitator: boolean;
   identiteit: Identiteit;
 }): Promise<DeelnemerRij> {
   const token = maakToken();
-  const opdracht = rolopdrachtVoorRol(args.rolId);
+  const opdracht = rolopdrachtVoorRol(args.organisatieId, args.rolId);
   /*
    * Het eigen token moet als header mee op precies dit verzoek: de RLS-policy `deelnemers_lezen`
    * herkent de zojuist ingevoegde rij aan `token = huidig_token()`, en die header moet er dus al
@@ -179,6 +181,7 @@ export async function neemDeel(args: {
 
   const deelnemer = await voegDeelnemerToe({
     sessieId: sessie.id,
+    organisatieId: sessie.organisatie_id,
     naam: args.naam,
     rolId: args.rolId,
     isFacilitator: false,

@@ -1,0 +1,28 @@
+{
+  "id": "diervoeding",
+  "naam": "Diervoeding & agrifood",
+  "omschrijving": "Producenten van mengvoer en complete voeroplossingen voor de veehouderij. Het spel kijkt door de vakgebieden van het bedrijf, de veehouder op het erf en de sectoruitdagingen naar use cases.",
+  "domeinmodel": {
+    "naam": "vakgebieden",
+    "toelichting": "De vakgebieden zoals ForFarmers ze zelf benoemt, aangevuld tot een volledige keten van grondstofinkoop tot boerenerf en ingedeeld naar sturend, primair en ondersteunend."
+  },
+  "klantlens": {
+    "enkelvoud": "Veehouder",
+    "meervoud": "klanttypen",
+    "blik": "Boerenblik",
+    "toelichting": "De veehouder is de klant. 'Dicht bij de boer' is het eerste strategische principe; deze lens houdt zijn perspectief aan tafel, ook als er niemand namens hem zit."
+  },
+  "kernwaarde_dimensie": "klantwaarde",
+  "persoonsgegevens_trefwoorden": [
+    "klant",
+    "veehouder",
+    "bedrijfsgegevens",
+    "contract",
+    "order",
+    "factuur",
+    "kredietlimiet",
+    "dierdata",
+    "erfbezoek",
+    "medewerker"
+  ]
+}

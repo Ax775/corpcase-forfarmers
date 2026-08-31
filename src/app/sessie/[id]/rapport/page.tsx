@@ -3,11 +3,11 @@
 import { useParams } from "next/navigation";
 import {
   alleSignalen,
-  domein as coraDomein,
+  domein as domeinKaart,
   organisatie,
-  realiteitschecks,
+  realiteitschecksVoorOrganisatie,
   rolNaam,
-  rolopdrachten,
+  rolopdrachtenVoorOrganisatie,
   speelmodi,
   speelmodus,
 } from "@/lib/content";
@@ -113,7 +113,7 @@ export default function RapportPagina() {
         </p>
         <p className="mt-1 text-sm text-inkt-zacht">
           {state.deelnemers
-            .map((d) => `${d.naam} (${rolNaam(d.rol_id)})`)
+            .map((d) => `${d.naam} (${rolNaam(state.sessie.organisatie_id, d.rol_id)})`)
             .join(", ")}
         </p>
       </header>
@@ -222,7 +222,8 @@ export default function RapportPagina() {
                     {beeld.usecase.titel}
                   </h3>
                   <span className="shrink-0 text-xs text-inkt-licht">
-                    {coraDomein(beeld.usecase.domein)?.naam ?? beeld.usecase.domein}
+                    {domeinKaart(state.sessie.organisatie_id, beeld.usecase.domein)?.naam ??
+                      beeld.usecase.domein}
                   </span>
                 </div>
 
@@ -347,7 +348,9 @@ export default function RapportPagina() {
           <h2 className="display text-2xl text-inkt">Realiteitschecks</h2>
           <ul className="mt-3 space-y-3">
             {state.besluiten.map((besluit) => {
-              const check = realiteitschecks.checks.find((c) => c.id === besluit.check_id);
+              const check = realiteitschecksVoorOrganisatie(
+                state.sessie.organisatie_id,
+              ).checks.find((c) => c.id === besluit.check_id);
               return (
                 <li key={besluit.id}>
                   <p className="text-sm font-medium text-inkt">
@@ -423,7 +426,9 @@ export default function RapportPagina() {
         <h2 className="display text-2xl text-inkt">De rolopdrachten</h2>
         <ul className="mt-3 space-y-2">
           {state.deelnemers.map((deelnemer) => {
-            const opdracht = rolopdrachten.opdrachten.find((o) => o.id === deelnemer.rolopdracht_id);
+            const opdracht = rolopdrachtenVoorOrganisatie(
+              state.sessie.organisatie_id,
+            ).opdrachten.find((o) => o.id === deelnemer.rolopdracht_id);
             if (!opdracht) return null;
             const oordeel = beoordeelRolopdracht(state, opdracht.controle);
             return (

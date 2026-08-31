@@ -10,18 +10,53 @@ import { z } from "zod";
 
 export const soortBedrijfsfunctie = z.enum(["sturend", "primair", "ondersteunend"]);
 
-export const coraDomeinSchema = z.object({
+/**
+ * Het sectorprofiel. Alles wat aan een bedrijfstak vastzit en niet aan een individuele
+ * organisatie: het domeinmodel, de waardedrivers, de uitdagingen, de rollen en de vocabulaire.
+ *
+ * Zonder deze laag zou een tweede sector een kopie van de codebase zijn. Nu is het een map met
+ * JSON. De `klantlens` draagt de woorden die per sector verschillen — een corporatie heeft
+ * huurders, een voerproducent veehouders — zodat de interface geen sectortaal hardcodeert.
+ */
+export const sectorSchema = z.object({
+  id: z.string().min(1),
+  naam: z.string().min(1),
+  omschrijving: z.string().min(1),
+  domeinmodel: z.object({
+    naam: z.string().min(1),
+    toelichting: z.string().optional(),
+  }),
+  klantlens: z.object({
+    /** Label op de filterchip en de signaalkaart: "Huurder", "Veehouder". */
+    enkelvoud: z.string().min(1),
+    /** Voor tellingen in de teamscore: "huurderstypen", "klanttypen". */
+    meervoud: z.string().min(1),
+    /** Naam van het teamscore-onderdeel: "Huurdersblik", "Boerenblik". */
+    blik: z.string().min(1),
+    toelichting: z.string().optional(),
+  }),
+  /** Id van de kwalitatieve dimensie die de waarde voor de klant meet; gebruikt door een rolopdracht. */
+  kernwaarde_dimensie: z.string().min(1),
+  /**
+   * Trefwoorden waarmee de rolopdracht-controle herkent dat een use case persoonsgegevens raakt.
+   * Wordt getoetst tegen de labels in `benodigde_data`. Sectoreigen: een corporatie herkent dat
+   * aan "huurder", een voerproducent aan "veehouder" of "bedrijfsgegevens".
+   */
+  persoonsgegevens_trefwoorden: z.array(z.string().min(1)).min(1),
+});
+
+export const domeinSchema = z.object({
   id: z.string().min(1),
   naam: z.string().min(1),
   soort: soortBedrijfsfunctie,
   omschrijving: z.string().min(1),
 });
 
-export const coraBestandSchema = z.object({
+export const domeinenBestandSchema = z.object({
   toelichting: z.string(),
   bron: z.string().optional(),
   geverifieerd: z.boolean(),
-  domeinen: z.array(coraDomeinSchema).min(1),
+  domeinen: z.array(domeinSchema).min(1),
 });
 
 /** Een kengetal draagt altijd zijn bron en of die geverifieerd is. Zie content/BRONNEN.md. */
@@ -39,6 +74,8 @@ export const organisatieSchema = z.object({
   id: z.string().min(1),
   naam: z.string().min(1),
   type: z.string(),
+  /** Verwijst naar een map in content/sectoren/. Bepaalt domeinen, drivers, rollen en vocabulaire. */
+  sector: z.string().min(1),
   pitch: z.string(),
   /**
    * Eén accentkleur; de varianten voor knoppen, kleine tekst en donkere panelen worden eruit
@@ -56,7 +93,7 @@ export const organisatieSchema = z.object({
     bron: z.string(),
     geverifieerd: z.boolean(),
   }),
-  steden: z.array(z.string()),
+  werkgebied: z.array(z.string()),
   kengetallen: z.array(kengetalSchema),
   strategische_themas: z.array(
     z.object({ id: z.string(), naam: z.string(), omschrijving: z.string() }),
@@ -109,7 +146,7 @@ export const jaarverslagBestandSchema = z.object({
 
 export const personaBestandSchema = z.object({
   organisatie_id: z.string(),
-  lens: z.literal("huurder"),
+  lens: z.literal("klant"),
   toelichting: z.string(),
   kaarten: z.array(personaKaartSchema).min(1),
 });
@@ -120,16 +157,14 @@ export const uitdagingBestandSchema = z.object({
   kaarten: z.array(uitdagingKaartSchema).min(1),
 });
 
-export const drivertypeIds = [
-  "tijdsbesparing",
-  "leegstandsreductie",
-  "dervingsreductie",
-  "vermeden_kosten",
-  "extra_opbrengst",
-] as const;
-
-export const drivertypeIdSchema = z.enum(drivertypeIds);
-export type DrivertypeId = (typeof drivertypeIds)[number];
+/**
+ * Drivertype-id's zijn sectoreigen: leegstandsreductie bestaat bij een corporatie en niet bij een
+ * voerproducent. Ze staan daarom niet als vaste enum in de code. Dat een use case alleen naar een
+ * drivertype van zijn eigen sector verwijst, wordt kruislings gecontroleerd in
+ * `scripts/valideer-content.ts` en bij het inlezen in `src/lib/content/index.ts`.
+ */
+export const drivertypeIdSchema = z.string().min(1);
+export type DrivertypeId = string;
 
 export const driverVeldSchema = z.object({
   id: z.string().min(1),
@@ -147,6 +182,10 @@ export const drivertypeSchema = z.object({
   naam: z.string().min(1),
   toelichting: z.string().min(1),
   eenheid: z.string(),
+  /**
+   * Wordt daadwerkelijk uitgerekend, niet alleen getoond: zie src/lib/waarde/formule.ts. De
+   * veldnamen erin moeten overeenkomen met `velden` hieronder.
+   */
   formule: z.string().min(1),
   velden: z.array(driverVeldSchema).min(1),
 });
@@ -285,7 +324,8 @@ export const speelmodiBestandSchema = z.object({
     .length(4),
 });
 
-export type CoraDomein = z.infer<typeof coraDomeinSchema>;
+export type Sector = z.infer<typeof sectorSchema>;
+export type Domein = z.infer<typeof domeinSchema>;
 export type Organisatie = z.infer<typeof organisatieSchema>;
 export type Kengetal = z.infer<typeof kengetalSchema>;
 export type JaarverslagKaart = z.infer<typeof jaarverslagKaartSchema>;

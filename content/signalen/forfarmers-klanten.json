@@ -1,0 +1,85 @@
+{
+  "organisatie_id": "forfarmers",
+  "lens": "klant",
+  "toelichting": "Klantpersona's van ForFarmers: veehouders met een eigen bedrijfsvoering, een eigen rendement en een eigen reden om te blijven of te vertrekken. Elk met een profiel, een reis en concrete frustraties.",
+  "kaarten": [
+    {
+      "id": "ffp-melkvee",
+      "titel": "Gerrit — melkveehouder, 140 koeien",
+      "thema": "dicht-bij-de-boer",
+      "profiel": "Familiebedrijf in Oost-Nederland, derde generatie. Voert zelf ruwvoer van eigen land en koopt krachtvoer bij. Rekent scherp op de kritieke melkprijs en kent zijn kostprijs per kilo melk tot achter de komma.",
+      "reis": "Ziet de voerspecialist eens per zes weken, bestelt tussendoor telefonisch of via de app. Beoordeelt het advies aan het rantsoen en aan wat de tank laat zien, niet aan de folder.",
+      "frustraties": [
+        "Het rantsoenadvies houdt geen rekening met de analyse van zijn eigen kuil van vorige week.",
+        "Prijswijzigingen komen per brief, zonder uitleg wat er in de receptuur veranderde.",
+        "Moet zelf de vertaalslag maken van voeradvies naar wat het betekent voor zijn kostprijs."
+      ],
+      "signaal": "Zijn rendement is het echte product. Voeradvies dat niet doorrekent naar zijn kostprijs, is voor hem een mening."
+    },
+    {
+      "id": "ffp-varkens",
+      "titel": "Marieke — zeugenhouderij met opfok",
+      "thema": "onderscheidend",
+      "profiel": "Gesloten bedrijf met 700 zeugen. Werkt met vaste afspraken met de slachterij en stuurt op voerconversie, uitval en biggen per zeug per jaar. Data uit het managementsysteem is haar dagelijkse taal.",
+      "reis": "Vergelijkt kengetallen per koppel en legt die naast het voerschema. Wisselt van leverancier als de cijfers structureel achterblijven, niet op basis van de relatie alleen.",
+      "frustraties": [
+        "Haar stalmanagementsysteem en de voergegevens praten niet met elkaar; koppelen is knippen en plakken.",
+        "Benchmarkcijfers die ze krijgt zijn maanden oud en niet vergelijkbaar met haar bedrijfstype.",
+        "Bij een tegenvallend koppel duurt het lang voor duidelijk is of het aan voer, gezondheid of klimaat lag."
+      ],
+      "signaal": "Zij stuurt al op data. Wie haar sneller een betrouwbare verklaring geeft dan de concurrent, houdt haar volume."
+    },
+    {
+      "id": "ffp-pluimvee-integratie",
+      "titel": "Jan-Willem — vleeskuikenbedrijf in een keten",
+      "thema": "ketenintegratie",
+      "profiel": "Meerdere stallen, werkt met vaste afspraken met broederij en slachterij. Koppels lopen op een strak schema; de marge zit in gewicht op het juiste moment en in zo min mogelijk uitval.",
+      "reis": "Zijn planning is geen eigen keuze maar een ketenafspraak. Voerleveringen moeten passen in een schema dat weken vooruit vastligt en soms van de ene dag op de andere schuift.",
+      "frustraties": [
+        "Een verzette opzetdatum betekent handmatig bellen om de hele voerplanning om te zetten.",
+        "Iedereen in de keten rapporteert in zijn eigen format; hij is de knoop waar het samenkomt.",
+        "Bij een vervoersverbod hoort hij het nieuws eerder van collega's dan van zijn leveranciers."
+      ],
+      "signaal": "Voor hem is voer geen product maar een schakel in een schema. Betrouwbaarheid van de planning weegt zwaarder dan de prijs per ton."
+    },
+    {
+      "id": "ffp-groot",
+      "titel": "Familie De Rooij — grootschalig, meerdere locaties",
+      "thema": "scherpe-prijzen",
+      "profiel": "Meer dan duizend hectare en meerdere veehouderijtakken over verschillende locaties, deels in twee landen. Onderhandelt jaarlijks over contracten en vergelijkt aanbieders op totaalpakket.",
+      "reis": "Werkt met een inkoper die offertes naast elkaar legt. Wil één aanspreekpunt en één overzicht over alle locaties, maar krijgt facturen en adviezen per vestiging.",
+      "frustraties": [
+        "Geen enkel overzicht dat zijn locaties bij elkaar optelt; dat maakt hij zelf in Excel.",
+        "Verschillende adviseurs per locatie geven soms tegenstrijdig advies.",
+        "Contractafspraken zijn per land anders vastgelegd, terwijl hij één bedrijf is."
+      ],
+      "signaal": "Hij is een grote klant die als een verzameling kleine klanten wordt bediend. Dat is precies waar een concurrent binnenkomt."
+    },
+    {
+      "id": "ffp-biologisch",
+      "titel": "Sanne — biologisch gemengd bedrijf",
+      "thema": "duurzame-oplossingen",
+      "profiel": "Biologische melkvee- en akkerbouwtak, levert aan een zuivelketen met eigen duurzaamheidseisen. Moet aantonen waar haar voer vandaan komt en wat de voetafdruk ervan is.",
+      "reis": "Krijgt van haar afnemer jaarlijks strengere vragen over herkomst en CO2. Moet die doorzetten naar haar leveranciers en hoopt dat het antwoord op tijd komt.",
+      "frustraties": [
+        "Voetafdrukcijfers komen als jaargemiddelde, terwijl haar afnemer per partij wil weten wat erin zat.",
+        "Certificeringseisen veranderen sneller dan de documentatie die ze krijgt.",
+        "Biologische grondstoffen zijn schaars; leveringszekerheid is een terugkerende zorg."
+      ],
+      "signaal": "Haar afnemer stelt de eisen, niet zij. Wie haar de onderbouwing kant-en-klaar levert, maakt zichzelf onmisbaar."
+    },
+    {
+      "id": "ffp-stoppend",
+      "titel": "Henk — twijfelt over doorgaan",
+      "thema": "dicht-bij-de-boer",
+      "profiel": "Zestiger met een gemengd bedrijf zonder duidelijke opvolger. Weegt een opkoopregeling af tegen nog een aantal jaren doorgaan. Investeert niet meer, onderhoudt wat er is.",
+      "reis": "Bestelt kleiner en minder vaak. Zegt weinig, maar zijn volume zakt al vier kwartalen. Het gesprek over stoppen voert hij aan de keukentafel, niet met zijn leverancier.",
+      "frustraties": [
+        "Krijgt aanbiedingen voor investeringen die voor hem niet meer aan de orde zijn.",
+        "Wordt behandeld als een groeiend bedrijf terwijl hij aan het afbouwen is.",
+        "Niemand vraagt wat zijn plan is; er wordt alleen op zijn bestelling gereageerd."
+      ],
+      "signaal": "Zijn dalende volume is een signaal dat nu als ruis wordt gelezen. Het verschil tussen afbouwen en overstappen is aan de cijfers niet te zien — maar het gesprek erover wel."
+    }
+  ]
+}

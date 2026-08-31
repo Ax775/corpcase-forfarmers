@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { rolNaam, rolopdrachten } from "@/lib/content";
+import { rolNaam, rolopdrachtenVoorOrganisatie } from "@/lib/content";
 import { beoordeelRolopdracht, portfolio, teamscore } from "@/lib/sessie/afgeleid";
 import { formatteerEuro } from "@/lib/waarde/berekening";
 import type { SessieState } from "@/lib/supabase/types";
@@ -137,7 +137,9 @@ export function Opbrengst({ state }: { state: SessieState }) {
 
         <ul className="mt-3 space-y-2">
           {state.deelnemers.map((deelnemer) => {
-            const opdracht = rolopdrachten.opdrachten.find((o) => o.id === deelnemer.rolopdracht_id);
+            const opdracht = rolopdrachtenVoorOrganisatie(
+              state.sessie.organisatie_id,
+            ).opdrachten.find((o) => o.id === deelnemer.rolopdracht_id);
             if (!opdracht) return null;
             const oordeel = beoordeelRolopdracht(state, opdracht.controle);
 
@@ -147,7 +149,7 @@ export function Opbrengst({ state }: { state: SessieState }) {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-xs text-inkt-licht">
-                        {deelnemer.naam} · {rolNaam(deelnemer.rol_id)}
+                        {deelnemer.naam} · {rolNaam(state.sessie.organisatie_id, deelnemer.rol_id)}
                       </p>
                       <p className="mt-1 text-sm leading-snug text-inkt">
                         {opdracht.opdracht}

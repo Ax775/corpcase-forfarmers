@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FASES, FASE_LABELS, type Fase } from "@/lib/supabase/types";
-import { rol, rolopdrachten } from "@/lib/content";
+import { rol, rolopdrachtenVoorOrganisatie } from "@/lib/content";
 import type { BewaardeIdentiteit } from "@/lib/sessie/identiteit";
 import type { SessieState } from "@/lib/supabase/types";
 import { eigenFase, looptVoor, teamscore } from "@/lib/sessie/afgeleid";
@@ -48,8 +48,10 @@ export function Sessiebalk({
   const [opdrachtZichtbaar, setOpdrachtZichtbaar] = useState(false);
   const [scoreUitlegZichtbaar, setScoreUitlegZichtbaar] = useState(false);
   const ik = state.deelnemers.find((d) => d.id === identiteit.deelnemerId);
-  const mijnRol = ik ? rol(ik.rol_id) : undefined;
-  const opdracht = rolopdrachten.opdrachten.find((o) => o.id === ik?.rolopdracht_id);
+  const mijnRol = ik ? rol(state.sessie.organisatie_id, ik.rol_id) : undefined;
+  const opdracht = rolopdrachtenVoorOrganisatie(state.sessie.organisatie_id).opdrachten.find(
+    (o) => o.id === ik?.rolopdracht_id,
+  );
   const score = teamscore(state);
   // Deze balk staat boven elke fase en poll elke 2,5s mee; het optellen maakt zichtbaar wanneer
   // een medespeler net iets aan de teamscore heeft toegevoegd, in plaats van dat het getal

@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { bibliotheek, cora, organisaties, realiteitschecks, rollen } from "@/lib/content";
+import { organisaties, sectorProfiel, sectoren } from "@/lib/content";
 import { Cijfer } from "@/components/basis";
 import { Cirkel, RasterCirkel } from "@/components/decoratie";
 import { Thema } from "@/components/thema";
 
 export default function Home() {
   const org = organisaties[0];
+
+  // De bibliotheek is niet langer één set: tel over alle sectoren die in content/ staan.
+  const profielen = sectoren.map((s) => sectorProfiel(s.id));
+  const tel = (kies: (p: (typeof profielen)[number]) => number) =>
+    profielen.reduce((som, p) => som + kies(p), 0);
 
   return (
     <Thema accent={org.thema.accent} className="flex-1">
@@ -51,10 +56,10 @@ export default function Home() {
 
         <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
           {[
-            { label: "Use cases", waarde: bibliotheek.usecases.length },
-            { label: "CORA-domeinen", waarde: cora.domeinen.length },
-            { label: "Rollen aan tafel", waarde: rollen.rollen.length },
-            { label: "Realiteitschecks", waarde: realiteitschecks.checks.length },
+            { label: "Use cases", waarde: tel((p) => p.usecases.usecases.length) },
+            { label: "Domeinen", waarde: tel((p) => p.domeinen.domeinen.length) },
+            { label: "Rollen aan tafel", waarde: tel((p) => p.rollen.rollen.length) },
+            { label: "Realiteitschecks", waarde: tel((p) => p.realiteitschecks.checks.length) },
           ].map((item) => (
             <Cijfer key={item.label} label={item.label} waarde={item.waarde} toon="accent" />
           ))}

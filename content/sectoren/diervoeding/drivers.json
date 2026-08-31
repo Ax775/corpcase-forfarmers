@@ -1,0 +1,125 @@
+{
+  "toelichting": "Definities van de bouwstenen waarmee een business case wordt doorgerekend. Elk drivertype heeft invulvelden en een formule; die formule wordt letterlijk uitgerekend (src/lib/waarde/formule.ts), dus wat de speler leest is wat er gebeurt. De dimensies met kern=true worden altijd getoond; de rest zit achter een knop, zodat een use case waarderen op een telefoon behapbaar blijft.",
+  "onzekerheid": {
+    "standaard_bandbreedte_pct": 30,
+    "toelichting": "Elke uitkomst wordt getoond als laag/verwacht/hoog. Laag en hoog worden berekend door de verwachte baat met dit percentage naar beneden en boven bij te stellen. Een business case toont nooit één hard getal."
+  },
+  "drivertypes": [
+    {
+      "id": "tijdsbesparing",
+      "naam": "Tijdsbesparing in een proces",
+      "toelichting": "Handelingen die vaak terugkomen en korter of automatisch worden. Wees eerlijk: bespaarde minuten worden pas geld als er ook echt minder capaciteit nodig is of de capaciteit elders wordt ingezet.",
+      "eenheid": "EUR/jaar",
+      "formule": "volume_per_jaar × (minuten_per_geval ÷ 60) × (reductie_pct ÷ 100) × uurtarief",
+      "velden": [
+        { "id": "volume_per_jaar", "label": "Aantal keer per jaar", "eenheid": "per jaar", "type": "getal", "min": 0 },
+        { "id": "minuten_per_geval", "label": "Minuten werk per keer (nu)", "eenheid": "minuten", "type": "getal", "min": 0 },
+        { "id": "reductie_pct", "label": "Verwachte tijdreductie", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 },
+        { "id": "uurtarief", "label": "Intern uurtarief (all-in)", "eenheid": "EUR/uur", "type": "getal", "min": 0, "uitgangspunt": "uurtarief_intern" }
+      ]
+    },
+    {
+      "id": "formuleringsmarge",
+      "naam": "Scherper formuleren per ton",
+      "toelichting": "Centen per ton op de receptuur, binnen dezelfde nutritionele specificatie. Bij miljoenen tonnen is dit de grootste knop die er is — en tegelijk de gevaarlijkste om te overschatten. Vul alleen het volume in dat deze use case echt raakt.",
+      "eenheid": "EUR/jaar",
+      "formule": "volume_ton × (aandeel_volume_pct ÷ 100) × besparing_per_ton",
+      "velden": [
+        { "id": "volume_ton", "label": "Jaarvolume", "eenheid": "ton/jaar", "type": "getal", "min": 0, "uitgangspunt": "volume_ton" },
+        { "id": "aandeel_volume_pct", "label": "Aandeel van dat volume dat deze use case raakt", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 },
+        { "id": "besparing_per_ton", "label": "Verwachte besparing per ton", "eenheid": "EUR/ton", "type": "getal", "min": 0 }
+      ]
+    },
+    {
+      "id": "transportbesparing",
+      "naam": "Minder transportkosten",
+      "toelichting": "Slimmer plannen, voller laden of minder kilometers rijden bij dezelfde afzet. Reken met ritten, niet met kilometers: een rit die vervalt scheelt ook chauffeurstijd en laadtijd.",
+      "eenheid": "EUR/jaar",
+      "formule": "ritten_per_jaar × kosten_per_rit × (reductie_pct ÷ 100)",
+      "velden": [
+        { "id": "ritten_per_jaar", "label": "Aantal ritten per jaar", "eenheid": "ritten/jaar", "type": "getal", "min": 0, "uitgangspunt": "ritten_per_jaar" },
+        { "id": "kosten_per_rit", "label": "Gemiddelde kosten per rit", "eenheid": "EUR/rit", "type": "getal", "min": 0, "uitgangspunt": "kosten_per_rit" },
+        { "id": "reductie_pct", "label": "Verwachte reductie", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 }
+      ]
+    },
+    {
+      "id": "afkeur_reductie",
+      "naam": "Minder afkeur, herbewerking en recall",
+      "toelichting": "Partijen die worden afgekeurd, opnieuw bewerkt of teruggehaald. Naast de directe kosten zit hier de schade die je niet in dit veld kwijt kunt: een recall raakt het vertrouwen van de boer.",
+      "eenheid": "EUR/jaar",
+      "formule": "productie_ton × (afkeur_pct ÷ 100) × kosten_per_ton × (reductie_pct ÷ 100)",
+      "velden": [
+        { "id": "productie_ton", "label": "Geproduceerd volume", "eenheid": "ton/jaar", "type": "getal", "min": 0, "uitgangspunt": "volume_ton" },
+        { "id": "afkeur_pct", "label": "Aandeel afkeur of herbewerking (nu)", "eenheid": "%", "type": "percentage", "min": 0, "max": 100, "uitgangspunt": "afkeur_pct" },
+        { "id": "kosten_per_ton", "label": "Kosten per afgekeurde ton", "eenheid": "EUR/ton", "type": "getal", "min": 0 },
+        { "id": "reductie_pct", "label": "Aandeel dat je voorkomt", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 }
+      ]
+    },
+    {
+      "id": "volumebehoud",
+      "naam": "Klanten en volume vasthouden",
+      "toelichting": "Voer dat je anders aan een concurrent was kwijtgeraakt. Reken met marge, niet met omzet: een ton die blijft, levert de marge op die eronder zit.",
+      "eenheid": "EUR/jaar",
+      "formule": "klanten_met_verloopsignaal × volume_per_klant_ton × marge_per_ton × (behoud_pct ÷ 100)",
+      "velden": [
+        { "id": "klanten_met_verloopsignaal", "label": "Klanten per jaar met verloopsignaal", "eenheid": "klanten/jaar", "type": "getal", "min": 0 },
+        { "id": "volume_per_klant_ton", "label": "Gemiddeld volume per klant", "eenheid": "ton/jaar", "type": "getal", "min": 0, "uitgangspunt": "volume_per_klant_ton" },
+        { "id": "marge_per_ton", "label": "Brutomarge per ton", "eenheid": "EUR/ton", "type": "getal", "min": 0, "uitgangspunt": "marge_per_ton" },
+        { "id": "behoud_pct", "label": "Aandeel dat je extra vasthoudt", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 }
+      ]
+    },
+    {
+      "id": "vermeden_kosten",
+      "naam": "Vermeden kosten per geval",
+      "toelichting": "Gevallen die je voorkomt: een spoedlevering, een tweede erfbezoek, een storing die tot stilstand leidt of een juridisch traject.",
+      "eenheid": "EUR/jaar",
+      "formule": "gevallen_per_jaar × kosten_per_geval × (reductie_pct ÷ 100)",
+      "velden": [
+        { "id": "gevallen_per_jaar", "label": "Aantal gevallen per jaar", "eenheid": "per jaar", "type": "getal", "min": 0 },
+        { "id": "kosten_per_geval", "label": "Kosten per geval", "eenheid": "EUR", "type": "getal", "min": 0 },
+        { "id": "reductie_pct", "label": "Aandeel dat je voorkomt", "eenheid": "%", "type": "percentage", "min": 0, "max": 100 }
+      ]
+    },
+    {
+      "id": "extra_opbrengst",
+      "naam": "Extra volume of nieuwe opbrengst",
+      "toelichting": "Nieuwe tonnen of een nieuwe dienst: extra afzet bij bestaande klanten, een nieuw concept, of een reststroom die je nu vermarkt in plaats van afvoert.",
+      "eenheid": "EUR/jaar",
+      "formule": "extra_volume_ton × marge_per_ton",
+      "velden": [
+        { "id": "extra_volume_ton", "label": "Extra volume (equivalent)", "eenheid": "ton/jaar", "type": "getal", "min": 0 },
+        { "id": "marge_per_ton", "label": "Brutomarge per ton", "eenheid": "EUR/ton", "type": "getal", "min": 0, "uitgangspunt": "marge_per_ton" }
+      ]
+    }
+  ],
+  "kostentypes": [
+    { "id": "eenmalig", "naam": "Eenmalige implementatiekosten", "eenheid": "EUR", "toelichting": "Bouw, inrichting, koppelvlakken, migratie en begeleiding bij invoering — over de clusters heen als het groepsbreed moet." },
+    { "id": "jaarlijks", "naam": "Jaarlijkse kosten", "eenheid": "EUR/jaar", "toelichting": "Licenties, verbruik, beheer, modelonderhoud en doorontwikkeling." },
+    { "id": "capaciteit", "naam": "Verandercapaciteit", "eenheid": "mensmaanden", "toelichting": "Wat de eigen organisatie erin moet stoppen: sleutelmensen uit IT, nutritie, productie en de buitendienst." }
+  ],
+  "kwalitatieve_dimensies": [
+    { "id": "klantwaarde", "naam": "Waarde voor de veehouder", "vraag": "Merkt de boer hier op zijn erf iets van, en is dat een verbetering van zijn rendement?", "kern": true },
+    { "id": "medewerkerswaarde", "naam": "Waarde voor de medewerker", "vraag": "Wordt het werk lichter, leuker of minder foutgevoelig?", "kern": true },
+    { "id": "duurzaamheid", "naam": "Duurzaamheidswaarde", "vraag": "Draagt dit bij aan CO2-reductie, circulaire grondstoffen of dierwelzijn?", "kern": true },
+    { "id": "compliance", "naam": "Wettelijk en verantwoording", "vraag": "Helpt dit bij voederveiligheid, GMP+, CSRD of de verantwoording aan de markt?", "kern": false },
+    { "id": "risicoreductie", "naam": "Risicoreductie", "vraag": "Verkleint dit een risico dat het bedrijf nu echt loopt?", "kern": false }
+  ],
+  "haalbaarheidsdimensies": [
+    { "id": "databeschikbaarheid", "naam": "Databeschikbaarheid", "vraag": "Hebben we de benodigde gegevens, in voldoende kwaliteit, uit een ontsloten bron?", "kern": true },
+    { "id": "technische_complexiteit", "naam": "Technische eenvoud", "vraag": "Is dit te bouwen of te kopen zonder diepe ingreep in het ERP of de fabrieksbesturing?", "kern": true },
+    { "id": "verandervermogen", "naam": "Verandervermogen", "vraag": "Kan de organisatie dit naast de lopende agenda absorberen, in alle clusters die het raakt?", "kern": true },
+    { "id": "afhankelijkheden", "naam": "Zelfstandigheid", "vraag": "Kan dit los, of moet er eerst iets anders af?", "kern": false },
+    { "id": "juridisch_ethisch", "naam": "Juridische en ethische ruimte", "vraag": "Is er een heldere grondslag, en kunnen we aan de boer uitleggen wat we met zijn data doen?", "kern": false }
+  ],
+  "scorekaart_dimensies": [
+    { "id": "impact", "naam": "Impact", "vraag": "Hoe groot is het effect als dit lukt?" },
+    { "id": "urgentie", "naam": "Urgentie", "vraag": "Hoe erg is het als we dit nog een jaar laten liggen?" },
+    { "id": "strategische_fit", "naam": "Strategische fit", "vraag": "Hoe direct raakt dit de principes van Strategie 2030?" },
+    { "id": "haalbaarheid", "naam": "Haalbaarheid", "vraag": "Hoe realistisch is invoering binnen een jaar?" }
+  ],
+  "schaal": {
+    "min": 1,
+    "max": 5,
+    "labels": { "1": "zeer laag", "2": "laag", "3": "gemiddeld", "4": "hoog", "5": "zeer hoog" }
+  }
+}

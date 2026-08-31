@@ -265,7 +265,7 @@ export default function BeheerPagina() {
                     {deelnemer.naam}
                   </p>
                   <p className="text-xs text-inkt-licht">
-                    {rolNaam(deelnemer.rol_id)}
+                    {rolNaam(state.sessie.organisatie_id, deelnemer.rol_id)}
                   </p>
                 </div>
                 {/*

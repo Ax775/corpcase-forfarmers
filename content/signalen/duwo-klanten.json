@@ -1,7 +1,7 @@
 {
   "organisatie_id": "duwo",
-  "lens": "huurder",
-  "toelichting": "Huurderspersona's van een studentenhuisvester. Elke persona draagt een reis en een frustratie; spelers kijken door hun ogen naar de dienstverlening.",
+  "lens": "klant",
+  "toelichting": "Klantpersona's (huurders) van een studentenhuisvester. Elke persona draagt een reis en een frustratie; spelers kijken door hun ogen naar de dienstverlening.",
   "kaarten": [
     {
       "id": "p-eerstejaars",

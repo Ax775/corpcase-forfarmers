@@ -1,0 +1,234 @@
+{
+  "id": "forfarmers",
+  "naam": "ForFarmers",
+  "type": "Producent van complete voeroplossingen (Euronext Amsterdam: FFARM)",
+  "sector": "diervoeding",
+  "pitch": "Vooraanstaande Europese voerproducent met een recordjaar achter de rug: 10,6 miljoen ton voer voor 28.500 boeren, vanuit 41 fabrieken in vier landen. Decentraal georganiseerd, centraal ondersteund, met de missie For the Future of Farming.",
+  "thema": {
+    "accent": "#00337F",
+    "toelichting": "De primaire huisstijlkleur van ForFarmers. Uit deze ene kleur worden de varianten voor knoppen, kleine tekst en donkere panelen afgeleid, met een gemeten contrasttoets. Het limegroen #99BA16 is de tweede huisstijlkleur; die is hier niet nodig omdat de interface één accent gebruikt.",
+    "bron": "CSS-variabele --primary-color op forfarmersgroup.eu, afgelezen 31-08-2026; --alt-color is #99BA16",
+    "geverifieerd": true
+  },
+  "jaarverslag": {
+    "jaar": 2025,
+    "titel": "Recordjaar: 10,6 miljoen ton voer en ruim 50% nettowinststijging",
+    "bron": "https://www.forfarmersgroup.eu/resultaten/resultaten-forfarmers-2025",
+    "geverifieerd": true
+  },
+  "werkgebied": [
+    "Nederland",
+    "Duitsland",
+    "Polen",
+    "Verenigd Koninkrijk",
+    "België"
+  ],
+  "kengetallen": [
+    {
+      "id": "volume_ton",
+      "label": "Totaal voervolume",
+      "waarde": 10600000,
+      "eenheid": "ton/jaar",
+      "notatie": "10,6 miljoen ton",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu (19-02-2026)",
+      "geverifieerd": true
+    },
+    {
+      "id": "volumegroei_pct",
+      "label": "Volumegroei ten opzichte van 2024",
+      "waarde": 18,
+      "eenheid": "%",
+      "notatie": "+18,0% totaal; autonoom +1,0%",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "brutowinst",
+      "label": "Brutowinst",
+      "waarde": 611200000,
+      "eenheid": "EUR/jaar",
+      "notatie": "€ 611,2 miljoen (+17,9%)",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "ebitda",
+      "label": "Onderliggende EBITDA",
+      "waarde": 145900000,
+      "eenheid": "EUR/jaar",
+      "notatie": "€ 145,9 miljoen (+44,7%)",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "ebit",
+      "label": "Onderliggende EBIT",
+      "waarde": 93200000,
+      "eenheid": "EUR/jaar",
+      "notatie": "€ 93,2 miljoen (+57,7%)",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "nettowinst",
+      "label": "Onderliggende nettowinst",
+      "waarde": 61900000,
+      "eenheid": "EUR/jaar",
+      "notatie": "€ 61,9 miljoen (+52,5%)",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "roace",
+      "label": "ROACE op onderliggende EBIT",
+      "waarde": 17.4,
+      "eenheid": "%",
+      "notatie": "17,4% per 31-12-2025 (ultimo 2024: 13,0%)",
+      "bron": "Persbericht jaarcijfers 2025, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "klanten",
+      "label": "Klanten",
+      "waarde": 28500,
+      "eenheid": "klanten",
+      "notatie": "28.500",
+      "bron": "Strategie 2030, forfarmersgroup.eu/onze-strategie",
+      "geverifieerd": true
+    },
+    {
+      "id": "medewerkers",
+      "label": "Medewerkers",
+      "waarde": 3000,
+      "eenheid": "medewerkers",
+      "notatie": "circa 3.000",
+      "bron": "Bedrijfsprofiel, forfarmersgroup.eu",
+      "geverifieerd": true
+    },
+    {
+      "id": "locaties",
+      "label": "Productielocaties",
+      "waarde": 41,
+      "eenheid": "fabrieken",
+      "notatie": "41 in vier landen",
+      "bron": "ForFarmers jaarverslag 2025",
+      "geverifieerd": false
+    }
+  ],
+  "strategische_themas": [
+    {
+      "id": "dicht-bij-de-boer",
+      "naam": "Dicht bij de boer",
+      "omschrijving": "Inspelen op lokale klantbehoeften om marktaandeel te winnen, met een decentrale organisatie die centraal wordt ondersteund."
+    },
+    {
+      "id": "onderscheidend",
+      "naam": "Onderscheidend in producten & markten",
+      "omschrijving": "Product- en adviesportfolio uitbreiden om winstgevendheid te ondersteunen; on-farm datamanagement wordt daarin steeds belangrijker."
+    },
+    {
+      "id": "scherpe-prijzen",
+      "naam": "Goed voer tegen scherpe prijzen",
+      "omschrijving": "Bijdragen aan het rendement van de boer door kosten- en kwaliteitsbewust te werken, met scherpe sturing op inkoop en flexibele kosten."
+    },
+    {
+      "id": "duurzame-oplossingen",
+      "naam": "Duurzame oplossingen",
+      "omschrijving": "Boeren en ketenpartners ondersteunen met alternatieve eiwitten en reststroomconcepten, in lijn met de duurzaamheidsambities."
+    },
+    {
+      "id": "ketenintegratie",
+      "naam": "(Virtuele) ketenintegratie",
+      "omschrijving": "Samenwerkingen in de agrifood-keten uitbreiden, van koppels onder eigen regie tot joint ventures met ketenpartners."
+    }
+  ],
+  "onderscheidende_kenmerken": [
+    "Beursgenoteerd, met een coöperatie als grootaandeelhouder: het bedrijf verantwoordt zich zowel aan de markt als aan boeren.",
+    "Decentraal georganiseerd per land, centraal ondersteund — een groepsbrede oplossing raakt in elk cluster een andere werkelijkheid.",
+    "De marge zit in centen per ton, over miljoenen tonnen: kleine verbeteringen in receptuur en logistiek tikken hard door.",
+    "De klant is tegelijk leverancierrelatie, kredietrisico en databron; hij laat een voerproducent dieper in zijn bedrijf kijken dan de meeste leveranciers.",
+    "Volume groeit vooral door overnames en joint ventures; autonoom is de markt in Noordwest-Europa krap tot krimpend.",
+    "Het grootste deel van de CO2-voetafdruk zit in ingekochte grondstoffen, niet in de eigen fabrieken."
+  ],
+  "rekenkundige_uitgangspunten": [
+    {
+      "id": "uurtarief_intern",
+      "label": "Intern uurtarief (all-in)",
+      "waarde": 65,
+      "eenheid": "EUR/uur",
+      "notatie": "€ 65 per uur",
+      "bron": "aanname op plausibele ordegrootte; vervang door het eigen tarief",
+      "geverifieerd": false
+    },
+    {
+      "id": "marge_per_ton",
+      "label": "Brutomarge per ton",
+      "waarde": 58,
+      "eenheid": "EUR/ton",
+      "notatie": "circa € 58 per ton",
+      "bron": "afgeleid: € 611,2 mln brutowinst gedeeld door 10,6 mln ton. Een groepsgemiddelde over alle diersoorten en landen; per segment wijkt dit af",
+      "geverifieerd": false
+    },
+    {
+      "id": "volume_per_klant_ton",
+      "label": "Gemiddeld volume per klant",
+      "waarde": 372,
+      "eenheid": "ton/jaar",
+      "notatie": "circa 372 ton per klant",
+      "bron": "afgeleid: 10,6 mln ton gedeeld door 28.500 klanten. Sterk scheef verdeeld: een integratiebedrijf neemt een veelvoud af van een gemengd gezinsbedrijf",
+      "geverifieerd": false
+    },
+    {
+      "id": "ritten_per_jaar",
+      "label": "Bulkritten per jaar",
+      "waarde": 380000,
+      "eenheid": "ritten/jaar",
+      "notatie": "circa 380.000 ritten",
+      "bron": "aanname, afgeleid van 10,6 mln ton bij circa 28 ton per vracht; niet gepubliceerd",
+      "geverifieerd": false
+    },
+    {
+      "id": "kosten_per_rit",
+      "label": "Gemiddelde kosten per bulkrit",
+      "waarde": 250,
+      "eenheid": "EUR/rit",
+      "notatie": "€ 250 per rit",
+      "bron": "aanname op plausibele ordegrootte voor bulktransport inclusief chauffeur en laadtijd",
+      "geverifieerd": false
+    },
+    {
+      "id": "afkeur_pct",
+      "label": "Afkeur en herbewerking",
+      "waarde": 0.5,
+      "eenheid": "%",
+      "notatie": "0,5% van het volume",
+      "bron": "aanname op plausibele ordegrootte; het echte cijfer staat in de kwaliteitsrapportage",
+      "geverifieerd": false
+    },
+    {
+      "id": "klantcontacten_per_jaar",
+      "label": "Klantcontacten per jaar",
+      "waarde": 500000,
+      "eenheid": "contacten/jaar",
+      "notatie": "circa 500.000",
+      "bron": "aanname, afgeleid van 28.500 klanten met gemiddeld enkele tientallen contacten per jaar",
+      "geverifieerd": false
+    },
+    {
+      "id": "erfbezoeken_per_jaar",
+      "label": "Erfbezoeken door de buitendienst",
+      "waarde": 150000,
+      "eenheid": "bezoeken/jaar",
+      "notatie": "circa 150.000",
+      "bron": "aanname op plausibele ordegrootte; het echte cijfer staat in het CRM",
+      "geverifieerd": false
+    }
+  ],
+  "budget_defaults": {
+    "geld_eur": 4000000,
+    "verandercapaciteit_mensmaanden": 72,
+    "toelichting": "Investeringsruimte voor het data- en AI-portfolio in één jaar, en de verandercapaciteit in mensmaanden van eigen sleutelmensen. Bewust krap ten opzichte van de ambitie: het gesprek gaat over wat er dan afvalt.",
+    "bron": "aanname; stel dit per sessie bij op de werkelijke ruimte",
+    "geverifieerd": false
+  }
+}

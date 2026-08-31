@@ -16,6 +16,7 @@ const volledigFormulier: OrganisatieFormulier = {
   id: "test-corp",
   naam: "Test Corp",
   type: "Woningcorporatie",
+  sector: "woningcorporatie",
   pitch: "Een testcorporatie voor de wizard.",
   accent: "#3366CC",
   themaToelichting: "De huisstijlkleur.",
@@ -25,7 +26,7 @@ const volledigFormulier: OrganisatieFormulier = {
   jaarverslagTitel: "Jaarverslag 2024",
   jaarverslagBron: "jaarverslag.pdf",
   jaarverslagGeverifieerd: false,
-  steden: ["Teststad"],
+  werkgebied: ["Teststad"],
   kengetallen: [
     { id: "eenheden", label: "Eenheden", waarde: 1000, eenheid: "eenheden", notatie: "1.000", bron: "jaarverslag", geverifieerd: true },
   ],
