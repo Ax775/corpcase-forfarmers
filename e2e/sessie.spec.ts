@@ -191,8 +191,11 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   await commercie.goto(`/sessie/${sessieId}/rapport`);
   await expect(commercie.getByRole("heading", { name: "Het portfolio" })).toBeVisible();
   await expect(commercie.getByRole("heading", { name: "Aannames en onzekerheden" })).toBeVisible();
+  // De verantwoording leest de verificatievlaggen uit de content; ze stond eerder vast als
+  // "niets is geverifieerd", wat onwaar werd zodra de cijfers wél gecontroleerd waren.
+  await expect(commercie.getByText(/gecontroleerd tegen de primaire bron/)).toBeVisible();
   await expect(
-    commercie.getByText(/komen uit publieke bronnen en zijn niet geverifieerd/),
+    commercie.getByText(/rekenkundige uitgangspunten waarmee de business cases rekenen/),
   ).toBeVisible();
   // De randvoorwaarde die Marieke invulde staat bij het roadmap-item in het rapport.
   await expect(commercie.getByText(/Eerst nodig: Koppelvlak op het ERP/)).toBeVisible();

@@ -363,11 +363,25 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
   const inPortfolio = portfolio(state);
   const sector = profielVoorOrganisatie(state.sessie.organisatie_id).sector;
 
+  /*
+   * Een leeg portfolio eerst, want zonder deze regel spreken oordeel en toelichting elkaar tegen.
+   * De controles van het type "elke use case moet X" kijken naar een lege verzameling, vinden geen
+   * overtreding, en melden dan "elke use case is in orde" — terwijl het oordeel niet gehaald is
+   * omdat er niets ligt. Bij `privacy_aandachtspunt_vastgelegd` viel het zelfs de andere kant op:
+   * die gaf gehaald terug, dus een pluim voor niets doen.
+   */
+  if (inPortfolio.length === 0) {
+    return {
+      gehaald: false,
+      toelichting: "Er staat niets in het portfolio, dus deze opdracht kon niet slagen.",
+    };
+  }
+
   switch (controle) {
     case "elke_usecase_heeft_thema": {
       const zonder = inPortfolio.filter((b) => b.signaalIds.length === 0);
       return {
-        gehaald: inPortfolio.length > 0 && zonder.length === 0,
+        gehaald: zonder.length === 0,
         toelichting:
           zonder.length === 0
             ? "Elke use case in het portfolio is herleidbaar naar een signaal."
@@ -424,7 +438,7 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
       const doorgerekend = inPortfolio.filter((b) => b.businessCase?.volledig).length;
       const nodig = Math.ceil(inPortfolio.length / 2);
       return {
-        gehaald: inPortfolio.length > 0 && doorgerekend >= nodig,
+        gehaald: doorgerekend >= nodig,
         toelichting: `${doorgerekend} van de ${inPortfolio.length} zijn volledig doorgerekend; nodig was ${nodig}.`,
       };
     }
@@ -432,7 +446,7 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
     case "elke_usecase_heeft_databron": {
       const zonder = inPortfolio.filter((b) => b.usecase.benodigde_data.length === 0);
       return {
-        gehaald: inPortfolio.length > 0 && zonder.length === 0,
+        gehaald: zonder.length === 0,
         toelichting:
           zonder.length === 0
             ? "Elke use case in het portfolio heeft een benoemde databron."

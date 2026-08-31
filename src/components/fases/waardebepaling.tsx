@@ -9,7 +9,12 @@ import {
 import type { Dimensie } from "@/lib/content/schemas";
 import { opslag } from "@/lib/sessie/api";
 import { alleBeelden, type UsecaseBeeld } from "@/lib/sessie/afgeleid";
-import { driversUitBibliotheek, formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
+import {
+  driversUitBibliotheek,
+  formatteerBandbreedte,
+  formatteerEuro,
+  formatteerTerugverdientijd,
+} from "@/lib/waarde/berekening";
 import type { SessieState, Waardemodus } from "@/lib/supabase/types";
 import type { BewaardeIdentiteit } from "@/lib/sessie/identiteit";
 import {
@@ -214,7 +219,7 @@ function Samenvatting({ beeld }: { beeld: UsecaseBeeld }) {
           {formatteerBandbreedte(bc.netto_baat)} per jaar
         </span>
         {bc.terugverdientijd_maanden ? (
-          <Etiket>terugverdiend in {Math.round(bc.terugverdientijd_maanden)} maanden</Etiket>
+          <Etiket>terugverdiend in {formatteerTerugverdientijd(bc.terugverdientijd_maanden)}</Etiket>
         ) : null}
         {!bc.volledig ? <Etiket toon="aandacht">nog niet compleet</Etiket> : null}
       </div>

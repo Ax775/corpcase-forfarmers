@@ -6,6 +6,7 @@ import {
   berekenBudgetStand,
   berekenBusinessCase,
   berekenDriver,
+  formatteerTerugverdientijd,
   gemiddeldeScore,
   STANDAARD_BANDBREEDTE_PCT,
 } from "../berekening";
@@ -289,5 +290,32 @@ describe("de formule in de content is de implementatie", () => {
     expect(ids).toContain("dienstopbrengst");
     // Zou een tweede sector erbij komen, dan brengt die zijn eigen lijst mee.
     expect(ids.sort()).toEqual(waardeModel.drivertypes.map((d) => d.id).sort());
+  });
+});
+
+describe("formatteerTerugverdientijd", () => {
+  /**
+   * Op het scherm stond "terugverdiend in 1 maanden", en bij alles onder het half zelfs
+   * "0 maanden" — wat leest als gratis. Beide kwamen uit een kale Math.round.
+   */
+  it("zegt 'maand' bij precies één", () => {
+    expect(formatteerTerugverdientijd(1)).toBe("1 maand");
+    expect(formatteerTerugverdientijd(1.4)).toBe("1 maand");
+  });
+
+  it("rondt niet naar nul af maar zegt het in woorden", () => {
+    expect(formatteerTerugverdientijd(0.4)).toBe("minder dan een maand");
+    expect(formatteerTerugverdientijd(0.99)).toBe("minder dan een maand");
+  });
+
+  it("gebruikt meervoud vanaf twee", () => {
+    expect(formatteerTerugverdientijd(1.6)).toBe("2 maanden");
+    expect(formatteerTerugverdientijd(18)).toBe("18 maanden");
+  });
+
+  it("noemt een onbruikbare waarde onbekend in plaats van nul", () => {
+    expect(formatteerTerugverdientijd(0)).toBe("onbekend");
+    expect(formatteerTerugverdientijd(-3)).toBe("onbekend");
+    expect(formatteerTerugverdientijd(Number.NaN)).toBe("onbekend");
   });
 });

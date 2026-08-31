@@ -22,7 +22,11 @@ import {
   onvolledigeBusinessCases,
   portfolio,
 } from "@/lib/sessie/afgeleid";
-import { formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
+import {
+  formatteerBandbreedte,
+  formatteerEuro,
+  formatteerTerugverdientijd,
+} from "@/lib/waarde/berekening";
 import { Hoofdregel, Knop, Melding } from "@/components/basis";
 import { Thema } from "@/components/thema";
 import { downloadCsv, genereerRapportCsv } from "@/lib/rapport/csv";
@@ -57,6 +61,9 @@ export default function RapportPagina() {
   const gedekt = dekking(state);
   const stand = budgetStand(state);
   const signalen = alleSignalen(state.sessie.organisatie_id);
+  // De verantwoording leest de vlaggen uit de content in plaats van een vaste zin te herhalen:
+  // anders blijft er staan dat niets geverifieerd is terwijl het merendeel dat wel is.
+  const kengetallenOpen = org.kengetallen.filter((k) => !k.geverifieerd).length;
   const kanttekeningen = aannames(state);
   const onvolledig = onvolledigeBusinessCases(state);
 
@@ -271,7 +278,7 @@ export default function RapportPagina() {
                     >
                       Netto {formatteerBandbreedte(beeld.businessCase.netto_baat)} per jaar
                       {beeld.businessCase.terugverdientijd_maanden
-                        ? `, terugverdiend in ${Math.round(beeld.businessCase.terugverdientijd_maanden)} maanden`
+                        ? `, terugverdiend in ${formatteerTerugverdientijd(beeld.businessCase.terugverdientijd_maanden)}`
                         : ""}
                     </p>
                     {!beeld.businessCase.volledig ? (
@@ -386,9 +393,16 @@ export default function RapportPagina() {
 
         <ul className="mt-3 space-y-2">
           <li className="text-sm leading-relaxed text-inkt-zacht">
-            De kengetallen van {org.naam} in deze sessie komen uit publieke bronnen en zijn niet
-            geverifieerd tegen het originele jaarverslag. De rekenkundige uitgangspunten
-            (uurtarief, dagopbrengst, volumes) zijn aannames.
+            {kengetallenOpen === 0
+              ? `Alle ${org.kengetallen.length} kengetallen van ${org.naam} in deze sessie zijn gecontroleerd tegen de primaire bron.`
+              : `Van de ${org.kengetallen.length} kengetallen van ${org.naam} in deze sessie ${
+                  org.kengetallen.length - kengetallenOpen === 1 ? "is er 1" : `zijn er ${org.kengetallen.length - kengetallenOpen}`
+                } gecontroleerd tegen de primaire bron; ${
+                  kengetallenOpen === 1 ? "één is dat nog niet" : `${kengetallenOpen} nog niet`
+                }.`}{" "}
+            De {org.rekenkundige_uitgangspunten.length} rekenkundige uitgangspunten waarmee de
+            business cases rekenen, zijn bewust ingevulde aannames op ordegrootte — geen cijfers
+            van {org.naam}.
           </li>
 
           {onvolledig.length > 0 ? (
@@ -421,6 +435,7 @@ export default function RapportPagina() {
           {gedekt.personasGemist.length > 0 ? (
             <li className="text-sm leading-relaxed text-inkt-zacht">
               {gedekt.personasGemist.length} van de{" "}
+              {gedekt.personasGemist.length + gedekt.personasGeraakt.length}{" "}
               {klantlensVoorOrganisatie(state.sessie.organisatie_id).meervoud} komen in geen enkele
               use case terug. Dat kan een bewuste keuze zijn, maar het is er geen die is
               uitgesproken.

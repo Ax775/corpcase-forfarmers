@@ -265,6 +265,20 @@ export function formatteerEuro(bedrag: number): string {
   }).format(bedrag);
 }
 
+/**
+ * Terugverdientijd in leesbare tekst.
+ *
+ * Twee dingen die met `Math.round` misgingen: "1 maanden" bij precies één maand, en "0 maanden"
+ * bij alles onder het half — wat leest als gratis. Een terugverdientijd korter dan een maand
+ * zeggen we daarom in woorden.
+ */
+export function formatteerTerugverdientijd(maanden: number): string {
+  if (!Number.isFinite(maanden) || maanden <= 0) return "onbekend";
+  if (maanden < 1) return "minder dan een maand";
+  const afgerond = Math.round(maanden);
+  return afgerond === 1 ? "1 maand" : `${afgerond} maanden`;
+}
+
 export function formatteerBandbreedte(band: Bandbreedte | null): string {
   if (!band) return "onbekend";
   return `${formatteerEuro(band.laag)} – ${formatteerEuro(band.hoog)}`;
