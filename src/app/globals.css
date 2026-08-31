@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/*
+ * Corpcase — visuele basis.
+ *
+ * Toon: een redactioneel instrument dat een dagdeel op tafel ligt bij een bestuur, niet een
+ * intern formulier. Warm papier, één accentkleur, en spaarzaam een houtskoolpaneel op de plek
+ * waar de beslissing valt.
+ *
+ * Elke kleur hieronder is doorgerekend op contrast; de waarden staan in
+ * src/lib/thema/__tests__/kleur.test.ts vastgelegd als test. De accentkleur wordt per corporatie
+ * overschreven door ThemaProvider, die de varianten afleidt uit één huisstijlkleur.
+ */
+
+@theme {
+  /* Ondergronden */
+  --color-papier: #faf7f3;
+  --color-vlak: #ffffff;
+  --color-rand: #eae4dc;
+  --color-rand-sterk: #cfc7bc;
+
+  /* Tekst — alle drie halen 4,5 of meer op papier */
+  --color-inkt: #22201e;
+  --color-inkt-zacht: #55504a;
+  --color-inkt-licht: #726a61;
+
+  /* Het donkere paneel */
+  --color-houtskool: #2b2926;
+  --color-houtskool-rand: #45413c;
+  /* Draagt de labels op het donkere paneel. #8e877e haalde daar 4,09 en was dus te licht. */
+  --color-houtskool-zacht: #9e968c;
+
+  /*
+   * Accent. Standaard koraal; per corporatie overschreven.
+   * accent is alleen voor grote vormen (cijfers, cirkels, matrixpunten) — het haalt bewust niet
+   * de norm voor kleine tekst. Daarvoor zijn accent-diep en accent-sterk.
+   */
+  --color-accent: #e8524a;
+  --color-accent-sterk: #dd261c;
+  --color-accent-diep: #c32119;
+  --color-accent-op-donker: #ec736d;
+  --color-accent-zacht: #fae6e5;
+
+  /* Semantisch */
+  --color-waarde: #1c6b52;
+  --color-waarde-zacht: #e6f2ee;
+  --color-aandacht: #8a5a13;
+  --color-aandacht-zacht: #fbf1de;
+  --color-risico: #93332f;
+  --color-risico-zacht: #fbeceb;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-kaart: 0.625rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-papier);
+  color: var(--color-inkt);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* Voorkomt dat iOS bij het focussen van een invoerveld inzoomt tijdens een sessie. */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Raakvlakken op telefoon: minimaal 44 px, ook als de inhoud kleiner is. */
+button,
+[role="button"],
+a.knop,
+label.keuze {
+  min-height: 2.75rem;
+  touch-action: manipulation;
+}
+
+/*
+ * Merkbare terugkoppeling op elk klikbaar element: een lichte lift op hover, een duik bij het
+ * indrukken. Bewust met `transform`, niet met de losse CSS-eigenschappen `translate`/`scale`:
+ * Tailwind 4 vertaalt zijn eigen `-translate-x-1/2`-achtige utility's — zoals de positionering
+ * van de matrixpunten en de decoratieve cirkels — juist naar díe losse eigenschappen (te zien in
+ * de gebouwde CSS: `.translate-x-1\/3{translate:var(--tw-translate-x) var(--tw-translate-y)}`).
+ * Was deze regel ook met `translate`/`scale` geschreven, dan zou hover op een matrixpunt zijn
+ * eigen centrering overschrijven en zichtbaar laten verspringen. `transform` raakt geen van
+ * beide, dus telt er zuiver bovenop.
+ *
+ * `hover` alleen binnen `(hover: hover)`: op een telefoon is er geen muis die weer weggaat, en
+ * zonder die grens blijft de lift na een tik "plakken" tot de volgende aanraking ergens anders.
+ */
+button:not(:disabled),
+[role="button"],
+a.knop,
+label.keuze {
+  transition: transform 200ms ease-out;
+}
+
+@media (hover: hover) {
+  button:not(:disabled):hover,
+  [role="button"]:hover,
+  a.knop:hover,
+  label.keuze:hover {
+    transform: translateY(-2px);
+  }
+}
+
+button:not(:disabled):active,
+[role="button"]:active,
+a.knop:active,
+label.keuze:active {
+  transform: scale(0.97);
+}
+
+/*
+ * Heel langzame ademhaling voor de decoratieve cirkels — zie Cirkel/RasterCirkel in
+ * decoratie.tsx. Klein genoeg om als rustig te lezen, niet als knipperend; lang genoeg (9s) dat
+ * niemand hem als een laadanimatie leest. Ook hier `transform`, om dezelfde reden als hierboven:
+ * de cirkels dragen hun positionering al in `translate`.
+ */
+@theme {
+  --animate-ademen: ademen 9s ease-in-out infinite;
+}
+
+@keyframes ademen {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.045);
+  }
+}
+
+/*
+ * Display-tekst. Playfair heeft van zichzelf ruime letterafstand bij grote formaten; die wordt
+ * hier ingehaald zodat koppen als één geheel lezen in plaats van als losse letters.
+ */
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+.cijfer {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 0.85;
+}
+
+/* Tabellen en matrixen mogen zelf scrollen; de pagina nooit horizontaal. */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .niet-printen {
+    display: none !important;
+  }
+
+  .print-blok {
+    break-inside: avoid;
+  }
+}
+
+/* Wie liever geen beweging ziet, krijgt hem ook niet. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
