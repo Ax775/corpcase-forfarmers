@@ -5,6 +5,7 @@ import {
   alleSignalen,
   domein as domeinKaart,
   domeinenVoorOrganisatie,
+  sectorVoorOrganisatie,
   usecasesVoorOrganisatie,
   rol,
   speelmodus,
@@ -34,7 +35,7 @@ export function Identificatie({
   doe: (actie: () => Promise<unknown>) => Promise<void>;
 }) {
   const [tab, setTab] = useState<"portfolio" | "bibliotheek" | "eigen">("portfolio");
-  const cora = domeinenVoorOrganisatie(state.sessie.organisatie_id);
+  const domeinen = domeinenVoorOrganisatie(state.sessie.organisatie_id);
   const modus = speelmodus(state.sessie.speelmodus);
   const beelden = alleBeelden(state);
   const gedekt = dekking(state);
@@ -52,7 +53,7 @@ export function Identificatie({
       <Dekkingsmeter
         organisatieId={state.sessie.organisatie_id}
         gedekt={gedekt.domeinenGedekt.length}
-        totaal={cora.domeinen.length}
+        totaal={domeinen.domeinen.length}
         ongedekt={gedekt.domeinenOngedekt}
       />
 
@@ -127,6 +128,8 @@ function Dekkingsmeter({
   const namen = ongedekt
     .map((id) => domeinKaart(organisatieId, id)?.naam)
     .filter(Boolean) as string[];
+  // "Alle vakgebieden zijn geraakt" leest beter dan "alle domeinen"; de naam komt uit de sector.
+  const domeinmodel = sectorVoorOrganisatie(organisatieId).domeinmodel.naam;
   return (
     <Kaart className="p-4">
       <div className="flex items-baseline justify-between gap-3">
@@ -148,7 +151,7 @@ function Dekkingsmeter({
         </p>
       ) : (
         <p className="mt-2 text-xs text-inkt-licht">
-          Alle CORA-domeinen zijn geraakt. Breder wordt het niet.
+          Alle {domeinmodel} zijn geraakt. Breder wordt het niet.
         </p>
       )}
     </Kaart>
@@ -287,11 +290,11 @@ function EigenKaart({
   const [titel, setTitel] = useState("");
   const [probleem, setProbleem] = useState("");
   const [oplossing, setOplossing] = useState("");
-  const cora = domeinenVoorOrganisatie(state.sessie.organisatie_id);
+  const domeinen = domeinenVoorOrganisatie(state.sessie.organisatie_id);
   // Begin bij het eerste primaire domein: dat is waar het werk van de organisatie zelf zit,
   // en een betere gok dan de sturende domeinen bovenaan de lijst.
   const [domeinId, setDomeinId] = useState(
-    (cora.domeinen.find((d) => d.soort === "primair") ?? cora.domeinen[0]).id,
+    (domeinen.domeinen.find((d) => d.soort === "primair") ?? domeinen.domeinen[0]).id,
   );
   const [signaalIds, setSignaalIds] = useState<string[]>([]);
 
@@ -347,7 +350,7 @@ function EigenKaart({
           value={domeinId}
           onChange={(e) => setDomeinId(e.target.value)}
         >
-          {cora.domeinen.map((d) => (
+          {domeinen.domeinen.map((d) => (
             <option key={d.id} value={d.id}>
               {d.naam}
             </option>

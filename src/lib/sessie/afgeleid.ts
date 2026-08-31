@@ -74,8 +74,8 @@ function berekeningenVan(state: SessieState): Berekeningen {
 /**
  * De hoogste netto baat in de sessie, als ijkpunt voor de financiële as van de matrix.
  *
- * Relatief in plaats van absoluut: wat voor de ene corporatie een groot bedrag is, is dat voor de
- * andere niet, en een vaste schaal zou bij DUWO alles onderin duwen.
+ * Relatief in plaats van absoluut: wat voor de ene organisatie een groot bedrag is, is dat voor de
+ * andere niet, en een vaste schaal zou bij een volume van miljoenen tonnen alles onderin duwen.
  */
 export function hoogsteNettoBaat(state: SessieState): number | null {
   let hoogste: number | null = null;
@@ -170,8 +170,8 @@ export type Dekking = {
  * Welke domeinen en klantpersona's het team heeft geraakt.
  *
  * Dit is de tegenkracht tegen het bekende patroon dat een MT alleen praat over de onderwerpen
- * waar het toch al mee bezig is. Welk domeinmodel dat is — CORA bij een corporatie, de
- * vakgebieden bij een voerproducent — komt uit het sectorprofiel.
+ * waar het toch al mee bezig is. Welk domeinmodel dat is — de vakgebieden bij een voerproducent —
+ * komt uit het sectorprofiel.
  */
 export function dekking(state: SessieState): Dekking {
   const personas = personasVoorOrganisatie(state.sessie.organisatie_id);

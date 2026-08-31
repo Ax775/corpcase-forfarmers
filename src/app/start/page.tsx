@@ -95,6 +95,11 @@ export default function StartPagina() {
           />
         </Veld>
 
+        {/*
+          Met één organisatie in de content is een keuzelijst van één optie alleen maar ruis. De
+          keuze verschijnt vanzelf zodra er een tweede bij komt.
+        */}
+        {organisaties.length > 1 ? (
         <Veld
           groep
           label="Voor welke organisatie?"
@@ -127,6 +132,7 @@ export default function StartPagina() {
             ))}
           </div>
         </Veld>
+        ) : null}
 
         <Veld
           groep

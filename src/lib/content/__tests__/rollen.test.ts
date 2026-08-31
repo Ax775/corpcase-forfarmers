@@ -22,19 +22,25 @@ describe("rol-helpers met een lege rol", () => {
 });
 
 /**
- * Twee sectoren hebben allebei een rol `bestuurder`. Zonder de organisatie erbij zou een lookup
- * stilzwijgend de verkeerde kaart teruggeven — precies de fout waarvoor de lookups sectorgebonden
- * zijn gemaakt.
+ * De lookups zijn sectorgebonden: ze nemen eerst de organisatie waarin je zit.
+ *
+ * Dat lijkt overbodig met één sector, en is het niet. Voor de hand liggende id's als `bestuurder`
+ * en `besturing` kiest een tweede sector vanzelf ook, en een lookup zonder context zou dan
+ * stilzwijgend de kaart van de verkeerde bedrijfstak teruggeven — een fout die pas halverwege een
+ * sessie opvalt. Deze tests houden die eigenschap vast zolang er nog niets is om hem tegen af te
+ * zetten.
  */
-describe("gelijknamige rollen in twee sectoren", () => {
-  it("geeft per organisatie de rol van de eigen sector", () => {
-    const namen = organisaties.map((o) => ({
-      organisatie: o.id,
-      lens: rol(o.id, "bestuurder")?.lens,
-    }));
+describe("lookups zijn gebonden aan de organisatie", () => {
+  it("vindt een rol alleen binnen de sector van die organisatie", () => {
+    const org = organisaties[0].id;
+    const eigen = rollenVoorOrganisatie(org).rollen[0];
 
-    const gevonden = namen.filter((n) => n.lens !== undefined);
-    expect(gevonden.length).toBeGreaterThan(1);
-    expect(new Set(gevonden.map((n) => n.lens)).size).toBe(gevonden.length);
+    expect(rol(org, eigen.id)).toEqual(eigen);
+    // Een rol-id uit een andere bedrijfstak hoort niets op te leveren, geen toevallige match.
+    expect(rol(org, "rol-uit-een-andere-bedrijfstak")).toBeUndefined();
+  });
+
+  it("weigert een onbekende organisatie in plaats van stil undefined te geven", () => {
+    expect(() => rol("bestaat-niet", "bestuurder")).toThrow(/Onbekende organisatie/);
   });
 });

@@ -4,9 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
  * Maakt schermafdrukken van de belangrijkste schermen, om ze met het oog te kunnen beoordelen.
  * Geen assertions op vormgeving: die zouden bij elke tekstwijziging breken.
  *
- * De opname draait op de ForFarmers-sessie. Dat is bewust: het is meteen een controle dat het
- * hele spel met een tweede sector werkt, inclusief de klantlens die dan "Veehouder" moet heten
- * en het accent dat uit de huisstijlkleur van die organisatie wordt afgeleid.
+ * De opname draait op een volledige ForFarmers-sessie, van lobby tot rapport en beamerscherm.
  *
  * Wel wordt er telkens gewacht tot de staat echt is doorgekomen. Zonder dat legt de opname een
  * kleurovergang of een nog niet opgeslagen waarde vast, en beoordeel je een halve render als
@@ -29,7 +27,6 @@ test("schermafdrukken van een gevulde sessie", async ({ browser }) => {
   const speler = await (await browser.newContext()).newPage();
 
   await facilitator.goto("/start");
-  await facilitator.getByRole("radio", { name: /ForFarmers/ }).check();
   await facilitator.getByLabel("Jouw naam").fill("Guido");
   await facilitator.getByRole("button", { name: "Sessie starten" }).click();
   await facilitator.waitForURL(/\/sessie\/[0-9a-f-]+\/beheer$/);

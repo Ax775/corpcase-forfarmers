@@ -3,17 +3,17 @@ import { bouwOrganisatieRegister } from "../index";
 
 /**
  * Bewijst dat de contentlaag echt meerdere organisaties naast elkaar aankan, met fictieve
- * bronnen — niet met een tweede, verzonnen echte corporatie in content/. Vóór deze functie was
+ * bronnen — niet met een tweede, verzonnen organisatie in content/. Vóór deze functie was
  * er precies één harde import per bestand; deze test moet omvallen als dat ooit weer sluipt.
  */
 
 function organisatie(id: string, accent: string) {
   return {
     id,
-    naam: `Testcorporatie ${id}`,
-    type: "Woningcorporatie",
-    sector: "woningcorporatie",
-    pitch: "Testfixture, geen echte corporatie.",
+    naam: `Testorganisatie ${id}`,
+    type: "Voerproducent",
+    sector: "diervoeding",
+    pitch: "Testfixture, geen echte organisatie.",
     thema: { accent, bron: "test", geverifieerd: false },
     jaarverslag: { jaar: 2024, titel: "Testjaarverslag", bron: "test", geverifieerd: false },
     werkgebied: ["Teststad"],

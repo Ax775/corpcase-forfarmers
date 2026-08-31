@@ -5,7 +5,7 @@ import {
 } from "@/lib/content/schemas";
 
 /**
- * Bouwt de drie contentbestanden voor een nieuwe corporatie uit het formulier van de
+ * Bouwt de drie contentbestanden voor een nieuwe organisatie uit het formulier van de
  * onboardingwizard, en valideert ze tegen dezelfde zod-schema's als `npm run content:check`.
  *
  * Genereert bestanden, schrijft niets weg: content leeft in `content/` en wordt met de app

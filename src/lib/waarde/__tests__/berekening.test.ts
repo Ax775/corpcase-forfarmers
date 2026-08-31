@@ -12,12 +12,13 @@ import {
 import { berekeningenVoorSector, waardemodelVoorSector } from "@/lib/content";
 
 /**
- * De rekenregels komen uit het sectorprofiel. Deze tests draaien op de woningcorporatie-sector,
- * met dezelfde verwachte uitkomsten als toen de formules nog in TypeScript stonden: dat is precies
- * de regressie die bewijst dat de omzetting naar uitvoerbare formules niets veranderd heeft.
+ * De rekenregels komen uit het sectorprofiel: de `formule` in drivers.json wordt uitgerekend, niet
+ * nagebouwd in TypeScript. Elke verwachte uitkomst hieronder is met de hand nagerekend, zodat deze
+ * tests de formules toetsen en niet alleen zichzelf.
  */
-const rekenregels = berekeningenVoorSector("woningcorporatie");
-const waardeModel = waardemodelVoorSector("woningcorporatie");
+const SECTOR = "diervoeding";
+const rekenregels = berekeningenVoorSector(SECTOR);
+const waardeModel = waardemodelVoorSector(SECTOR);
 
 describe("berekenDriver", () => {
   it("rekent een tijdsbesparing door", () => {
@@ -31,19 +32,49 @@ describe("berekenDriver", () => {
     if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(15000);
   });
 
-  it("rekent leegstandsreductie door", () => {
-    // 18.000 mutaties * 10 dagen * 10% * 15 euro = 270.000 euro
+  it("rekent formuleringsmarge door — de grootste knop bij miljoenen tonnen", () => {
+    // 10,6 mln ton * 40% van het volume * € 0,60 per ton = € 2.544.000
     const uitkomst = berekenDriver({
-      type: "leegstandsreductie",
+      type: "formuleringsmarge",
+      waarden: { volume_ton: 10600000, aandeel_volume_pct: 40, besparing_per_ton: 0.6 },
+    }, rekenregels);
+    expect(uitkomst.status).toBe("berekend");
+    if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(2544000);
+  });
+
+  it("rekent transportbesparing door", () => {
+    // 380.000 ritten * € 250 * 6% = € 5.700.000
+    const uitkomst = berekenDriver({
+      type: "transportbesparing",
+      waarden: { ritten_per_jaar: 380000, kosten_per_rit: 250, reductie_pct: 6 },
+    }, rekenregels);
+    expect(uitkomst.status).toBe("berekend");
+    if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(5700000);
+  });
+
+  it("rekent afkeurreductie door, met vier velden en twee percentages", () => {
+    // 10,6 mln ton * 0,5% afkeur * € 180 per ton * 15% voorkomen = € 1.431.000
+    const uitkomst = berekenDriver({
+      type: "afkeur_reductie",
+      waarden: { productie_ton: 10600000, afkeur_pct: 0.5, kosten_per_ton: 180, reductie_pct: 15 },
+    }, rekenregels);
+    expect(uitkomst.status).toBe("berekend");
+    if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(1431000);
+  });
+
+  it("rekent volumebehoud door op marge, niet op omzet", () => {
+    // 900 klanten * 372 ton * € 58 marge * 12% behoud = € 2.330.208
+    const uitkomst = berekenDriver({
+      type: "volumebehoud",
       waarden: {
-        mutaties_per_jaar: 18000,
-        leegstandsdagen_per_mutatie: 10,
-        reductie_pct: 10,
-        dagopbrengst: 15,
+        klanten_met_verloopsignaal: 900,
+        volume_per_klant_ton: 372,
+        marge_per_ton: 58,
+        behoud_pct: 12,
       },
     }, rekenregels);
     expect(uitkomst.status).toBe("berekend");
-    if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(270000);
+    if (uitkomst.status === "berekend") expect(uitkomst.jaarlijkse_baat).toBeCloseTo(2330208);
   });
 
   it("meldt een ontbrekend veld in plaats van er nul van te maken", () => {
@@ -57,12 +88,12 @@ describe("berekenDriver", () => {
 
   it("behandelt NaN en Infinity als ontbrekend", () => {
     const uitkomst = berekenDriver({
-      type: "dervingsreductie",
-      waarden: { huidige_post_per_jaar: Number.NaN, reductie_pct: Number.POSITIVE_INFINITY },
+      type: "extra_opbrengst",
+      waarden: { extra_volume_ton: Number.NaN, marge_per_ton: Number.POSITIVE_INFINITY },
     }, rekenregels);
     expect(uitkomst.status).toBe("onbekend");
     if (uitkomst.status === "onbekend") {
-      expect(uitkomst.ontbrekende_velden).toEqual(["huidige_post_per_jaar", "reductie_pct"]);
+      expect(uitkomst.ontbrekende_velden).toEqual(["extra_volume_ton", "marge_per_ton"]);
     }
   });
 });
@@ -93,12 +124,13 @@ describe("berekenBusinessCase", () => {
           type: "tijdsbesparing",
           waarden: { volume_per_jaar: 10000, minuten_per_geval: 6, reductie_pct: 25, uurtarief: 60 },
         },
-        { type: "dervingsreductie", waarden: { huidige_post_per_jaar: 100000, reductie_pct: 10 } },
+        { type: "extra_opbrengst", waarden: { extra_volume_ton: 200, marge_per_ton: 50 } },
       ],
       kosten,
       rekenregels,
     );
     expect(bc.volledig).toBe(true);
+    // 15.000 uit tijdsbesparing + 10.000 uit extra volume = 25.000 bruto, min 20.000 vaste kosten
     expect(bc.bruto_baat?.verwacht).toBeCloseTo(25000);
     expect(bc.netto_baat?.verwacht).toBeCloseTo(5000);
     expect(bc.netto_baat!.laag).toBeLessThan(bc.netto_baat!.verwacht);
@@ -112,13 +144,13 @@ describe("berekenBusinessCase", () => {
           type: "tijdsbesparing",
           waarden: { volume_per_jaar: 10000, minuten_per_geval: 6, reductie_pct: 25, uurtarief: 60 },
         },
-        { type: "dervingsreductie", waarden: { huidige_post_per_jaar: 100000 } },
+        { type: "extra_opbrengst", waarden: { extra_volume_ton: 200 } },
       ],
       kosten,
       rekenregels,
     );
     expect(bc.volledig).toBe(false);
-    expect(bc.ontbrekende_velden).toContain("dervingsreductie.reductie_pct");
+    expect(bc.ontbrekende_velden).toContain("extra_opbrengst.marge_per_ton");
     expect(bc.bruto_baat?.verwacht).toBeCloseTo(15000);
   });
 
@@ -131,7 +163,7 @@ describe("berekenBusinessCase", () => {
 
   it("berekent geen terugverdientijd bij een negatieve netto baat", () => {
     const bc = berekenBusinessCase(
-      [{ type: "dervingsreductie", waarden: { huidige_post_per_jaar: 50000, reductie_pct: 10 } }],
+      [{ type: "extra_opbrengst", waarden: { extra_volume_ton: 100, marge_per_ton: 50 } }],
       kosten,
       rekenregels,
     );
@@ -141,7 +173,7 @@ describe("berekenBusinessCase", () => {
 
   it("rekent de terugverdientijd in maanden", () => {
     const bc = berekenBusinessCase(
-      [{ type: "extra_opbrengst", waarden: { extra_eenheden: 100, jaaropbrengst_per_eenheid: 1200 } }],
+      [{ type: "extra_opbrengst", waarden: { extra_volume_ton: 2400, marge_per_ton: 50 } }],
       { eenmalig: 100000, jaarlijks: 20000, capaciteit: 2 },
       rekenregels,
     );
@@ -178,7 +210,7 @@ describe("positie en kwadrant", () => {
     const positie = bepaalPositie({
       businessCase: null,
       hoogsteNettoBaatInSessie: null,
-      kwalitatief: { huurderswaarde: 5, maatschappelijk: 5, compliance: 4 },
+      kwalitatief: { klantwaarde: 5, duurzaamheid: 5, compliance: 4 },
       haalbaarheid: { databeschikbaarheid: 4, technische_complexiteit: 4 },
     });
     expect(positie).not.toBeNull();
@@ -222,9 +254,11 @@ describe("de formule in de content is de implementatie", () => {
     expect(Object.keys(rekenregels).sort()).toEqual(contentIds);
   });
 
-  it("elke sector brengt zijn eigen drivertypes mee", () => {
-    const voer = Object.keys(berekeningenVoorSector("diervoeding"));
-    expect(voer).toContain("formuleringsmarge");
-    expect(voer).not.toContain("leegstandsreductie");
+  it("de drivertypes zijn die van deze sector, niet een vaste lijst in de code", () => {
+    const ids = Object.keys(rekenregels);
+    expect(ids).toContain("formuleringsmarge");
+    expect(ids).toContain("transportbesparing");
+    // Zou een tweede sector erbij komen, dan brengt die zijn eigen lijst mee.
+    expect(ids.sort()).toEqual(waardeModel.drivertypes.map((d) => d.id).sort());
   });
 });

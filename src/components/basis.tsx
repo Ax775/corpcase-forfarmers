@@ -93,8 +93,8 @@ export function Veld({
    *
    * Een `<label>` mag geen ander `<label>` bevatten. Bij geneste labels raakt de koppeling tussen
    * een keuzerondje en zijn eigen tekst kwijt: de browser koppelt elk rondje aan het buitenste
-   * label, en dan hoort iemand met een schermlezer bij elke optie "Voor welke organisatie?" in
-   * plaats van "ForFarmers" of "DUWO". Een groep krijgt daarom een `role="group"` met een eigen
+   * label, en dan hoort iemand met een schermlezer bij elke optie "Hoeveel tijd heb je?" in
+   * plaats van "Kort" of "Halve dag". Een groep krijgt daarom een `role="group"` met een eigen
    * naam, zodat elke optie zijn eigen label houdt.
    */
   groep?: boolean;

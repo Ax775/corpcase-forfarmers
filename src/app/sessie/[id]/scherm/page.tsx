@@ -5,6 +5,7 @@ import { FASE_LABELS } from "@/lib/supabase/types";
 import {
   domein as domeinKaart,
   domeinenVoorOrganisatie,
+  klantlensVoorOrganisatie,
   organisatie,
   speelmodus,
 } from "@/lib/content";
@@ -160,7 +161,8 @@ export default function SchermPagina() {
             <p className="mt-2 text-sm text-inkt-zacht">
               {gedekt.domeinenGedekt.length} van {domeinenVoorOrganisatie(state.sessie.organisatie_id).domeinen.length} domeinen ·{" "}
               {gedekt.personasGeraakt.length} van{" "}
-              {gedekt.personasGeraakt.length + gedekt.personasGemist.length} huurderstypen
+              {gedekt.personasGeraakt.length + gedekt.personasGemist.length}{" "}
+              {klantlensVoorOrganisatie(state.sessie.organisatie_id).meervoud}
             </p>
             {gedekt.domeinenOngedekt.length > 0 ? (
               <p className="mt-1 text-sm leading-relaxed text-inkt-zacht">

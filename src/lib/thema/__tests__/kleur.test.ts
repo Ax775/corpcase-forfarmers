@@ -119,7 +119,7 @@ describe("elke organisatie in content/", () => {
 
 describe("de zachte tint draagt tekst", () => {
   /**
-   * De zachte tint wordt per corporatie afgeleid, dus dit moet per organisatie getoetst worden
+   * De zachte tint wordt per organisatie afgeleid, dus dit moet per organisatie getoetst worden
    * en niet op één vaste waarde. Op die tint valt tekst wanneer een cirkel achter een tekstblok
    * ligt; inkt-licht haalt er net niet genoeg, vandaar dat daar inkt-zacht wordt gebruikt.
    */

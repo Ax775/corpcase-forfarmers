@@ -31,7 +31,7 @@ export default function Home() {
 
         <p className="mt-5 max-w-xl text-base leading-relaxed text-inkt-zacht">
           Een werksessie waarin bestuur en management door de ogen van het eigen jaarverslag, de
-          eigen huurders en de eigen uitdagingen tot use cases komen — en die vervolgens waarderen,
+          eigen klanten en de eigen uitdagingen tot use cases komen — en die vervolgens waarderen,
           prioriteren en op een roadmap zetten.
         </p>
 
@@ -72,12 +72,12 @@ export default function Home() {
         <section className="mt-14 flex items-start gap-5 border-t border-rand pt-8">
           <RasterCirkel formaat={84} className="hidden shrink-0 sm:block" />
           <div>
-            <h2 className="display text-xl text-inkt">Voorbeeldcorporatie: {org.naam}</h2>
+            <h2 className="display text-xl text-inkt">{org.naam}</h2>
             <p className="mt-2 text-sm leading-relaxed text-inkt-zacht">{org.pitch}</p>
             <p className="mt-3 text-xs leading-relaxed text-inkt-licht">
-              De cijfers in deze demo komen uit publieke bronnen en zijn nog niet geverifieerd tegen
-              het originele jaarverslag. Elk cijfer toont zijn bron; zie{" "}
-              <code>content/BRONNEN.md</code>.
+              De cijfers komen uit publieke bronnen. Wat tegen de primaire bron is gecontroleerd
+              staat als geverifieerd gemarkeerd; de rekenkundige uitgangspunten zijn expliciet
+              aannames. Elk cijfer toont zijn bron; zie <code>content/BRONNEN.md</code>.
             </p>
           </div>
         </section>

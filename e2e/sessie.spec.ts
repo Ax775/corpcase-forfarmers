@@ -25,7 +25,7 @@ async function joinMet(page: Page, code: string, naam: string, rol: string) {
 
 test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ browser }) => {
   const facilitator = await nieuweSpeler(browser);
-  const wonen = await nieuweSpeler(browser);
+  const commercie = await nieuweSpeler(browser);
   const it = await nieuweSpeler(browser);
 
   // --- Sessie starten -------------------------------------------------------
@@ -43,7 +43,7 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   expect(code).toHaveLength(6);
 
   // --- Twee spelers doen mee ------------------------------------------------
-  await joinMet(wonen, code, "Marieke", "Manager Wonen / Klant");
+  await joinMet(commercie, code, "Marieke", "Commercieel directeur");
   await joinMet(it, code, "Peter", "Informatiemanager / IT");
 
   // De facilitator ziet ze allebei binnenkomen zonder de pagina te verversen.
@@ -52,27 +52,29 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
 
   // --- Privé-rolopdracht lekt niet -----------------------------------------
   // De opdracht zit achter het rolpaneel, dat zelf achter het avatarknopje in de balk zit.
-  await wonen.getByRole("button", { name: "Toon jouw rol en opdracht" }).click();
-  await wonen.getByRole("button", { name: /Toon mijn opdracht/ }).click();
-  const opdrachtVanMarieke = await wonen
+  await commercie.getByRole("button", { name: "Toon jouw rol en opdracht" }).click();
+  await commercie.getByRole("button", { name: /Toon mijn opdracht/ }).click();
+  const opdrachtVanMarieke = await commercie
     .getByText(/Zorg dat minstens twee use cases/)
     .innerText();
-  expect(opdrachtVanMarieke).toContain("bewoner");
+  expect(opdrachtVanMarieke).toContain("veehouder");
   // Peter ziet zijn eigen opdracht, niet die van Marieke.
   await it.getByRole("button", { name: "Toon jouw rol en opdracht" }).click();
   await it.getByRole("button", { name: /Toon mijn opdracht/ }).click();
-  await expect(it.getByText(/geen enkele use case het portfolio in gaat zonder benoemde databron/)).toBeVisible();
+  await expect(
+    it.getByText(/klant- of bedrijfsgegevens gebruikt een expliciet vastgelegde aanname/),
+  ).toBeVisible();
   await expect(it.getByText(/Zorg dat minstens twee use cases/)).toHaveCount(0);
 
   // --- Fase 1: verkennen ----------------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Verkennen" }).click();
 
-  await expect(wonen.getByRole("heading", { name: "Wat herken je?" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Wat herken je?" })).toBeVisible();
   // De kaarten staan per lens gefilterd, zoals een deelnemer ze ook doorloopt.
-  await wonen.getByRole("button", { name: "Jaarverslag", exact: true }).click();
-  await wonen.getByRole("button", { name: /Circa 18.000 verhuizingen/ }).click();
-  await wonen.getByRole("button", { name: "Huurder", exact: true }).click();
-  await wonen.getByRole("button", { name: /Mateo — internationale student/ }).click();
+  await commercie.getByRole("button", { name: "Jaarverslag", exact: true }).click();
+  await commercie.getByRole("button", { name: /Recordjaar, maar autonoom bijna vlak/ }).click();
+  await commercie.getByRole("button", { name: "Veehouder", exact: true }).click();
+  await commercie.getByRole("button", { name: /Gerrit — melkveehouder/ }).click();
 
   await it.getByRole("button", { name: "Uitdaging", exact: true }).click();
   await it.getByRole("button", { name: /Data staat in silo's/ }).click();
@@ -81,31 +83,31 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   // punt van de gezamenlijke verkenning: je ziet waar jullie beeld samenvalt.
   await it.getByRole("button", { name: "Jaarverslag", exact: true }).click();
   await expect(
-    it.getByRole("button", { name: /Circa 18\.000 verhuizingen/ }),
+    it.getByRole("button", { name: /Recordjaar, maar autonoom bijna vlak/ }),
   ).toContainText(/collega/, { timeout: 20_000 });
 
   // --- Fase 2: identificatie ------------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Identificatie" }).click();
-  await expect(wonen.getByRole("heading", { name: "Welke use cases volgen hieruit?" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Welke use cases volgen hieruit?" })).toBeVisible();
 
-  await wonen.getByRole("button", { name: "Bibliotheek" }).click();
-  const eersteKaart = wonen.getByRole("button", { name: "Op tafel leggen" }).first();
+  await commercie.getByRole("button", { name: "Bibliotheek" }).click();
+  const eersteKaart = commercie.getByRole("button", { name: "Op tafel leggen" }).first();
   await eersteKaart.click();
 
-  await wonen.getByRole("button", { name: /Op tafel \(/ }).click();
-  await expect(wonen.getByRole("button", { name: "Openen en meehelpen" }).first()).toBeVisible();
+  await commercie.getByRole("button", { name: /Op tafel \(/ }).click();
+  await expect(commercie.getByRole("button", { name: "Openen en meehelpen" }).first()).toBeVisible();
 
   // Peter ziet de use case van Marieke verschijnen.
   await expect(it.getByRole("button", { name: /Op tafel \(1\)/ })).toBeVisible({ timeout: 20_000 });
 
   // --- Elkaar helpen: hulpvraag en aanvulling ------------------------------
-  await wonen.getByRole("button", { name: "Openen en meehelpen" }).first().click();
-  await wonen.getByRole("button", { name: "Hulpvraag" }).click();
-  await wonen
+  await commercie.getByRole("button", { name: "Openen en meehelpen" }).first().click();
+  await commercie.getByRole("button", { name: "Hulpvraag" }).click();
+  await commercie
     .getByPlaceholder(/Wat weet je niet/)
     .fill("Ik weet niet hoeveel meldingen dit per jaar zijn.");
-  await wonen.getByRole("button", { name: "Toevoegen" }).click();
-  await expect(wonen.getByText("Ik weet niet hoeveel meldingen dit per jaar zijn.")).toBeVisible();
+  await commercie.getByRole("button", { name: "Toevoegen" }).click();
+  await expect(commercie.getByText("Ik weet niet hoeveel meldingen dit per jaar zijn.")).toBeVisible();
 
   // Peter ziet de hulpvraag van Marieke en beantwoordt hem.
   await it.getByRole("button", { name: /Op tafel \(/ }).click();
@@ -118,87 +120,89 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   await it.getByRole("button", { name: "Toevoegen" }).click();
 
   // Marieke ziet de aanvulling van Peter binnenkomen.
-  await expect(wonen.getByText("Ongeveer 25.000 per jaar uit het ERP.")).toBeVisible({
+  await expect(commercie.getByText("Ongeveer 25.000 per jaar uit het ERP.")).toBeVisible({
     timeout: 20_000,
   });
 
   // --- Fase 3: waardebepaling ----------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Waardebepaling" }).click();
-  await expect(wonen.getByRole("heading", { name: "Wat levert het op?" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Wat levert het op?" })).toBeVisible();
 
-  await wonen.getByRole("button", { name: "Waarderen" }).first().click();
-  await wonen.getByRole("button", { name: "Doorrekenen" }).click();
-  await wonen.getByRole("button", { name: /Begin met de ordegroottes/ }).click();
+  await commercie.getByRole("button", { name: "Waarderen" }).first().click();
+  await commercie.getByRole("button", { name: "Doorrekenen" }).click();
+  await commercie.getByRole("button", { name: /Begin met de ordegroottes/ }).click();
 
   // Zodra de drivers gevuld zijn, staat er een bandbreedte tussen twee bedragen en niet één
   // hard getal. Dat is de belofte van het waardemodel, dus die toetsen we expliciet.
-  await expect(wonen.getByText(/€[\d.\s]+ – €[\d.\s]+/).first()).toBeVisible({
+  await expect(commercie.getByText(/€[\d.\s]+ – €[\d.\s]+/).first()).toBeVisible({
     timeout: 20_000,
   });
-  await expect(wonen.getByText("netto per jaar")).toBeVisible();
+  await expect(commercie.getByText("netto per jaar")).toBeVisible();
 
   // De niet-financiële waarde staat er los naast en wordt apart gescoord. Marieke zet de
-  // huurderswaarde hoog; dat telt straks mee bij de onthulling van haar rolopdracht.
-  const huurderswaardeBlok = wonen
-    .getByText("Waarde voor de huurder", { exact: true })
+  // klantwaarde hoog; dat telt straks mee bij de onthulling van haar rolopdracht.
+  const klantwaardeBlok = commercie
+    .getByText("Waarde voor de veehouder", { exact: true })
     .locator("xpath=..");
-  await expect(huurderswaardeBlok).toBeVisible();
-  await huurderswaardeBlok.getByRole("button", { name: "Score 5" }).click();
+  await expect(klantwaardeBlok).toBeVisible();
+  await klantwaardeBlok.getByRole("button", { name: "Score 5" }).click();
 
   // Ook de haalbaarheid krijgt een oordeel, anders komt de use case niet op de matrix.
-  const haalbaarheidBlok = wonen
+  const haalbaarheidBlok = commercie
     .getByText("Databeschikbaarheid", { exact: true })
     .locator("xpath=..");
   await haalbaarheidBlok.getByRole("button", { name: "Score 4" }).click();
 
   // --- Fase 4: prioritering -------------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Prioritering" }).click();
-  await expect(wonen.getByRole("heading", { name: "Wat doen we wél?" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Wat doen we wél?" })).toBeVisible();
 
-  await wonen.getByRole("button", { name: "Opnemen" }).first().click();
-  await expect(wonen.getByRole("button", { name: "In het portfolio" })).toBeVisible();
+  await commercie.getByRole("button", { name: "Opnemen" }).first().click();
+  await expect(commercie.getByRole("button", { name: "In het portfolio" })).toBeVisible();
 
   // Het toegekende budget verschijnt in de balk die laat zien wat er nog in past.
-  await expect(wonen.getByText(/van .*€/).first()).toBeVisible();
+  await expect(commercie.getByText(/van .*€/).first()).toBeVisible();
 
   // Een realiteitscheck vraagt om een besluit, en dat besluit wordt vastgelegd.
-  await wonen.getByRole("button", { name: /We handhaven/ }).first().click();
-  await expect(wonen.getByText("gehandhaafd").first()).toBeVisible({ timeout: 20_000 });
+  await commercie.getByRole("button", { name: /We handhaven/ }).first().click();
+  await expect(commercie.getByText("gehandhaafd").first()).toBeVisible({ timeout: 20_000 });
 
   // --- Fase 5: roadmap ------------------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Roadmap" }).click();
-  await expect(wonen.getByRole("heading", { name: "Wanneer doen we wat?" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Wanneer doen we wat?" })).toBeVisible();
 
-  await wonen.getByRole("button", { name: "Nu", exact: true }).first().click();
-  const randvoorwaarden = wonen
+  await commercie.getByRole("button", { name: "Nu", exact: true }).first().click();
+  const randvoorwaarden = commercie
     .getByRole("textbox", { name: /Wat moet er eerst geregeld zijn/ })
     .first();
   await expect(randvoorwaarden).toBeVisible();
-  await randvoorwaarden.fill("Koppelvlak op VERA en een besluit over het gebruik van huurdersdata.");
+  await randvoorwaarden.fill("Koppelvlak op het ERP en een besluit over het gebruik van klantdata.");
   await randvoorwaarden.blur();
 
   // --- Opbrengst en rapport -------------------------------------------------
   await facilitator.getByRole("button", { name: "Volgende fase: Opbrengst" }).click();
-  await expect(wonen.getByRole("heading", { name: "Wat er ligt" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Wat er ligt" })).toBeVisible();
 
   // Pas nu zijn de rolopdrachten van iedereen zichtbaar.
-  await expect(wonen.getByText(/geen enkele use case het portfolio in gaat zonder benoemde databron/)).toBeVisible();
-
-  await wonen.goto(`/sessie/${sessieId}/rapport`);
-  await expect(wonen.getByRole("heading", { name: "Het portfolio" })).toBeVisible();
-  await expect(wonen.getByRole("heading", { name: "Aannames en onzekerheden" })).toBeVisible();
   await expect(
-    wonen.getByText(/komen uit publieke bronnen en zijn niet geverifieerd/),
+    commercie.getByText(/klant- of bedrijfsgegevens gebruikt een expliciet vastgelegde aanname/),
+  ).toBeVisible();
+
+  await commercie.goto(`/sessie/${sessieId}/rapport`);
+  await expect(commercie.getByRole("heading", { name: "Het portfolio" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Aannames en onzekerheden" })).toBeVisible();
+  await expect(
+    commercie.getByText(/komen uit publieke bronnen en zijn niet geverifieerd/),
   ).toBeVisible();
   // De randvoorwaarde die Marieke invulde staat bij het roadmap-item in het rapport.
-  await expect(wonen.getByText(/Eerst nodig: Koppelvlak op VERA/)).toBeVisible();
+  await expect(commercie.getByText(/Eerst nodig: Koppelvlak op het ERP/)).toBeVisible();
   // En de kanttekening dat een doorrekening op aannames rust, ontbreekt niet.
-  await expect(wonen.getByRole("heading", { name: "Realiteitschecks" })).toBeVisible();
+  await expect(commercie.getByRole("heading", { name: "Realiteitschecks" })).toBeVisible();
 
   // Het rapport gaat ook als spreadsheet mee, voor wie verder wil rekenen dan de pagina zelf.
   const [download] = await Promise.all([
-    wonen.waitForEvent("download"),
-    wonen.getByRole("button", { name: "CSV downloaden" }).click(),
+    commercie.waitForEvent("download"),
+    commercie.getByRole("button", { name: "CSV downloaden" }).click(),
   ]);
   expect(download.suggestedFilename()).toMatch(/\.csv$/);
   const csvPad = await download.path();
@@ -207,7 +211,7 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   expect(csvInhoud).toContain("Business cases");
   expect(csvInhoud).toContain("Roadmap");
   // De randvoorwaarde die Marieke invulde staat ook in de export.
-  expect(csvInhoud).toContain("Koppelvlak op VERA");
+  expect(csvInhoud).toContain("Koppelvlak op het ERP");
 
   // Het beamerscherm van de facilitator toont dezelfde sessie.
   await facilitator.goto(`/sessie/${sessieId}/scherm`);
@@ -228,7 +232,7 @@ test("de facilitator logt op een ander apparaat opnieuw in met de beheercode", a
   const sessieId = facilitator.url().match(/\/sessie\/([0-9a-f-]+)\//)![1];
   const code = (await facilitator.getByLabel(/Sessiecode/).innerText()).trim();
 
-  await joinMet(speler, code, "Marieke", "Manager Wonen / Klant");
+  await joinMet(speler, code, "Marieke", "Commercieel directeur");
 
   // Een gewone deelnemer die op het beheerscherm meekijkt, krijgt de beheercode nooit te zien —
   // dat veld reist alleen naar wie zich al als facilitator bewees.
@@ -267,7 +271,7 @@ test("een speler navigeert zelf vooruit en krijgt een waarschuwing dat hij voorl
   await facilitator.waitForURL(/\/sessie\/[0-9a-f-]+\/beheer$/);
   const code = (await facilitator.getByLabel(/Sessiecode/).innerText()).trim();
 
-  await joinMet(speler, code, "Marieke", "Manager Wonen / Klant");
+  await joinMet(speler, code, "Marieke", "Commercieel directeur");
   await expect(speler.getByRole("heading", { name: "Klaar om te beginnen" })).toBeVisible();
 
   // De facilitator zet de groep pas op Verkennen; de waarschuwing bestaat nog niet.

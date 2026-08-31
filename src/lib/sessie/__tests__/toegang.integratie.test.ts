@@ -56,7 +56,7 @@ const opruimen: Toegang[] = [];
 async function nieuweSessie(titel: string): Promise<Toegang> {
   const toegang = await maakSessie({
     titel,
-    organisatieId: "duwo",
+    organisatieId: "forfarmers",
     speelmodusId: "kort",
     facilitatorNaam: "Testfacilitator",
     facilitatorRolId: "bestuurder",
@@ -84,8 +84,8 @@ describe.skipIf(!heeftOmgeving)("toegangsmodel", () => {
     expect(sessie.fase).toBe("lobby");
     expect(deelnemer.is_facilitator).toBe(true);
     // De facilitator krijgt net als iedereen een privé-rolopdracht.
-    expect(deelnemer.rolopdracht_id).toBe("ro-bestuurder");
-    // De uitgangspunten van DUWO zijn overgenomen, zodat de business cases kunnen rekenen.
+    expect(deelnemer.rolopdracht_id).toBe("vro-bestuurder");
+    // De uitgangspunten van de organisatie zijn overgenomen, zodat business cases kunnen rekenen.
     expect(sessie.uitgangspunten.uurtarief_intern).toBe(65);
   });
 
@@ -114,8 +114,8 @@ describe.skipIf(!heeftOmgeving)("toegangsmodel", () => {
     const eerste = await nieuweSessie("Sessie met gedeeld werk");
     const tweede = await neemDeel({
       code: eerste.sessie.join_code,
-      naam: "Manager Wonen",
-      rolId: "manager-wonen",
+      naam: "Commercieel directeur",
+      rolId: "commercieel-directeur",
     });
 
     await voegUsecaseToe(tweede.identiteit, {

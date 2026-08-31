@@ -31,7 +31,7 @@
   --color-houtskool-zacht: #9e968c;
 
   /*
-   * Accent. Standaard koraal; per corporatie overschreven.
+   * Accent. Standaardwaarden; per organisatie overschreven vanuit het thema.
    * accent is alleen voor grote vormen (cijfers, cirkels, matrixpunten) — het haalt bewust niet
    * de norm voor kleine tekst. Daarvoor zijn accent-diep en accent-sterk.
    */

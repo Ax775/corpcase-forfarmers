@@ -5,8 +5,8 @@ import "./globals.css";
 
 /**
  * De lettertypen worden bij de build opgehaald en vanaf het eigen domein geserveerd. Er gaat dus
- * geen bezoekersdata naar Google — voor een corporatie die in deze game zelf over privacy bij
- * huurdersdata praat, is dat geen detail.
+ * geen bezoekersdata naar Google — voor een organisatie die in deze game zelf over privacy bij
+ * klantdata praat, is dat geen detail.
  */
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +24,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Corpcase",
   description:
-    "Serious business game voor use-case identificatie, waardebepaling, prioritering en roadmap in de corporatiesector.",
+    "Serious business game voor use-case identificatie, waardebepaling, prioritering en roadmap in de diervoedersector.",
 };
 
 export const viewport: Viewport = {

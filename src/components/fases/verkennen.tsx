@@ -16,8 +16,8 @@ import { Etiket, Hoofdregel, Kaart, Knop, Kop, Melding } from "@/components/basi
 const PER_PORTIE = 12;
 
 /**
- * Het label van de klantlens verschilt per sector — een corporatie heeft huurders, een
- * voerproducent veehouders — en komt daarom uit het sectorprofiel in plaats van uit deze tabel.
+ * Het label van de klantlens verschilt per sector — een voerproducent heeft veehouders — en komt
+ * daarom uit het sectorprofiel in plaats van uit deze tabel.
  */
 const lensLabels = (klant: string): Record<SignaalKaart["lens"], string> => ({
   jaarverslag: "Jaarverslag",

@@ -153,7 +153,7 @@ export default function OrganisatieToevoegenPagina() {
   const resultaat = valideerFormulier(organisatieJson, jaarverslagJson, personasJson);
 
   const bestaandePersonaConcepten = [...new Set(allePersonaSignalen.map((k) => k.id))].sort();
-  // De klantlens heet per sector anders: huurder bij een corporatie, veehouder bij een voerproducent.
+  // De klantlens heet per sector anders; bij diervoeding is dat de veehouder.
   const lens = klantlens(form.sector);
 
   return (
@@ -204,7 +204,7 @@ export default function OrganisatieToevoegenPagina() {
                 className={invoerStijl}
                 value={form.type}
                 onChange={(e) => werkForm({ type: e.target.value })}
-                placeholder="Woningcorporatie"
+                placeholder="Producent van complete voeroplossingen"
               />
             </Veld>
 

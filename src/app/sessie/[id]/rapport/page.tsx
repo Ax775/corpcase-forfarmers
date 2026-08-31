@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import {
   alleSignalen,
   domein as domeinKaart,
+  klantlensVoorOrganisatie,
   organisatie,
   realiteitschecksVoorOrganisatie,
   rolNaam,
@@ -419,8 +420,10 @@ export default function RapportPagina() {
 
           {gedekt.personasGemist.length > 0 ? (
             <li className="text-sm leading-relaxed text-inkt-zacht">
-              {gedekt.personasGemist.length} van de huurderstypen komen in geen enkele use case
-              terug. Dat kan een bewuste keuze zijn, maar het is er geen die is uitgesproken.
+              {gedekt.personasGemist.length} van de{" "}
+              {klantlensVoorOrganisatie(state.sessie.organisatie_id).meervoud} komen in geen enkele
+              use case terug. Dat kan een bewuste keuze zijn, maar het is er geen die is
+              uitgesproken.
             </li>
           ) : null}
         </ul>
@@ -448,10 +451,9 @@ export default function RapportPagina() {
 
       <footer className="mt-10 border-t border-rand pt-5">
         <p className="text-xs leading-relaxed text-inkt-licht">
-          Samengesteld tijdens een werksessie met Corpcase. De use-casebibliotheek en de
-          domeinindeling zijn gebaseerd op de CORA-referentiearchitectuur en de VERA-standaard van
-          de corporatiesector. De verantwoording van elk cijfer staat in de bronnenlijst van de
-          applicatie.
+          Samengesteld tijdens een werksessie met Corpcase. De domeinindeling volgt de
+          vakgebieden van {org.naam}; de use-casebibliotheek is opgesteld voor de diervoedersector.
+          De verantwoording van elk cijfer staat in de bronnenlijst van de applicatie.
         </p>
       </footer>
     </main>

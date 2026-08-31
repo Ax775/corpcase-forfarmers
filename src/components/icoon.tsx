@@ -91,10 +91,26 @@ export function HuisIcoon({ className = "h-4 w-4" }: IcoonProps) {
   );
 }
 
-export function GebouwIcoon({ className = "h-4 w-4" }: IcoonProps) {
+export function FabriekIcoon({ className = "h-4 w-4" }: IcoonProps) {
   return (
     <svg aria-hidden viewBox={VIEWBOX} className={className} fill="currentColor">
-      <path d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z" />
+      <path d="M80-120v-500l200-100v100l200-100v100l200-100v180h200v420H80Zm80-80h640v-260H600v-118l-200 100v-100l-200 100v-100l-40 20v358Zm200-80h80v-160h-80v160Zm-160 0h80v-160h-80v160Zm320 0h80v-160h-80v160Zm160 0h80v-160h-80v160ZM800-460H160h640Z" />
+    </svg>
+  );
+}
+
+export function KolfIcoon({ className = "h-4 w-4" }: IcoonProps) {
+  return (
+    <svg aria-hidden viewBox={VIEWBOX} className={className} fill="currentColor">
+      <path d="M200-120q-51 0-72.5-45.5T138-250l222-270v-240h-40q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760h-40v240l222 270q32 39 10.5 84.5T760-120H200Zm80-120h400L544-400H416L280-240Zm-80 40h560L520-492v-268h-80v268L200-200Zm280-280Z" />
+    </svg>
+  );
+}
+
+export function BladIcoon({ className = "h-4 w-4" }: IcoonProps) {
+  return (
+    <svg aria-hidden viewBox={VIEWBOX} className={className} fill="currentColor">
+      <path d="M180-140q-33 0-56.5-23.5T100-220q0-15 5.5-28.5T122-273q41-41 62-93.5T205-475q0-138 98.5-236.5T540-810q56 0 109 21t95 62q11 11 16.5 24.5T766-674q0 33-23.5 56.5T686-594H540q-53 0-90.5 37.5T412-466q0 22 7 42t20 37l-98 98q-30 30-68 46t-80 16l-13 87Zm86-166q23 0 44-9t37-25l63-63q-20-25-31-55.5T368-522q0-71 50.5-121.5T540-694h146q-30-27-68-41.5T540-750q-113 0-192.5 79.5T268-478q0 47-11.5 91.5T222-300q11-3 22-4.5t22-1.5Z" />
     </svg>
   );
 }
@@ -125,16 +141,21 @@ export function GroepenIcoon({ className = "h-4 w-4" }: IcoonProps) {
 
 /**
  * Eén icoon per rol, zodat "Jouw bril" in de lobby ook zonder de naam te lezen al een signaal
- * geeft welke blik je meebrengt. Los van `content/spel/rollen.json` gehouden — dat bestand is
+ * geeft welke blik je meebrengt. Los van de rollen in de sectorcontent gehouden — dat bestand is
  * puur speltekst, dit is presentatie — maar de sleutels moeten wel gelijk blijven aan `rol.id`.
+ * `__tests__/rolIconen.test.ts` bewaakt dat: een nieuwe rol zonder icoon rendert anders stilletjes
+ * niets, en dat valt met het oog nauwelijks op.
  */
-const ROL_ICONEN: Record<string, ComponentType<IcoonProps>> = {
+export const ROL_ICONEN: Record<string, ComponentType<IcoonProps>> = {
   bestuurder: BestuurIcoon,
-  "manager-wonen": HuisIcoon,
-  "manager-vastgoed": GebouwIcoon,
-  "manager-financien": BetalingenIcoon,
+  "commercieel-directeur": GroepenIcoon,
+  "directeur-supplychain": FabriekIcoon,
+  "manager-nutritie": KolfIcoon,
+  cfo: BetalingenIcoon,
   informatiemanager: DatabaseIcoon,
-  huurdersvertegenwoordiger: GroepenIcoon,
+  duurzaamheidsmanager: BladIcoon,
+  // Het erf: deze rol brengt het perspectief van de boer mee.
+  klantvertegenwoordiger: HuisIcoon,
 };
 
 export function RolIcoon({ rolId, className = "h-4 w-4" }: IcoonProps & { rolId: string }) {

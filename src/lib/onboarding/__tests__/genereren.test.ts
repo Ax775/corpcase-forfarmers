@@ -15,9 +15,9 @@ import {
 const volledigFormulier: OrganisatieFormulier = {
   id: "test-corp",
   naam: "Test Corp",
-  type: "Woningcorporatie",
-  sector: "woningcorporatie",
-  pitch: "Een testcorporatie voor de wizard.",
+  type: "Voerproducent",
+  sector: "diervoeding",
+  pitch: "Een testorganisatie voor de wizard.",
   accent: "#3366CC",
   accentSecundair: "#7FA82B",
   themaToelichting: "De huisstijlkleur.",
@@ -61,7 +61,7 @@ const personaKaarten: PersonaKaartFormulier[] = [
 
 describe("slugify", () => {
   it("maakt van een naam een content-id in dezelfde stijl als de bestaande bestanden", () => {
-    expect(slugify("DUWO Rotterdam")).toBe("duwo-rotterdam");
+    expect(slugify("ForFarmers Polen")).toBe("forfarmers-polen");
     expect(slugify("  Woonstichting  Eigen Huis  ")).toBe("woonstichting-eigen-huis");
     expect(slugify("Élan Wonen")).toBe("elan-wonen");
   });

@@ -1,12 +1,12 @@
 # Bronnen en verificatiestatus
 
 Dit bestand verantwoordt waar de inhoud van de game vandaan komt en wat nog geverifieerd moet
-worden. **Loop de sectie van je organisatie door vóór de eerste sessie.** De game toont bij elk
-cijfer de bron, en markeert expliciet wat een aanname is.
+worden. **Loop het door vóór de eerste sessie.** De game toont bij elk cijfer de bron, en markeert
+expliciet wat een aanname is.
 
 Elk kengetal draagt een `geverifieerd`-vlag. Die staat alleen op `true` als het cijfer in de
 primaire bron is gezien — niet als het aannemelijk is, en niet als het uit een samenvatting komt.
-`npm run content:check` telt per organisatie hoeveel er nog open staat.
+`npm run content:check` telt hoeveel er nog open staat.
 
 ## Twee soorten cijfers, en het verschil telt
 
@@ -16,12 +16,12 @@ primaire bron is gezien — niet als het aannemelijk is, en niet als het uit een
   de facilitator past ze per sessie aan op de werkelijke cijfers, en dán wordt de sessie scherp.
   Ze staan expliciet als aanname gemarkeerd en horen dat te blijven.
 
-Ook alle voorgevulde driverwaarden in de use-casebibliotheken zijn aannames op ordegrootte. Ze
+Ook alle voorgevulde driverwaarden in de use-casebibliotheek zijn aannames op ordegrootte. Ze
 bestaan om het gesprek te starten — het invullen van de echte waarde ís de oefening.
 
 ---
 
-# ForFarmers (sector diervoeding)
+# ForFarmers
 
 Opgesteld op 31 augustus 2026. De cijfers over boekjaar 2025 komen uit het persbericht bij de
 jaarcijfers, gepubliceerd door ForFarmers zelf op 19 februari 2026, en zijn daar rechtstreeks
@@ -48,7 +48,7 @@ afgelezen.
 | Onderwerp | Waarde in de game | Actie |
 |---|---|---|
 | Productielocaties | 41 fabrieken | Controleren in het jaarverslag 2025 |
-| Domeinmodel | 18 vakgebieden | Anders dan CORA bij corporaties bestaat er voor deze sector geen publieke referentiearchitectuur. De indeling is opgesteld op basis van de acht vakgebieden die ForFarmers zelf noemt, aangevuld tot een volledige keten. Leg hem naast de eigen organisatie-indeling |
+| Domeinmodel | 18 vakgebieden | Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur. De indeling is opgesteld op basis van de acht vakgebieden die ForFarmers zelf noemt, aangevuld tot een volledige keten van grondstofinkoop tot boerenerf. Leg hem naast de eigen organisatie-indeling |
 | Verdeling medewerkers per cluster | NL 35%, UK 29%, DU 19%, PL 17%, BE 5 fte | Uit een zoekresultaatsamenvatting van het jaarverslag, niet tegen het origineel gecontroleerd. Staat niet in de game, wel in deze briefing |
 
 ## Afgeleide cijfers — reken ze na voordat je ze gebruikt
@@ -89,68 +89,20 @@ echte klantsegmentatie en de sessie wordt meteen herkenbaarder.
 
 ---
 
-# DUWO (sector woningcorporatie)
-
-Deze sectie is ongewijzigd overgenomen uit de eerste oplevering. Er is sindsdien niets opnieuw
-gecontroleerd; alle zestien cijfers staan nog op `geverifieerd: false`.
-
-## Waarom veel items op `geverifieerd: false` staan
-
-De omgeving waarin de eerste versie is gebouwd had een egress-proxy die directe toegang blokkeerde
-tot `coraveraonline.nl`, `cora.wikixl.nl`, `aedes.nl`, `duwo.nl` en de DUWO-jaarverslag-PDF.
-Zoekresultaten waren wel beschikbaar. De cijfers hieronder komen daarom uit
-zoekresultaatsamenvattingen van publieke bronnen en zijn niet tegen het originele document
-gecontroleerd. Ze zijn bruikbaar als startpunt voor het gesprek, niet als verantwoordingscijfer.
-
-## Te verifiëren vóór gebruik
-
-| Onderwerp | Waarde in de game | Bron | Actie |
-|---|---|---|---|
-| Aantal eenheden DUWO | ruim 33.000 | DUWO jaarverslag 2024 / duwo.nl | Controleer in het jaarverslag |
-| Verhuizingen per jaar | circa 18.000 | duwo.nl nieuwsbericht | Controleer; bepaalt de grootste driver in het model |
-| Studenten in werkgebied | 126.000 (was 127.500) | DUWO jaarverslag 2024 | Controleer |
-| Tekort in werkgebied | 3.600 eenheden | DUWO jaarverslag 2024 | Controleer |
-| Behoefte 2029 | 50.000 eenheden | duwo.nl | Controleer |
-| Woonbeleving | 7,2 gemiddeld, elke locatie ≥ 7,1 | Woonbelevingsonderzoek 2024 | Controleer |
-| Groeiambitie Den Haag | 5.000 eenheden | DUWO jaarverslag 2024 | Controleer |
-| CORA-hoofdbedrijfsfuncties | 18 domeinen | CORA 5 bedrijfsfunctiemodel | Controleer exacte benamingen tegen coraveraonline.nl |
-| Accentkleur DUWO | `#E8524A` (koraal) | voorlopig gekozen | Vervang door de huisstijlkleur van DUWO. Eén hex volstaat, de rest wordt afgeleid |
-| VERA-objectnamen | gebruikt als "benodigde data" per use case | VERA-standaard, Aedes Datastandaarden | Controleer of de gehanteerde termen aansluiten |
-
-## Zuivere aannames
-
-Deze staan in `content/organisaties/duwo.json` onder `rekenkundige_uitgangspunten`:
-
-- Intern uurtarief all-in: € 65/uur
-- Gemiddelde maandhuur per eenheid: € 450 → € 15 gederfde opbrengst per leegstandsdag
-- Leegstandsdagen per mutatie: 10
-- Reparatieverzoeken per jaar: 25.000
-- Klantcontacten per jaar: 120.000
-- Inkoopfacturen per jaar: 40.000
-- Jaarlijkse huurderving door achterstand en oninbaarheid: € 1.500.000
-- Investeringsruimte: € 1.500.000 en 36 mensmaanden verandercapaciteit per jaar
-
-## Geraadpleegde publieke bronnen
-
-- CORA — Woningcorporatie Referentiearchitectuur: https://www.coraveraonline.nl/index.php/Bedrijfsfuncties
-- VERA-standaard, Aedes Datastandaarden: https://aedes.nl/datastandaarden/vera-standaard
-- Aedes-benchmark 2025: https://aedes.nl/aedes-benchmark/aedes-benchmark-2025-belangrijkste-resultaten
-- DUWO jaarverslag 2024: https://view.publitas.com/cfreport/duwo-jaarverslag-2024
-- DUWO — behoefte 50.000 eenheden in 2029: https://www.duwo.nl/over-duwo/duwo-nieuws/het-laatste-nieuws/nieuwsbericht/in-2029-behoefte-van-50000-eenheden-in-werkgebied-duwo
-- DUWO Woonbelevingsonderzoek 2024: https://www.duwo.nl/over-duwo/duwo-nieuws/het-laatste-nieuws/nieuwsbericht/woonbelevingsonderzoek-2024-bewoners-geven-duwo-gemiddeld-een-72
-
----
-
 # Eigen data toevoegen
 
 De contentbestanden staan los van de code.
 
-**Een organisatie binnen een bestaande sector** — vervang of vul aan in `content/organisaties/` en
-`content/signalen/`, of gebruik de wizard op `/organisatie-toevoegen` die de drie bestanden voor je
-genereert. Draai daarna `npm run content:check`.
+**De ForFarmers-cijfers aanpassen** — `content/organisaties/forfarmers.json` bevat de kengetallen
+en de rekenkundige uitgangspunten. Vervang de aannames door de werkelijke cijfers en draai daarna
+`npm run content:check`.
 
-**Een nieuwe sector** — maak een map onder `content/sectoren/` met `sector.json`, `domeinen.json`,
-`uitdagingen.json`, `drivers.json`, `rollen.json`, `rolopdrachten.json`, `realiteitschecks.json` en
-`usecases.json`, en voeg hem toe aan `SECTOR_BRONNEN` in `src/lib/content/index.ts`. De rekenregels
+**Een tweede organisatie in dezelfde bedrijfstak** — bijvoorbeeld een cluster of een dochter met
+eigen cijfers: gebruik de wizard op `/organisatie-toevoegen`, die de drie bestanden genereert plus
+de regels om in `src/lib/content/index.ts` te plakken.
+
+**Een andere bedrijfstak** — maak een map onder `content/sectoren/` met `sector.json`,
+`domeinen.json`, `uitdagingen.json`, `drivers.json`, `rollen.json`, `rolopdrachten.json`,
+`realiteitschecks.json` en `usecases.json`, en voeg hem toe aan `SECTOR_BRONNEN`. De rekenregels
 komen uit de `formule` in `drivers.json` en worden letterlijk uitgerekend; er is geen TypeScript
 voor nodig.

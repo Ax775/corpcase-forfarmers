@@ -212,7 +212,7 @@ function RoadmapKaart({
               className={`${invoerStijl} mt-1 min-h-14 !text-sm`}
               defaultValue={item.randvoorwaarden}
               onBlur={(e) => void bewaar({ randvoorwaarden: e.target.value })}
-              placeholder="Bijvoorbeeld: koppelvlak op VERA, of een besluit over het gebruik van huurdersdata."
+              placeholder="Bijvoorbeeld: een koppelvlak op het ERP, of een besluit over het gebruik van klantdata."
             />
           </label>
 

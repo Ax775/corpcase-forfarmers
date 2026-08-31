@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * Zod-schema's voor de contentbibliotheek in `content/`.
  *
- * De contentbestanden zijn bewust los van de code gehouden zodat een adviseur of de corporatie
+ * De contentbestanden zijn bewust los van de code gehouden zodat een adviseur of de organisatie
  * zelf use cases, signalen en kengetallen kan aanpassen zonder een regel TypeScript aan te raken.
  * Deze schema's zijn het contract: `npm run content:check` valideert de bestanden ertegen.
  */
@@ -15,8 +15,9 @@ export const soortBedrijfsfunctie = z.enum(["sturend", "primair", "ondersteunend
  * organisatie: het domeinmodel, de waardedrivers, de uitdagingen, de rollen en de vocabulaire.
  *
  * Zonder deze laag zou een tweede sector een kopie van de codebase zijn. Nu is het een map met
- * JSON. De `klantlens` draagt de woorden die per sector verschillen — een corporatie heeft
- * huurders, een voerproducent veehouders — zodat de interface geen sectortaal hardcodeert.
+ * JSON. De `klantlens` draagt de woorden die per sector verschillen — een voerproducent heeft
+ * veehouders, een andere bedrijfstak weer iets anders — zodat de interface geen sectortaal
+ * hardcodeert.
  */
 export const sectorSchema = z.object({
   id: z.string().min(1),
@@ -27,11 +28,11 @@ export const sectorSchema = z.object({
     toelichting: z.string().optional(),
   }),
   klantlens: z.object({
-    /** Label op de filterchip en de signaalkaart: "Huurder", "Veehouder". */
+    /** Label op de filterchip en de signaalkaart, bijvoorbeeld "Veehouder". */
     enkelvoud: z.string().min(1),
-    /** Voor tellingen in de teamscore: "huurderstypen", "klanttypen". */
+    /** Voor tellingen in de teamscore, bijvoorbeeld "klanttypen". */
     meervoud: z.string().min(1),
-    /** Naam van het teamscore-onderdeel: "Huurdersblik", "Boerenblik". */
+    /** Naam van het teamscore-onderdeel, bijvoorbeeld "Boerenblik". */
     blik: z.string().min(1),
     toelichting: z.string().optional(),
   }),
@@ -39,8 +40,8 @@ export const sectorSchema = z.object({
   kernwaarde_dimensie: z.string().min(1),
   /**
    * Trefwoorden waarmee de rolopdracht-controle herkent dat een use case persoonsgegevens raakt.
-   * Wordt getoetst tegen de labels in `benodigde_data`. Sectoreigen: een corporatie herkent dat
-   * aan "huurder", een voerproducent aan "veehouder" of "bedrijfsgegevens".
+   * Wordt getoetst tegen de labels in `benodigde_data`. Sectoreigen: een voerproducent herkent
+   * dat aan "veehouder", "klant" of "bedrijfsgegevens".
    */
   persoonsgegevens_trefwoorden: z.array(z.string().min(1)).min(1),
 });
@@ -167,8 +168,8 @@ export const uitdagingBestandSchema = z.object({
 });
 
 /**
- * Drivertype-id's zijn sectoreigen: leegstandsreductie bestaat bij een corporatie en niet bij een
- * voerproducent. Ze staan daarom niet als vaste enum in de code. Dat een use case alleen naar een
+ * Drivertype-id's zijn sectoreigen: formuleringsmarge betekent iets bij een voerproducent en
+ * nergens anders. Ze staan daarom niet als vaste enum in de code. Dat een use case alleen naar een
  * drivertype van zijn eigen sector verwijst, wordt kruislings gecontroleerd in
  * `scripts/valideer-content.ts` en bij het inlezen in `src/lib/content/index.ts`.
  */

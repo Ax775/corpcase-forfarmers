@@ -1,14 +1,8 @@
 # Een sessie begeleiden
 
-Praktische handleiding voor wie Corpcase inzet bij een organisatie.
+Praktische handleiding voor wie Corpcase inzet bij ForFarmers.
 
 ## Vooraf
-
-**Kies de organisatie.** Op `/start` kies je voor wie je speelt. Die keuze bepaalt meer dan de
-naam op het scherm: het jaarverslag, de klantpersona's, de domeinen, de rollen, het waardemodel en
-de use-casebibliotheek komen allemaal uit de bijbehorende sector. Een corporatie rekent met
-leegstandsdagen en kijkt naar huurders; een voerproducent rekent met centen per ton en kijkt naar
-veehouders.
 
 **Kies de speelduur.** Kort (60–90 min) past in een MT-overleg, halve dag geeft ruimte voor
 discussie, hele dag laat je alles doorrekenen. De app past kaartaantallen, verplichte velden en de
@@ -25,10 +19,12 @@ per ton en het volume per klant zijn daaruit afgeleide groepsgemiddelden die per
 land sterk afwijken. Noem dat hardop bij de eerste doorrekening — anders rekent het team met een
 gemiddelde alsof het hun situatie is.
 
-**Verdeel de rollen.** Zes tot acht rollen, afhankelijk van de sector, elk met een eigen bril.
-Zorg dat in elk geval de informatiemanager en iemand namens de klant vertegenwoordigd zijn — dat
-zijn de twee stemmen die anders het snelst wegvallen. Bij een corporatie is dat de
-huurdersvertegenwoordiger, bij een voerproducent de stem van de veehouder.
+**Verdeel de rollen.** Acht rollen, elk met een eigen bril: bestuurder, commercieel directeur,
+directeur supply chain, manager nutritie & innovatie, CFO, informatiemanager, manager duurzaamheid
+en de stem van de veehouder. Zorg dat in elk geval de informatiemanager en die laatste
+vertegenwoordigd zijn — dat zijn de twee stemmen die anders het snelst wegvallen. De boer heeft
+geen stoel aan tafel tenzij iemand hem geeft, en zonder informatiemanager belanden er use cases in
+het portfolio waarvan niemand weet of de data er is.
 
 **Stuur de link vooraf.** Fase 1 kan asynchroon: deelnemers markeren op hun eigen moment wat ze
 herkennen. Dat scheelt in de sessie een half uur en levert een beter startpunt op, omdat mensen

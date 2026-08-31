@@ -12,8 +12,8 @@ import type { DrivertypeId, Usecase } from "@/lib/content/schemas";
  *    precisie die er niet is en kost geloofwaardigheid aan de bestuurstafel.
  *
  * De module is bewust vrij van content: de rekenregels komen als `Berekeningen` binnen, opgebouwd
- * uit het sectorprofiel (`berekeningenVoorSector`). Zo weet de motor niets van huurders of
- * veehouders, en kan een sector zijn eigen drivers meebrengen zonder één regel TypeScript.
+ * uit het sectorprofiel (`berekeningenVoorSector`). Zo weet de motor niets van veehouders of
+ * tonnen voer, en kan een sector zijn eigen drivers meebrengen zonder één regel TypeScript.
  */
 
 export const STANDAARD_BANDBREEDTE_PCT = 30;
@@ -165,7 +165,7 @@ export type Positie = { waarde: number; haalbaarheid: number };
  * Bepaalt de positie van een use case in de waarde-haalbaarheidsmatrix, op een schaal van 1-5.
  *
  * De waarde-as combineert bewust twee bronnen: een doorgerekende euro-baat en de kwalitatieve
- * scores. Een use case zonder euro's kan zo nog steeds hoog scoren op volkshuisvestelijke waarde —
+ * scores. Een use case zonder euro's kan zo nog steeds hoog scoren op duurzaamheidswaarde —
  * anders zou het spel alleen kostenbesparingen belonen.
  */
 export function bepaalPositie(args: {
@@ -199,7 +199,7 @@ export function bepaalPositie(args: {
 
 /**
  * Vertaalt een euro-uitkomst naar de 1-5 schaal, relatief aan de grootste netto baat in de sessie.
- * Relatief, omdat een absolute schaal per corporatie anders zou moeten liggen.
+ * Relatief, omdat een absolute schaal per organisatie anders zou moeten liggen.
  */
 function financieleScore(
   businessCase: BusinessCase | null | undefined,

@@ -30,7 +30,7 @@ import { Halftoon } from "@/components/decoratie";
  * Fase 3: wat is dit waard?
  *
  * Het team kiest per use case zelf de diepgang. De scorekaart is snel en eerlijk over zijn eigen
- * grofheid; de business case rekent door met de kengetallen van de corporatie. Wat beide gemeen
+ * grofheid; de business case rekent door met de kengetallen van de organisatie. Wat beide gemeen
  * hebben: de niet-financiële waarde blijft altijd apart zichtbaar, zodat het spel niet alleen
  * kostenbesparingen beloont.
  */

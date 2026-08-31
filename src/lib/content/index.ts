@@ -1,16 +1,9 @@
 import speelmodiJson from "@content/spel/speelmodi.json";
 
 // Sectoren. Een sector bundelt alles wat aan een bedrijfstak vastzit en niet aan één organisatie:
-// het domeinmodel, de waardedrivers, de uitdagingen, de rollen en de vocabulaire. Een nieuwe
-// bedrijfstak is daarmee een map met JSON plus één regel hieronder, geen kopie van de codebase.
-import woningcorporatieSector from "@content/sectoren/woningcorporatie/sector.json";
-import woningcorporatieDomeinen from "@content/sectoren/woningcorporatie/domeinen.json";
-import woningcorporatieUitdagingen from "@content/sectoren/woningcorporatie/uitdagingen.json";
-import woningcorporatieDrivers from "@content/sectoren/woningcorporatie/drivers.json";
-import woningcorporatieRollen from "@content/sectoren/woningcorporatie/rollen.json";
-import woningcorporatieRolopdrachten from "@content/sectoren/woningcorporatie/rolopdrachten.json";
-import woningcorporatieRealiteitschecks from "@content/sectoren/woningcorporatie/realiteitschecks.json";
-import woningcorporatieUsecases from "@content/sectoren/woningcorporatie/usecases.json";
+// het domeinmodel, de waardedrivers, de uitdagingen, de rollen en de vocabulaire. Er is er nu één,
+// maar de laag blijft staan: een tweede bedrijfstak is daarmee een map met JSON plus één regel
+// hieronder, in plaats van een kopie van de codebase.
 
 import diervoedingSector from "@content/sectoren/diervoeding/sector.json";
 import diervoedingDomeinen from "@content/sectoren/diervoeding/domeinen.json";
@@ -25,9 +18,6 @@ import diervoedingUsecases from "@content/sectoren/diervoeding/usecases.json";
 // signaallenzen (jaarverslag, klanten). Nieuwe organisatie? Voeg de drie imports hieronder toe en
 // één regel aan ORGANISATIE_BRONNEN — de onboardingwizard (/organisatie-toevoegen) genereert de
 // bestanden zelf en toont precies die regels om te plakken.
-import duwoJson from "@content/organisaties/duwo.json";
-import duwoJaarverslagJson from "@content/signalen/duwo-jaarverslag.json";
-import duwoKlantenJson from "@content/signalen/duwo-klanten.json";
 
 import forfarmersJson from "@content/organisaties/forfarmers.json";
 import forfarmersJaarverslagJson from "@content/signalen/forfarmers-jaarverslag.json";
@@ -61,24 +51,15 @@ import {
  * Twee soorten toegang, met opzet:
  *
  * - **Collecties zijn sectorgebonden.** `rollenVoorSector`, `usecasesVoorSector` enzovoort. Een
- *   corporatie krijgt nooit de rollen van een voerproducent te zien.
+ *   organisatie krijgt nooit de rollen van een andere bedrijfstak te zien.
  * - **Puntlookups zijn dat ook.** `usecase`, `domein`, `rol` en `rolNaam` nemen allemaal eerst de
- *   organisatie waarin je zit. Dat moet: twee sectoren hebben allebei een domein `besturing` en
- *   een rol `bestuurder`, dus een lookup zonder context zou stilzwijgend de verkeerde kaart
- *   teruggeven. Id's zijn uniek binnen een sector, niet daarbuiten.
+ *   organisatie waarin je zit. Dat blijft zo met één sector: id's zijn uniek binnen een sector en
+ *   niet daarbuiten — voor de hand liggende namen als `besturing` en `bestuurder` kiest een
+ *   tweede sector vanzelf ook — en een lookup zonder context zou dan stilzwijgend de verkeerde
+ *   kaart teruggeven.
  */
 
 const SECTOR_BRONNEN = [
-  {
-    sector: woningcorporatieSector,
-    domeinen: woningcorporatieDomeinen,
-    uitdagingen: woningcorporatieUitdagingen,
-    drivers: woningcorporatieDrivers,
-    rollen: woningcorporatieRollen,
-    rolopdrachten: woningcorporatieRolopdrachten,
-    realiteitschecks: woningcorporatieRealiteitschecks,
-    usecases: woningcorporatieUsecases,
-  },
   {
     sector: diervoedingSector,
     domeinen: diervoedingDomeinen,
@@ -92,7 +73,6 @@ const SECTOR_BRONNEN = [
 ];
 
 const ORGANISATIE_BRONNEN = [
-  { organisatie: duwoJson, jaarverslag: duwoJaarverslagJson, personas: duwoKlantenJson },
   {
     organisatie: forfarmersJson,
     jaarverslag: forfarmersJaarverslagJson,
@@ -266,6 +246,7 @@ export const rolopdrachtenVoorOrganisatie = viaOrganisatie((p) => p.rolopdrachte
 export const realiteitschecksVoorOrganisatie = viaOrganisatie((p) => p.realiteitschecks);
 export const usecasesVoorOrganisatie = viaOrganisatie((p) => p.usecases);
 export const klantlensVoorOrganisatie = viaOrganisatie((p) => p.sector.klantlens);
+export const sectorVoorOrganisatie = viaOrganisatie((p) => p.sector);
 
 // Puntlookups, altijd binnen de sector van de organisatie ---------------------
 

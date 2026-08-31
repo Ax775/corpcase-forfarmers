@@ -10,7 +10,7 @@
 --
 -- Twee ontwerpkeuzes die de rest verklaren:
 --
--- 1. De inhoudelijke bibliotheek (CORA-domeinen, signaalkaarten, use cases, waardemodel,
+-- 1. De inhoudelijke bibliotheek (domeinen, signaalkaarten, use cases, waardemodel,
 --    spelinstellingen) staat NIET in de database. Die leeft in content/ en wordt met de applicatie
 --    meegebouwd en gevalideerd. De database bewaart alleen sessiestate en verwijst naar die
 --    content met tekstuele ids. Zo kan er geen drift ontstaan tussen wat de app kent en wat de

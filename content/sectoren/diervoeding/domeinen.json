@@ -1,27 +1,115 @@
 {
-  "toelichting": "Taxonomie van vakgebieden bij een mengvoerproducent, gebruikt als domein-lens en dekkingsmeter in de game. De acht vakgebieden die ForFarmers zelf noemt (Sales & Sales Support, Productie & Techniek, Inkoop & Formulering, Logistiek, Nutritie & Innovatie, Laboratorium, Marketing & Communicatie, Business Support) zijn hier uitgesplitst tot een volledige keten, en ingedeeld naar sturend, primair en ondersteunend. Anders dan CORA bij woningcorporaties bestaat er voor deze sector geen publieke referentiearchitectuur; deze indeling is opgesteld op basis van de eigen publicaties van ForFarmers.",
+  "toelichting": "Taxonomie van vakgebieden bij een mengvoerproducent, gebruikt als domein-lens en dekkingsmeter in de game. De acht vakgebieden die ForFarmers zelf noemt (Sales & Sales Support, Productie & Techniek, Inkoop & Formulering, Logistiek, Nutritie & Innovatie, Laboratorium, Marketing & Communicatie, Business Support) zijn hier uitgesplitst tot een volledige keten van grondstofinkoop tot boerenerf, en ingedeeld naar sturend, primair en ondersteunend. Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur; deze indeling is opgesteld op basis van de eigen publicaties van ForFarmers en moet naast de werkelijke organisatie-indeling gelegd worden.",
   "bron": "https://www.werkenbijforfarmers.nl/over-forfarmers/organisatie.aspx (vakgebieden) en https://www.forfarmersgroup.eu/onze-strategie (ketenstappen)",
   "geverifieerd": false,
   "domeinen": [
-    { "id": "besturing", "naam": "Besturing", "soort": "sturend", "omschrijving": "Strategievorming, portfoliokeuzes en koersbepaling van de groep, inclusief overnames en joint ventures." },
-    { "id": "planning-control", "naam": "Planning & Control", "soort": "sturend", "omschrijving": "Begroten, forecasten, sturen op volume en marge, en verantwoorden aan aandeelhouders en analisten." },
-    { "id": "risico-compliance", "naam": "Risico & Compliance", "soort": "sturend", "omschrijving": "Voedsel- en voederveiligheid, GMP+, dierwelzijn, wet- en regelgeving, privacy en duurzaamheidsrapportage." },
-
-    { "id": "inkoop-grondstoffen", "naam": "Grondstofinkoop", "soort": "primair", "omschrijving": "Inkoop en positiebeheer van granen, eiwitten, co-producten en additieven in een volatiele wereldmarkt." },
-    { "id": "formulering", "naam": "Formulering & receptuur", "soort": "primair", "omschrijving": "Least-cost formulering binnen nutritionele specificaties: de knop waar centen per ton worden verdiend of verloren." },
-    { "id": "productie", "naam": "Productie & Techniek", "soort": "primair", "omschrijving": "Malen, mengen, persen en pelleteren; fabrieksrendement, energieverbruik en onderhoud van 41 locaties." },
-    { "id": "kwaliteit-lab", "naam": "Kwaliteit & Laboratorium", "soort": "primair", "omschrijving": "Monstername, analyse, borging en tracering van grondstof tot afgeleverde partij." },
-    { "id": "logistiek", "naam": "Logistiek & distributie", "soort": "primair", "omschrijving": "Bulktransport naar het erf: ritplanning, beladingsgraad, silovoorraden en aflevermomenten." },
-    { "id": "verkoop-advies", "naam": "Verkoop & bedrijfsadvies", "soort": "primair", "omschrijving": "De buitendienst en de specialisten op het erf: voeradvies, rantsoenen en het rendement van de boer." },
-    { "id": "klantbeheer", "naam": "Klantbeheer & orderproces", "soort": "primair", "omschrijving": "Orders, contracten, klantenservice, facturatie en het digitale klantportaal." },
-    { "id": "nutritie-innovatie", "naam": "Nutritie & Innovatie", "soort": "primair", "omschrijving": "Voedingskennis, proefonderzoek, nieuwe concepten en alternatieve eiwitbronnen." },
-    { "id": "duurzaamheid-keten", "naam": "Duurzaamheid & reststromen", "soort": "primair", "omschrijving": "CO2-voetafdruk van het rantsoen, circulaire reststromen en verantwoorde herkomst van grondstoffen." },
-    { "id": "ketenintegratie", "naam": "Ketenintegratie & partners", "soort": "primair", "omschrijving": "Samenwerking met slachterijen, zuivel, broederijen en joint ventures; regie over koppels en afzet." },
-
-    { "id": "financien", "naam": "Financiën", "soort": "ondersteunend", "omschrijving": "Administratie, debiteuren en kredietrisico op boerenbedrijven, treasury en jaarrekening." },
-    { "id": "informatievoorziening", "naam": "Informatievoorziening & ICT", "soort": "ondersteunend", "omschrijving": "ERP, koppelvlakken, datafundament en beveiliging over vier landenclusters met een decentrale historie." },
-    { "id": "inkoop-indirect", "naam": "Indirecte inkoop & contracten", "soort": "ondersteunend", "omschrijving": "Energie, transportcontracten, verpakking, diensten en leveranciersmanagement buiten grondstoffen." },
-    { "id": "hrm", "naam": "HRM", "soort": "ondersteunend", "omschrijving": "Werving, vakmanschap, opvolging en inzetbaarheid van circa 3.000 medewerkers." },
-    { "id": "marketing-communicatie", "naam": "Marketing & Communicatie", "soort": "ondersteunend", "omschrijving": "Merk, vakinhoudelijke content richting boeren, interne communicatie en woordvoering." }
+    {
+      "id": "besturing",
+      "naam": "Besturing",
+      "soort": "sturend",
+      "omschrijving": "Strategievorming, portfoliokeuzes en koersbepaling van de groep, inclusief overnames en joint ventures."
+    },
+    {
+      "id": "planning-control",
+      "naam": "Planning & Control",
+      "soort": "sturend",
+      "omschrijving": "Begroten, forecasten, sturen op volume en marge, en verantwoorden aan aandeelhouders en analisten."
+    },
+    {
+      "id": "risico-compliance",
+      "naam": "Risico & Compliance",
+      "soort": "sturend",
+      "omschrijving": "Voedsel- en voederveiligheid, GMP+, dierwelzijn, wet- en regelgeving, privacy en duurzaamheidsrapportage."
+    },
+    {
+      "id": "inkoop-grondstoffen",
+      "naam": "Grondstofinkoop",
+      "soort": "primair",
+      "omschrijving": "Inkoop en positiebeheer van granen, eiwitten, co-producten en additieven in een volatiele wereldmarkt."
+    },
+    {
+      "id": "formulering",
+      "naam": "Formulering & receptuur",
+      "soort": "primair",
+      "omschrijving": "Least-cost formulering binnen nutritionele specificaties: de knop waar centen per ton worden verdiend of verloren."
+    },
+    {
+      "id": "productie",
+      "naam": "Productie & Techniek",
+      "soort": "primair",
+      "omschrijving": "Malen, mengen, persen en pelleteren; fabrieksrendement, energieverbruik en onderhoud van 41 locaties."
+    },
+    {
+      "id": "kwaliteit-lab",
+      "naam": "Kwaliteit & Laboratorium",
+      "soort": "primair",
+      "omschrijving": "Monstername, analyse, borging en tracering van grondstof tot afgeleverde partij."
+    },
+    {
+      "id": "logistiek",
+      "naam": "Logistiek & distributie",
+      "soort": "primair",
+      "omschrijving": "Bulktransport naar het erf: ritplanning, beladingsgraad, silovoorraden en aflevermomenten."
+    },
+    {
+      "id": "verkoop-advies",
+      "naam": "Verkoop & bedrijfsadvies",
+      "soort": "primair",
+      "omschrijving": "De buitendienst en de specialisten op het erf: voeradvies, rantsoenen en het rendement van de boer."
+    },
+    {
+      "id": "klantbeheer",
+      "naam": "Klantbeheer & orderproces",
+      "soort": "primair",
+      "omschrijving": "Orders, contracten, klantenservice, facturatie en het digitale klantportaal."
+    },
+    {
+      "id": "nutritie-innovatie",
+      "naam": "Nutritie & Innovatie",
+      "soort": "primair",
+      "omschrijving": "Voedingskennis, proefonderzoek, nieuwe concepten en alternatieve eiwitbronnen."
+    },
+    {
+      "id": "duurzaamheid-keten",
+      "naam": "Duurzaamheid & reststromen",
+      "soort": "primair",
+      "omschrijving": "CO2-voetafdruk van het rantsoen, circulaire reststromen en verantwoorde herkomst van grondstoffen."
+    },
+    {
+      "id": "ketenintegratie",
+      "naam": "Ketenintegratie & partners",
+      "soort": "primair",
+      "omschrijving": "Samenwerking met slachterijen, zuivel, broederijen en joint ventures; regie over koppels en afzet."
+    },
+    {
+      "id": "financien",
+      "naam": "Financiën",
+      "soort": "ondersteunend",
+      "omschrijving": "Administratie, debiteuren en kredietrisico op boerenbedrijven, treasury en jaarrekening."
+    },
+    {
+      "id": "informatievoorziening",
+      "naam": "Informatievoorziening & ICT",
+      "soort": "ondersteunend",
+      "omschrijving": "ERP, koppelvlakken, datafundament en beveiliging over vier landenclusters met een decentrale historie."
+    },
+    {
+      "id": "inkoop-indirect",
+      "naam": "Indirecte inkoop & contracten",
+      "soort": "ondersteunend",
+      "omschrijving": "Energie, transportcontracten, verpakking, diensten en leveranciersmanagement buiten grondstoffen."
+    },
+    {
+      "id": "hrm",
+      "naam": "HRM",
+      "soort": "ondersteunend",
+      "omschrijving": "Werving, vakmanschap, opvolging en inzetbaarheid van circa 3.000 medewerkers."
+    },
+    {
+      "id": "marketing-communicatie",
+      "naam": "Marketing & Communicatie",
+      "soort": "ondersteunend",
+      "omschrijving": "Merk, vakinhoudelijke content richting boeren, interne communicatie en woordvoering."
+    }
   ]
 }

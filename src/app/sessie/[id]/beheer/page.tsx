@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { FASES, FASE_LABELS, type Fase } from "@/lib/supabase/types";
-import { rolNaam, speelmodus } from "@/lib/content";
+import { klantlensVoorOrganisatie, rolNaam, speelmodus } from "@/lib/content";
 import { opslag } from "@/lib/sessie/api";
 import { useAanwezigheid, useSessie } from "@/lib/sessie/gebruik";
 import {
@@ -310,7 +310,9 @@ export default function BeheerPagina() {
 
           {gedekt.personasGemist.length > 0 ? (
             <Melding>
-              {gedekt.personasGemist.length} van de huurderstypen komen nog nergens in terug.
+              {gedekt.personasGemist.length} van de{" "}
+              {klantlensVoorOrganisatie(state.sessie.organisatie_id).meervoud} komen nog nergens in
+              terug.
             </Melding>
           ) : null}
 
