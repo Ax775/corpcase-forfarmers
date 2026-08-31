@@ -62,7 +62,9 @@ Sectorgebonden en dus te verplaatsen naar content:
 
 - [x] C1 `BRONNEN.md` per sector; `geverifieerd: true` alleen waar het cijfer in de primaire bron
       is gezien. Rekenkundige aannames blijven expliciet aanname.
-- [x] C2 Eigen Supabase-project; `.env.example` ontkoppelen van dat van de collega.
+- [~] C2 `.env.example` is ontkoppeld van het project van de collega. Het aanmaken van een
+      eigen Supabase-project staat open: dat vraagt een account. Zonder die variabelen draait de
+      app in de offline modus, dus hij is wel speelbaar.
 - [x] C3 Stale `npm run seed` opruimen: staat in package.json, README en BRONNEN.md, maar
       `scripts/seed.ts` bestaat niet en `schema.sql` legt uit dat een seed-stap juist niet nodig is.
 - [x] C4 README en FACILITATOR.md bijwerken naar twee sectoren.
