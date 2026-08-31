@@ -4,6 +4,10 @@ import { test, expect, type Page } from "@playwright/test";
  * Maakt schermafdrukken van de belangrijkste schermen, om ze met het oog te kunnen beoordelen.
  * Geen assertions op vormgeving: die zouden bij elke tekstwijziging breken.
  *
+ * De opname draait op de ForFarmers-sessie. Dat is bewust: het is meteen een controle dat het
+ * hele spel met een tweede sector werkt, inclusief de klantlens die dan "Veehouder" moet heten
+ * en het accent dat uit de huisstijlkleur van die organisatie wordt afgeleid.
+ *
  * Wel wordt er telkens gewacht tot de staat echt is doorgekomen. Zonder dat legt de opname een
  * kleurovergang of een nog niet opgeslagen waarde vast, en beoordeel je een halve render als
  * ontwerp — dat is bij een eerdere ronde precies misgegaan.
@@ -25,6 +29,7 @@ test("schermafdrukken van een gevulde sessie", async ({ browser }) => {
   const speler = await (await browser.newContext()).newPage();
 
   await facilitator.goto("/start");
+  await facilitator.getByRole("radio", { name: /ForFarmers/ }).check();
   await facilitator.getByLabel("Jouw naam").fill("Guido");
   await facilitator.getByRole("button", { name: "Sessie starten" }).click();
   await facilitator.waitForURL(/\/sessie\/[0-9a-f-]+\/beheer$/);
@@ -36,8 +41,8 @@ test("schermafdrukken van een gevulde sessie", async ({ browser }) => {
   await facilitator.screenshot({ path: `${MAP}/01-facilitator.png`, fullPage: false });
 
   await speler.goto(`/deelnemen?code=${code}`);
-  await speler.getByLabel("Jouw naam").fill("Marieke");
-  await speler.getByLabel("Jouw rol").selectOption({ label: "Manager Wonen / Klant" });
+  await speler.getByLabel("Jouw naam").fill("Elske");
+  await speler.getByLabel("Jouw rol").selectOption({ label: "Commercieel directeur" });
   await speler.getByRole("button", { name: "Meedoen" }).click();
   await speler.waitForURL(/\/sessie\/[0-9a-f-]+$/);
   await bezonken(speler);
@@ -47,9 +52,9 @@ test("schermafdrukken van een gevulde sessie", async ({ browser }) => {
   await speelTot(speler, sessieId);
   await expect(speler.getByRole("heading", { name: "Wat herken je?" })).toBeVisible();
   await speler.getByRole("button", { name: "Jaarverslag", exact: true }).click();
-  await speler.getByRole("button", { name: /Circa 18.000 verhuizingen/ }).click();
-  await speler.getByRole("button", { name: "Huurder", exact: true }).click();
-  await speler.getByRole("button", { name: /Mateo — internationale student/ }).click();
+  await speler.getByRole("button", { name: /Recordjaar, maar autonoom bijna vlak/ }).click();
+  await speler.getByRole("button", { name: "Veehouder", exact: true }).click();
+  await speler.getByRole("button", { name: /Gerrit — melkveehouder/ }).click();
   await bezonken(speler);
   await speler.screenshot({ path: `${MAP}/03-verkennen.png`, fullPage: false });
 
@@ -75,7 +80,7 @@ test("schermafdrukken van een gevulde sessie", async ({ browser }) => {
     timeout: 20_000,
   });
   await speler
-    .getByText("Waarde voor de huurder", { exact: true })
+    .getByText("Waarde voor de veehouder", { exact: true })
     .locator("xpath=..")
     .getByRole("button", { name: "Score 5" })
     .click();

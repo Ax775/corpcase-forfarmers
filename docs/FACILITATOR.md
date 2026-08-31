@@ -1,21 +1,34 @@
 # Een sessie begeleiden
 
-Praktische handleiding voor wie Corpcase inzet bij een corporatie.
+Praktische handleiding voor wie Corpcase inzet bij een organisatie.
 
 ## Vooraf
+
+**Kies de organisatie.** Op `/start` kies je voor wie je speelt. Die keuze bepaalt meer dan de
+naam op het scherm: het jaarverslag, de klantpersona's, de domeinen, de rollen, het waardemodel en
+de use-casebibliotheek komen allemaal uit de bijbehorende sector. Een corporatie rekent met
+leegstandsdagen en kijkt naar huurders; een voerproducent rekent met centen per ton en kijkt naar
+veehouders.
 
 **Kies de speelduur.** Kort (60–90 min) past in een MT-overleg, halve dag geeft ruimte voor
 discussie, hele dag laat je alles doorrekenen. De app past kaartaantallen, verplichte velden en de
 investeringsruimte hierop aan.
 
-**Loop de cijfers na.** De DUWO-gegevens komen uit publieke bronnen en zijn nog niet geverifieerd;
-de rekenkundige uitgangspunten (uurtarief, dagopbrengst, volumes) zijn aannames. Zie
-[`content/BRONNEN.md`](../content/BRONNEN.md). Vervang ze door de echte cijfers van de corporatie
-en de sessie wordt meteen een stuk scherper. Dat kan zonder code aan te raken.
+**Loop de cijfers na.** De gegevens komen uit publieke bronnen; de rekenkundige uitgangspunten
+(uurtarief, kosten per eenheid, volumes) zijn aannames op ordegrootte. Zie
+[`content/BRONNEN.md`](../content/BRONNEN.md), waar per organisatie staat wat geverifieerd is en
+wat niet. Vervang de aannames door de echte cijfers en de sessie wordt meteen een stuk scherper.
+Dat kan zonder code aan te raken.
 
-**Verdeel de rollen.** Zes rollen, elk met een eigen bril. Zorg dat in elk geval de
-informatiemanager en iemand namens de bewoners vertegenwoordigd zijn — dat zijn de twee stemmen
-die anders het snelst wegvallen.
+Voor ForFarmers zijn de jaarcijfers 2025 geverifieerd tegen het eigen persbericht; de brutomarge
+per ton en het volume per klant zijn daaruit afgeleide groepsgemiddelden die per segment en per
+land sterk afwijken. Noem dat hardop bij de eerste doorrekening — anders rekent het team met een
+gemiddelde alsof het hun situatie is.
+
+**Verdeel de rollen.** Zes tot acht rollen, afhankelijk van de sector, elk met een eigen bril.
+Zorg dat in elk geval de informatiemanager en iemand namens de klant vertegenwoordigd zijn — dat
+zijn de twee stemmen die anders het snelst wegvallen. Bij een corporatie is dat de
+huurdersvertegenwoordiger, bij een voerproducent de stem van de veehouder.
 
 **Stuur de link vooraf.** Fase 1 kan asynchroon: deelnemers markeren op hun eigen moment wat ze
 herkennen. Dat scheelt in de sessie een half uur en levert een beter startpunt op, omdat mensen
@@ -39,10 +52,11 @@ drie ergens anders zitten, is dat het moment om ze weer bij elkaar te roepen.
 
 Wat op het beheerscherm om aandacht vraagt:
 
-- **Het gesprek is nog smal.** Weinig CORA-domeinen geraakt betekent meestal dat het team praat
-  over waar het toch al mee bezig was. Goede interventie: laat de domein-lens openslaan en vraag
-  welk domein het meest wordt overgeslagen.
-- **Huurderstypen die nergens terugkomen.** Vraag wie er namens die bewoner aan tafel zit.
+- **Het gesprek is nog smal.** Weinig domeinen geraakt betekent meestal dat het team praat over
+  waar het toch al mee bezig was. Goede interventie: laat de domein-lens openslaan en vraag welk
+  domein het meest wordt overgeslagen. Bij een voerproducent zijn dat vaak grondstofinkoop en
+  formulering — precies waar de meeste marge zit.
+- **Klanttypen die nergens terugkomen.** Vraag wie er namens die klant aan tafel zit.
 - **Open hulpvragen.** Lees er één hardop voor. Meestal weet iemand aan tafel het antwoord binnen
   dertig seconden, en dat is precies het moment waarop het spel zijn werk doet.
 - **Budget overschreden.** Niet direct corrigeren. Vraag wat er dan afvalt; daar zit het gesprek.
@@ -52,8 +66,8 @@ Wat op het beheerscherm om aandacht vraagt:
 1. **De eerste doorrekening.** Zodra er een bedrag met een bandbreedte op het scherm staat, komt
    het gesprek over aannames vanzelf. Laat het team de driverwaarden aanpassen tot ze er zelf
    achter staan — dat invullen ís de oefening, niet de uitkomst.
-2. **De realiteitscheck.** Wanneer het budget halveert of de functionaris gegevensbescherming
-   bezwaar maakt, blijkt of de prioritering echt gedragen is. Dwing een besluit af: aanpassen of
+2. **De realiteitscheck.** Wanneer het budget halveert, de grondstofmarkt keert of een uitbraak een
+   regio stillegt, blijkt of de prioritering echt gedragen is. Dwing een besluit af: aanpassen of
    onderbouwd handhaven. Niet beslissen is de enige verkeerde uitkomst.
 3. **De onthulling van de rolopdrachten.** Elke rol had een geheime opdracht. Als die van de
    informatiemanager niet gehaald is, staan er use cases in het portfolio zonder benoemde
@@ -62,8 +76,9 @@ Wat op het beheerscherm om aandacht vraagt:
 ## Na afloop
 
 Het rapport (`/sessie/<id>/rapport`) print je of bewaar je als pdf. Het bevat bewust ook wat er
-níét klopt: onvolledige doorrekeningen, een overschreden budget, gemiste huurderstypen en elke
-aanname die iemand expliciet heeft gemaakt. Dat is wat het bruikbaar maakt in een RvC-gesprek.
+níét klopt: onvolledige doorrekeningen, een overschreden budget, gemiste klanttypen en elke
+aanname die iemand expliciet heeft gemaakt. Dat is wat het bruikbaar maakt in een gesprek met de
+raad van commissarissen of de directie.
 
 ## Als het netwerk het laat afweten
 

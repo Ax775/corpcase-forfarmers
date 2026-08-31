@@ -5,12 +5,12 @@ uitzien als iets waar je tijd aan wijdt, niet als een intern formulier. De vormt
 warm papier, één accentkleur, een display-serif tegenover kleine schreefloze tekst, en spaarzaam een
 houtskoolpaneel op de plek waar de beslissing valt.
 
-## Eén kleur per corporatie, de rest afgeleid
+## Eén kleur per organisatie, de rest afgeleid
 
-Een corporatieprofiel levert **één** hex in `content/organisaties/<naam>.json`:
+Een organisatieprofiel levert **één** hex in `content/organisaties/<naam>.json`:
 
 ```json
-"thema": { "accent": "#E8524A", "bron": "…", "geverifieerd": false }
+"thema": { "accent": "#00337F", "bron": "…", "geverifieerd": true }
 ```
 
 `src/lib/thema/kleur.ts` leidt daaruit vier varianten af, elk gemeten tegen de ondergrond waarop
@@ -26,7 +26,8 @@ hij daadwerkelijk komt te staan:
 De afleiding verschuift de lichtheid net zolang tot de **gemeten** verhouding de drempel haalt,
 in plaats van een vast percentage te verdonkeren. Dat verschil telt: een vast percentage werkt
 toevallig bij koraal, maar zou bij een geel of lichtgroen logo alsnog onleesbare knoptekst
-opleveren. Er wordt bovendien hoger gemikt dan het minimum, omdat precies op 4,5 landen broos is
+opleveren, en bij het diepe marineblauw van ForFarmers zou tekst op een houtskoolpaneel juist te
+donker blijven. Er wordt bovendien hoger gemikt dan het minimum, omdat precies op 4,5 landen broos is
 en kleine tekst op het minimum nog steeds onprettig leest.
 
 `src/lib/thema/__tests__/kleur.test.ts` toetst dit voor elke organisatie in `content/` én voor een
@@ -109,7 +110,7 @@ blijft de cirkel onder de haarlijnkop of onder de teamscore, in plaats van erond
 
 Playfair Display voor display, Inter voor de rest, allebei via `next/font/google`. Die haalt ze bij
 de build binnen en serveert ze vanaf het eigen domein — er gaat dus geen bezoekersdata naar Google.
-Voor een corporatie die in deze game zelf over privacy bij huurdersdata praat, is dat geen detail.
+Voor een organisatie die in deze game zelf over privacy bij klantdata praat, is dat geen detail.
 
 ## Iconen
 

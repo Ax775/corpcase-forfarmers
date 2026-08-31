@@ -92,6 +92,7 @@ export default function StartPagina() {
         </Veld>
 
         <Veld
+          groep
           label="Voor welke organisatie?"
           hint="Bepaalt het jaarverslag, de klanten, de domeinen en het waardemodel waarmee je speelt."
         >
@@ -123,7 +124,11 @@ export default function StartPagina() {
           </div>
         </Veld>
 
-        <Veld label="Hoeveel tijd heb je?" hint="Bepaalt het aantal kaarten, de timers en hoe diep je doorrekent.">
+        <Veld
+          groep
+          label="Hoeveel tijd heb je?"
+          hint="Bepaalt het aantal kaarten, de timers en hoe diep je doorrekent."
+        >
           <div className="space-y-2">
             {speelmodi.modi.map((m) => (
               <label
@@ -164,7 +169,7 @@ export default function StartPagina() {
           />
         </Veld>
 
-        <Veld label="Doe je ook zelf mee?">
+        <Veld groep label="Doe je ook zelf mee?">
           <div className="space-y-2">
             {(
               [

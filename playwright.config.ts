@@ -1,4 +1,15 @@
+import { existsSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
+
+/**
+ * De bouwomgeving waarin dit project is ontstaan levert een eigen Chromium mee. Op een werkplek
+ * zonder dat pad valt Playwright terug op zijn eigen browser (`npx playwright install chromium`),
+ * in plaats van te falen op een bestand dat er niet is.
+ */
+const MEEGELEVERDE_CHROMIUM = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+const launchOptions = existsSync(MEEGELEVERDE_CHROMIUM)
+  ? { executablePath: MEEGELEVERDE_CHROMIUM }
+  : {};
 
 /**
  * End-to-end-tests draaien tegen de offline modus: de sessie leeft dan in het geheugen van de
@@ -23,8 +34,7 @@ export default defineConfig({
       name: "telefoon",
       use: {
         ...devices["Pixel 7"],
-        // De omgeving levert een eigen Chromium; die gebruiken in plaats van er een te downloaden.
-        launchOptions: { executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" },
+        launchOptions,
       },
     },
   ],

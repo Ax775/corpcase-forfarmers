@@ -10,7 +10,6 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed": "tsx scripts/seed.ts",
     "content:check": "tsx scripts/valideer-content.ts",
     "e2e": "playwright test"
   },

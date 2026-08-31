@@ -83,19 +83,40 @@ export function Knop({
 export function Veld({
   label,
   hint,
+  groep = false,
   children,
 }: {
   label: string;
   hint?: string;
+  /**
+   * Zet dit aan als het veld een groep keuzerondjes bevat in plaats van één invoerelement.
+   *
+   * Een `<label>` mag geen ander `<label>` bevatten. Bij geneste labels raakt de koppeling tussen
+   * een keuzerondje en zijn eigen tekst kwijt: de browser koppelt elk rondje aan het buitenste
+   * label, en dan hoort iemand met een schermlezer bij elke optie "Voor welke organisatie?" in
+   * plaats van "ForFarmers" of "DUWO". Een groep krijgt daarom een `role="group"` met een eigen
+   * naam, zodat elke optie zijn eigen label houdt.
+   */
+  groep?: boolean;
   children: ReactNode;
 }) {
-  return (
-    <label className="block">
+  const inhoud = (
+    <>
       <span className="block text-sm font-medium text-inkt">{label}</span>
       {hint ? <span className="mt-0.5 block text-xs text-inkt-licht">{hint}</span> : null}
       <div className="mt-1.5">{children}</div>
-    </label>
+    </>
   );
+
+  if (groep) {
+    return (
+      <div role="group" aria-label={label} className="block">
+        {inhoud}
+      </div>
+    );
+  }
+
+  return <label className="block">{inhoud}</label>;
 }
 
 export const invoerStijl =
