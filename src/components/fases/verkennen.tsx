@@ -9,6 +9,7 @@ import {
   type SignaalKaart,
 } from "@/lib/content";
 import { opslag } from "@/lib/sessie/api";
+import { opRelevantie, relevantie } from "@/lib/sessie/relevantie";
 import type { SessieState } from "@/lib/supabase/types";
 import type { BewaardeIdentiteit } from "@/lib/sessie/identiteit";
 import { Etiket, Hoofdregel, Kaart, Knop, Kop, Melding } from "@/components/basis";
@@ -60,18 +61,24 @@ export function Verkennen({
   const gekozen = new Set(mijnSelecties.map((s) => s.signaal_id));
 
   /**
-   * De kaarten die bij jouw rol horen komen bovenaan. Niet gefilterd: iedereen mag overal naar
-   * kijken, maar je begint bij wat jij het beste kunt beoordelen.
+   * De kaarten die bij jouw rol horen komen bovenaan, samen met wat een collega al herkende.
+   * Niet gefilterd: iedereen mag overal naar kijken, maar je begint bij wat jij het beste kunt
+   * beoordelen. Elke kaart die omhoog is gezet, draagt de reden — zie lib/sessie/relevantie.ts.
    */
+  const doorCollegas = useMemo(() => {
+    const per = new Set<string>();
+    for (const s of state.selecties) {
+      if (s.deelnemer_id !== identiteit.deelnemerId) per.add(s.signaal_id);
+    }
+    return per;
+  }, [state.selecties, identiteit.deelnemerId]);
+
   const gesorteerd = useMemo(() => {
-    const relevant = new Set(mijnRol?.kijkt_naar ?? []);
     const zichtbaar = lens === "alle" ? signalen : signalen.filter((s) => s.lens === lens);
-    return [...zichtbaar].sort((a, b) => {
-      const scoreA = a.domeinen?.some((d) => relevant.has(d)) ? 0 : 1;
-      const scoreB = b.domeinen?.some((d) => relevant.has(d)) ? 0 : 1;
-      return scoreA - scoreB;
-    });
-  }, [signalen, lens, mijnRol]);
+    return opRelevantie(zichtbaar, (signaal) =>
+      relevantie({ signaal, rol: mijnRol, doorCollega: doorCollegas.has(signaal.id) }),
+    );
+  }, [signalen, lens, mijnRol, doorCollegas]);
 
   async function wissel(signaal: SignaalKaart) {
     if (gekozen.has(signaal.id)) {
@@ -106,7 +113,7 @@ export function Verkennen({
 
   // Al gekozen kaarten blijven altijd in beeld, ook als ze buiten de huidige portie vallen.
   const zichtbaar = gesorteerd.filter(
-    (signaal, index) => index < portie * PER_PORTIE || gekozen.has(signaal.id),
+    ({ signaal }, index) => index < portie * PER_PORTIE || gekozen.has(signaal.id),
   );
 
   const genoeg = mijnSelecties.length >= modus.min_signalen_per_speler;
@@ -153,7 +160,7 @@ export function Verkennen({
       </div>
 
       <ul className="space-y-2.5 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
-        {zichtbaar.map((signaal) => {
+        {zichtbaar.map(({ signaal, relevantie: waarom }) => {
           const selectie = mijnSelecties.find((s) => s.signaal_id === signaal.id);
           const isGekozen = Boolean(selectie);
           const anderen = state.selecties.filter(
@@ -172,10 +179,15 @@ export function Verkennen({
                     <span className="text-sm font-medium leading-snug text-inkt">
                       {signaal.titel}
                     </span>
-                    <span className="mt-0.5 shrink-0">
+                    <span className="mt-0.5 flex shrink-0 flex-col items-end gap-1">
                       <Etiket toon={isGekozen ? "accent" : "neutraal"}>
                         {LENS_LABELS[signaal.lens]}
                       </Etiket>
+                      {waarom.reden && !isGekozen ? (
+                        <span className="text-[10px] leading-none text-inkt-licht">
+                          {waarom.reden}
+                        </span>
+                      ) : null}
                     </span>
                   </div>
                   <p className="mt-1.5 text-sm leading-relaxed text-inkt-zacht">

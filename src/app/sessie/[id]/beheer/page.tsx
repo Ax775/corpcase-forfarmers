@@ -4,15 +4,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { FASES, FASE_LABELS, type Fase } from "@/lib/supabase/types";
-import { klantlensVoorOrganisatie, rolNaam, speelmodus } from "@/lib/content";
+import { rolNaam, speelmodus } from "@/lib/content";
+import { interventies } from "@/lib/sessie/interventies";
 import { telwoord } from "@/lib/tekst/meervoud";
 import { opslag } from "@/lib/sessie/api";
 import { useAanwezigheid, useSessie } from "@/lib/sessie/gebruik";
 import {
   aanwezig,
-  alleBeelden,
-  budgetStand,
-  dekking,
   eigenFase,
   looptVoor,
   openHulpvragen,
@@ -58,12 +56,10 @@ export default function BeheerPagina() {
   const ikSpeelMee = eigenDeelnemer?.rol_id != null;
 
   const modus = speelmodus(state.sessie.speelmodus);
-  const beelden = alleBeelden(state);
   const score = teamscore(state);
-  const gedekt = dekking(state);
   const vragen = openHulpvragen(state);
+  const voorstellen = interventies(state);
   const online = aanwezig(state);
-  const stand = budgetStand(state);
   const huidigeIndex = FASES.indexOf(state.sessie.fase);
 
   async function naarFase(fase: Fase) {
@@ -312,37 +308,29 @@ export default function BeheerPagina() {
       </section>
 
       <section>
-        <h2 className="display text-lg text-inkt">Waar het hapert</h2>
-        <div className="mt-2 space-y-2">
-          {gedekt.domeinenOngedekt.length > 6 ? (
-            <Melding>
-              Het gesprek is nog smal: {gedekt.domeinenGedekt.length} van de{" "}
-              {gedekt.domeinenGedekt.length + gedekt.domeinenOngedekt.length} domeinen geraakt.
-            </Melding>
-          ) : null}
-
-          {gedekt.personasGemist.length > 0 ? (
-            <Melding>
-              {gedekt.personasGemist.length} van de{" "}
-              {klantlensVoorOrganisatie(state.sessie.organisatie_id).meervoud} komen nog nergens in
-              terug.
-            </Melding>
-          ) : null}
-
-          {beelden.filter((b) => b.volledigheid < 1).length > 0 &&
-          state.sessie.fase === "waardebepaling" ? (
-            <Melding>
-              {beelden.filter((b) => b.volledigheid < 1).length === 1
-                ? "Eén use case is nog niet volledig gewaardeerd."
-                : `${beelden.filter((b) => b.volledigheid < 1).length} use cases zijn nog niet volledig gewaardeerd.`}
-            </Melding>
-          ) : null}
-
-          {stand.overschreden.geld || stand.overschreden.capaciteit ? (
-            <Melding toon="risico">
-              Het budget is overschreden. Goed moment om te vragen wat er dan afvalt.
-            </Melding>
-          ) : null}
+        <h2 className="display text-lg text-inkt">Wat nu te doen</h2>
+        <p className="mt-1 text-xs leading-relaxed text-inkt-licht">
+          Afgeleid uit de stand van de sessie. Bij elk punt staat waaróp het gebaseerd is, zodat je
+          het ook naast je neer kunt leggen.
+        </p>
+        <div className="mt-2.5 space-y-2">
+          {voorstellen.length === 0 ? (
+            <Leeg>Niets dat om aandacht vraagt.</Leeg>
+          ) : (
+            voorstellen.map((v) => (
+              <Kaart key={v.id} className="p-3.5">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-medium leading-snug text-inkt">{v.interventie}</p>
+                  {v.urgentie === "hoog" ? (
+                    <Etiket toon="risico">nu</Etiket>
+                  ) : v.urgentie === "midden" ? (
+                    <Etiket toon="aandacht">let op</Etiket>
+                  ) : null}
+                </div>
+                <p className="mt-1.5 text-xs leading-relaxed text-inkt-zacht">{v.signaal}</p>
+              </Kaart>
+            ))
+          )}
 
           {vragen.length > 0 ? (
             <Kaart className="p-3.5">
@@ -360,13 +348,6 @@ export default function BeheerPagina() {
                 ))}
               </ul>
             </Kaart>
-          ) : null}
-
-          {gedekt.domeinenOngedekt.length <= 6 &&
-          gedekt.personasGemist.length === 0 &&
-          vragen.length === 0 &&
-          !stand.overschreden.geld ? (
-            <Leeg>Niets dat om aandacht vraagt.</Leeg>
           ) : null}
         </div>
       </section>

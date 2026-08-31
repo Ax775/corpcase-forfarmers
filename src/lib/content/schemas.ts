@@ -267,6 +267,14 @@ export const rolSchema = z.object({
   lens: z.string().min(1),
   kijkt_naar: z.array(z.string()).min(1),
   vraag: z.string().min(1),
+  /**
+   * De signaallens waar deze rol als eerste naar kijkt.
+   *
+   * `kijkt_naar` bevat domeinen, en die staan alleen op domein- en uitdagingskaarten. Zonder dit
+   * veld zakken jaarverslag- en klantkaarten voor iedere rol naar onderen, ook voor de bestuurder
+   * die juist het jaarverslag moet lezen en voor de stem van de klant.
+   */
+  lensvoorkeur: z.enum(["jaarverslag", "klant", "uitdaging", "domein"]).optional(),
 });
 
 export const rollenBestandSchema = z.object({

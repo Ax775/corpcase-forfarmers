@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { beoordeelRolopdracht } from "../afgeleid";
-import { organisaties, rolopdrachtenVoorOrganisatie, speelmodi } from "@/lib/content";
-import type { SessieState } from "@/lib/supabase/types";
+import { organisaties, rolopdrachtenVoorOrganisatie } from "@/lib/content";
+import { sessieState } from "./sessiefixture";
 
 /**
  * Een sessie waarin niemand iets in het portfolio heeft gezet.
@@ -10,37 +10,6 @@ import type { SessieState } from "@/lib/supabase/types";
  * opbrengstfase belandt als een groep vastloopt. Juist dan moet de onthulling van de rolopdrachten
  * kloppen, want die is bedoeld als bevinding — niet als ruis.
  */
-function legeSessie(): SessieState {
-  const org = organisaties[0];
-  return {
-    sessie: {
-      id: "test",
-      titel: "Lege sessie",
-      organisatie_id: org.id,
-      speelmodus: speelmodi.modi[0].id,
-      fase: "opbrengst",
-      join_code: "ABCDEF",
-      beheer_code: null,
-      budget_geld: org.budget_defaults.geld_eur,
-      budget_capaciteit: org.budget_defaults.verandercapaciteit_mensmaanden,
-      uitgangspunten: {},
-      onzekerheid_pct: 30,
-      fase_deadline: null,
-      aangemaakt_op: "2026-01-01T00:00:00Z",
-      bijgewerkt_op: "2026-01-01T00:00:00Z",
-      afgerond_op: null,
-    },
-    deelnemers: [],
-    selecties: [],
-    usecases: [],
-    usecaseSignalen: [],
-    waarderingen: [],
-    bijdragen: [],
-    allocaties: [],
-    besluiten: [],
-    roadmap: [],
-  };
-}
 
 describe("rolopdrachten bij een leeg portfolio", () => {
   const controles = rolopdrachtenVoorOrganisatie(organisaties[0].id).opdrachten.map(
@@ -49,7 +18,7 @@ describe("rolopdrachten bij een leeg portfolio", () => {
 
   it("beoordeelt geen enkele opdracht als gehaald", () => {
     for (const controle of controles) {
-      const oordeel = beoordeelRolopdracht(legeSessie(), controle);
+      const oordeel = beoordeelRolopdracht(sessieState({ sessie: { fase: "opbrengst" } as never }), controle);
       expect(oordeel.gehaald, `${controle} zou niet gehaald mogen zijn`).toBe(false);
     }
   });
@@ -61,7 +30,7 @@ describe("rolopdrachten bij een leeg portfolio", () => {
    */
   it("laat de toelichting niet beweren dat alles in orde is", () => {
     for (const controle of controles) {
-      const oordeel = beoordeelRolopdracht(legeSessie(), controle);
+      const oordeel = beoordeelRolopdracht(sessieState({ sessie: { fase: "opbrengst" } as never }), controle);
       expect(oordeel.toelichting, `${controle} spreekt zijn eigen oordeel tegen`).not.toMatch(
         /^Elke use case/,
       );
@@ -69,7 +38,7 @@ describe("rolopdrachten bij een leeg portfolio", () => {
   });
 
   it("zegt in gewone taal waaróm het niet lukte", () => {
-    const oordeel = beoordeelRolopdracht(legeSessie(), controles[0]);
+    const oordeel = beoordeelRolopdracht(sessieState({ sessie: { fase: "opbrengst" } as never }), controles[0]);
     expect(oordeel.toelichting).toContain("niets in het portfolio");
   });
 });

@@ -52,17 +52,30 @@ eigen scherm; op het beheerscherm zie je het bij "Wie is er" terug als een etike
 Dat is geen storing — vaak is het iemand die alvast rondkijkt — maar bij drie mensen die alle
 drie ergens anders zitten, is dat het moment om ze weer bij elkaar te roepen.
 
-Wat op het beheerscherm om aandacht vraagt:
+**Het beheerscherm denkt mee.** Onder "Wat nu te doen" staat wat de app afleidt uit de stand van
+de sessie, met bij elk punt zowel het signaal (wat er feitelijk is waargenomen) als één concrete
+handeling. Dat paneel is meestal leeg, en dat is de bedoeling: een lijst die altijd vol staat wordt
+niet gelezen. Wat er kan verschijnen:
 
+- **De groep loopt uiteen.** Vanaf twee mensen die in een andere fase kijken dan de groep. Bij één
+  is dat meestal iemand die vooruit kijkt; daar zegt de app niets over.
+- **Deze fase loopt uit.** De speelduur zet per fase een tijd; die wordt nu ook echt gebruikt.
 - **Het gesprek is nog smal.** Weinig vakgebieden geraakt betekent meestal dat het team praat over
-  waar het toch al mee bezig was. Goede interventie: laat de domein-lens openslaan en vraag welk
-  vakgebied het meest wordt overgeslagen. In de praktijk zijn dat vaak de Future-of-Farming-thema's
-  — duurzaamheid op het erf en ketensamenwerking — omdat die minder tastbaar voelen dan een
-  verbetering in het orderproces.
-- **Klanttypen die nergens terugkomen.** Vraag wie er namens die klant aan tafel zit.
-- **Open hulpvragen.** Lees er één hardop voor. Meestal weet iemand aan tafel het antwoord binnen
-  dertig seconden, en dat is precies het moment waarop het spel zijn werk doet.
-- **Budget overschreden.** Niet direct corrigeren. Vraag wat er dan afvalt; daar zit het gesprek.
+  waar het toch al mee bezig was. Het voorstel noemt de vakgebieden die worden overgeslagen — in de
+  praktijk vaak de Future-of-Farming-thema's, omdat die minder tastbaar voelen dan een verbetering
+  in het orderproces.
+- **Eén persoon draagt de sessie.** Als meer dan zestig procent van de use cases van dezelfde
+  deelnemer komt. Dan levert de sessie zijn portfolio op, niet dat van het team.
+- **Er wordt niet doorgerekend**, het budget is overschreden, er is nog geen realiteitscheck
+  besloten, of de roadmap is leeg terwijl het portfolio dat niet is.
+
+Elk voorstel is een suggestie met de reden erbij, nooit een opdracht. Zie je iets waar je het niet
+mee eens bent, dan zie je meteen waarop het gebaseerd was.
+
+**Deelnemers krijgen niet allemaal dezelfde volgorde.** In de verkenfase staan de signaalkaarten
+bovenaan die bij jouw rol horen, met een bijschrift waarom. Er wordt niets verborgen — iedereen kan
+overal bij — maar je begint bij wat jij het beste kunt beoordelen. De stem van de veehouder ziet
+dus andere kaarten bovenaan dan de informatiemanager.
 
 ## Drie momenten die het meeste opleveren
 
