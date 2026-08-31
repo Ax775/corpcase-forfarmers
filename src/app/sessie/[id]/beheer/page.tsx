@@ -94,7 +94,11 @@ export default function BeheerPagina() {
   }
 
   return (
-    <Thema accent={organisatie(state.sessie.organisatie_id).thema.accent} className="flex-1">
+    <Thema
+      accent={organisatie(state.sessie.organisatie_id).thema.accent}
+      accentSecundair={organisatie(state.sessie.organisatie_id).thema.accent_secundair}
+      className="flex-1"
+    >
     <main className="mx-auto w-full max-w-4xl px-4 py-6">
       <Kop
         boven="Facilitator"

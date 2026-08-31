@@ -45,6 +45,13 @@ wordt.
   code-alfabet zelf sluit al verwarrende tekens uit (geen I/1, geen O/0).
 - **Groen betekent waarde, niet accent.** Een negatieve netto baat wordt daarom in de risicokleur
   getoond; anders leest een verliesgevende use case als winst.
+
+  Precies daarom mag een organisatie optioneel een **tweede** huisstijlkleur aanleveren
+  (`accent_secundair`): die doet niet mee als tweede accent, maar neemt de waardekleur over. Bij
+  ForFarmers is dat hun limegroen `#99BA16`, dat op crème 2,09 haalt en dus wordt verdiept tot
+  `#586C0D` op 5,51 — met behoud van tint, zodat het hún groen blijft. Een tweede kleur die wél
+  als accent mee zou doen, haalt de functie uit het eerste accent: dan is niets meer bijzonder.
+  Wie geen tweede kleur opgeeft, houdt het standaardgroen.
 - **Eén houtskoolpaneel per scherm**, op de plek waar de beslissing valt: het uitkomstblok bij de
   waardebepaling, de investeringsruimte bij de prioritering, de grote getallen bij de opbrengst,
   en de matrix op de beamer. Geen invoervelden op donker.

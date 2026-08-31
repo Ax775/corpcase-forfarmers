@@ -19,6 +19,7 @@ const volledigFormulier: OrganisatieFormulier = {
   sector: "woningcorporatie",
   pitch: "Een testcorporatie voor de wizard.",
   accent: "#3366CC",
+  accentSecundair: "#7FA82B",
   themaToelichting: "De huisstijlkleur.",
   themaBron: "huisstijlgids",
   themaGeverifieerd: true,

@@ -64,6 +64,7 @@ export default function SpelerPagina() {
   return (
     <Thema
       accent={organisatie(state.sessie.organisatie_id).thema.accent}
+      accentSecundair={organisatie(state.sessie.organisatie_id).thema.accent_secundair}
       className="flex flex-1 flex-col"
     >
       <Sessiebalk state={state} identiteit={identiteit} sessieId={sessieId} doe={doe} />

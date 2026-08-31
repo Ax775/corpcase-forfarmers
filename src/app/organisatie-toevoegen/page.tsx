@@ -75,6 +75,7 @@ const legFormulier = (): OrganisatieFormulier => ({
   sector: sectoren[0].id,
   pitch: "",
   accent: "#E8524A",
+  accentSecundair: "",
   themaToelichting: "",
   themaBron: "",
   themaGeverifieerd: false,
@@ -353,10 +354,51 @@ export default function OrganisatieToevoegenPagina() {
             ) : (
               <p className="mt-1.5 text-xs text-risico">Geen geldige kleurcode.</p>
             )}
+
+            <div className="mt-4">
+              <span className="block text-sm font-medium text-inkt">
+                Tweede huisstijlkleur (optioneel)
+              </span>
+              <span className="mt-0.5 block text-xs text-inkt-licht">
+                Doet niet mee als tweede accent, maar neemt de waardekleur over: het groen dat
+                &quot;dit levert op&quot; betekent. Leeg laten houdt het standaardgroen.
+              </span>
+              <div className="mt-1.5 flex items-center gap-2">
+                <input
+                  type="color"
+                  value={
+                    /^#[0-9a-fA-F]{6}$/.test(form.accentSecundair)
+                      ? form.accentSecundair
+                      : "#1c6b52"
+                  }
+                  onChange={(e) => werkForm({ accentSecundair: e.target.value })}
+                  className="h-11 w-14 cursor-pointer rounded-kaart border border-rand-sterk bg-vlak p-1"
+                />
+                <input
+                  className={`${invoerStijl} w-36 font-mono`}
+                  value={form.accentSecundair}
+                  onChange={(e) => werkForm({ accentSecundair: e.target.value })}
+                  placeholder="#99BA16"
+                />
+                {form.accentSecundair ? (
+                  <Knop
+                    soort="rand"
+                    onClick={() => werkForm({ accentSecundair: "" })}
+                    className="!px-2.5 !py-1.5 !text-xs"
+                  >
+                    Wissen
+                  </Knop>
+                ) : null}
+              </div>
+            </div>
           </Veld>
 
           {palet ? (
-            <Thema accent={form.accent} className="rounded-kaart border border-rand p-4">
+            <Thema
+              accent={form.accent}
+              accentSecundair={form.accentSecundair || undefined}
+              className="rounded-kaart border border-rand p-4"
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-inkt-licht">
                 Voorbeeld
               </p>

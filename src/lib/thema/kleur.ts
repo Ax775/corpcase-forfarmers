@@ -1,9 +1,14 @@
 /**
  * Kleurafleiding met gemeten contrast.
  *
- * Een corporatie levert één accentkleur aan. Daar zijn drie varianten van nodig die elk een
+ * Een organisatie levert één accentkleur aan. Daar zijn drie varianten van nodig die elk een
  * andere leesbaarheidseis hebben: een vulling waar witte knoptekst op staat, een tint voor kleine
  * tekst op papier, en een tint voor tekst op een donker paneel.
+ *
+ * Een tweede huisstijlkleur is optioneel. Die gaat niet als tweede accent de interface in — dan
+ * wordt het versiering en verliest het eerste accent zijn functie — maar neemt de plek over van de
+ * waardekleur: het groen dat "dit levert op" betekent. Dat werkt alleen omdat het ontwerp die
+ * betekenis al had; bij een organisatie zonder tweede kleur blijft het standaardgroen staan.
  *
  * Die varianten worden niet met een vast percentage verdonkerd. Dat werkt toevallig bij koraal,
  * maar bij een gele of lichtgroene huisstijl levert het alsnog onleesbare tekst op. In plaats
@@ -165,6 +170,22 @@ function zachteTint(accent: string): string {
   return rgbNaarHex(hslNaarRgb({ h: hsl.h, s: Math.min(hsl.s, 0.7), l: 0.94 }));
 }
 
+/**
+ * Het palet van de tweede huisstijlkleur.
+ *
+ * `waarde` staat als kleine tekst op papier en heeft dus de zwaarste eis. Een felle huisstijlkleur
+ * — ForFarmers' limegroen haalt op crème nog geen 2,5 — wordt daarvoor net zolang verdiept tot hij
+ * leesbaar is, met behoud van tint. Zo blijft het herkenbaar hun groen, en is het toch te lezen.
+ */
+export type TweedePalet = {
+  /** De aangeleverde kleur. Alleen voor grote vormen zonder tekst erop. */
+  tweede: string;
+  /** Kleine tekst in de waardekleur op de papieren ondergrond. */
+  waarde: string;
+  /** Lichte tint voor achtergrondvlakken, bijvoorbeeld een etiket. */
+  waardeZacht: string;
+};
+
 export type Palet = {
   /** De aangeleverde kleur. Alleen voor grote vormen: cijfers, cirkels, matrixpunten. */
   accent: string;
@@ -203,6 +224,22 @@ export function leidPaletAf(accent: string): Palet {
   };
 }
 
+/**
+ * Leidt de waardekleur af uit de tweede huisstijlkleur.
+ *
+ * Bewust dezelfde gemeten contrasttoets als het hoofdaccent: ook een tweede kleur mag de interface
+ * niet stilletjes onleesbaar maken.
+ */
+export function leidTweedePaletAf(tweede: string): TweedePalet {
+  const genormaliseerd = rgbNaarHex(hexNaarRgb(tweede));
+
+  return {
+    tweede: genormaliseerd,
+    waarde: zoekVariant(genormaliseerd, PAPIER, DOEL_KLEINE_TEKST, "donkerder"),
+    waardeZacht: zachteTint(genormaliseerd),
+  };
+}
+
 /** De variabelen zoals ze op een element gezet worden; de utilities lezen ze via var(). */
 export function paletAlsVariabelen(palet: Palet): Record<string, string> {
   return {
@@ -211,5 +248,13 @@ export function paletAlsVariabelen(palet: Palet): Record<string, string> {
     "--color-accent-diep": palet.accentDiep,
     "--color-accent-op-donker": palet.accentOpDonker,
     "--color-accent-zacht": palet.accentZacht,
+  };
+}
+
+export function tweedePaletAlsVariabelen(palet: TweedePalet): Record<string, string> {
+  return {
+    "--color-accent-tweede": palet.tweede,
+    "--color-waarde": palet.waarde,
+    "--color-waarde-zacht": palet.waardeZacht,
   };
 }

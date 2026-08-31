@@ -38,6 +38,8 @@ export type OrganisatieFormulier = {
   sector: string;
   pitch: string;
   accent: string;
+  /** Optionele tweede huisstijlkleur; neemt de waardekleur over. Leeg laten mag. */
+  accentSecundair: string;
   themaToelichting: string;
   themaBron: string;
   themaGeverifieerd: boolean;
@@ -107,6 +109,7 @@ export function bouwOrganisatieJson(f: OrganisatieFormulier) {
     pitch: f.pitch,
     thema: {
       accent: f.accent,
+      ...(f.accentSecundair ? { accent_secundair: f.accentSecundair } : {}),
       toelichting: f.themaToelichting,
       bron: f.themaBron,
       geverifieerd: f.themaGeverifieerd,

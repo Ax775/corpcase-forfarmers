@@ -52,7 +52,11 @@ export default function SchermPagina() {
   );
 
   return (
-    <Thema accent={organisatie(state.sessie.organisatie_id).thema.accent} className="flex-1">
+    <Thema
+      accent={organisatie(state.sessie.organisatie_id).thema.accent}
+      accentSecundair={organisatie(state.sessie.organisatie_id).thema.accent_secundair}
+      className="flex-1"
+    >
     <main className="relative mx-auto w-full max-w-6xl overflow-hidden px-8 py-8">
       {/*
        * De cirkel begint onder de kop. Daarboven staat de teamscore in vol koraal, en dat cijfer

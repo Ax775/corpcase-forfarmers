@@ -83,6 +83,15 @@ export const organisatieSchema = z.object({
    */
   thema: z.object({
     accent: z.string().regex(/^#[0-9a-fA-F]{3,6}$/, "Geef een kleurcode zoals #E8524A"),
+    /**
+     * Optionele tweede huisstijlkleur. Neemt de plek in van de waardekleur — het groen dat "dit
+     * levert op" betekent — in plaats van als tweede accent mee te doen. Weglaten mag: dan blijft
+     * het standaardgroen staan.
+     */
+    accent_secundair: z
+      .string()
+      .regex(/^#[0-9a-fA-F]{3,6}$/, "Geef een kleurcode zoals #99BA16")
+      .optional(),
     toelichting: z.string().optional(),
     bron: z.string(),
     geverifieerd: z.boolean(),

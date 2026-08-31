@@ -77,7 +77,11 @@ export default function RapportPagina() {
   }
 
   return (
-    <Thema accent={org.thema.accent} className="flex-1">
+    <Thema
+      accent={org.thema.accent}
+      accentSecundair={org.thema.accent_secundair}
+      className="flex-1"
+    >
     <main className="mx-auto w-full max-w-3xl px-6 py-10">
       <div className="niet-printen mb-8 flex flex-wrap items-center justify-between gap-4">
         <p className="text-xs text-inkt-licht">

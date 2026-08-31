@@ -13,7 +13,11 @@ export default function Home() {
     profielen.reduce((som, p) => som + kies(p), 0);
 
   return (
-    <Thema accent={org.thema.accent} className="flex-1">
+    <Thema
+      accent={org.thema.accent}
+      accentSecundair={org.thema.accent_secundair}
+      className="flex-1"
+    >
       <main className="relative mx-auto w-full max-w-3xl overflow-hidden px-5 py-12 sm:py-20">
         <Cirkel hoek="rechtsboven" formaat={0.62} />
 

@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  AA_NORMAAL,
   contrast,
   HOUTSKOOL,
   hexNaarRgb,
   hslNaarRgb,
   leidPaletAf,
+  leidTweedePaletAf,
   luminantie,
   PAPIER,
   rgbNaarHex,
@@ -170,6 +172,47 @@ describe("de vaste neutralen", () => {
   it("houden de semantische kleuren leesbaar", () => {
     for (const hex of ["#1C6B52", "#8A5A13", "#93332F"]) {
       expect(contrast(hex, PAPIER)).toBeGreaterThanOrEqual(AA);
+    }
+  });
+});
+
+describe("tweede huisstijlkleur", () => {
+  /**
+   * De tweede kleur neemt de waardekleur over en staat dus als kleine tekst op papier. Juist een
+   * felle merkkleur haalt daar niets: ForFarmers' limegroen komt op crème niet eens in de buurt.
+   * Deze test bewaakt dat de afleiding hem verdiept in plaats van hem te laten staan.
+   */
+  it("verdiept een felle tweede kleur tot kleine tekst op papier leesbaar is", () => {
+    const rauw = "#99BA16";
+    expect(contrast(rauw, PAPIER)).toBeLessThan(AA_NORMAAL);
+
+    const palet = leidTweedePaletAf(rauw);
+    expect(contrast(palet.waarde, PAPIER)).toBeGreaterThanOrEqual(AA_NORMAAL);
+    expect(palet.tweede).toBe(rauw);
+  });
+
+  it("houdt de tint herkenbaar bij het verdiepen", () => {
+    const palet = leidTweedePaletAf("#99BA16");
+    const rauweTint = rgbNaarHsl(hexNaarRgb("#99BA16")).h;
+    const diepeTint = rgbNaarHsl(hexNaarRgb(palet.waarde)).h;
+    // Zelfde tint op afrondingsverschillen na: het moet nog steeds hún groen zijn.
+    expect(Math.abs(rauweTint - diepeTint)).toBeLessThan(0.02);
+  });
+
+  it("levert een zachte tint die donkere tekst draagt", () => {
+    const palet = leidTweedePaletAf("#99BA16");
+    expect(contrast("#22201E", palet.waardeZacht)).toBeGreaterThanOrEqual(AA_NORMAAL);
+  });
+
+  it("doet dat ook voor de organisaties die een tweede kleur in content hebben", () => {
+    for (const org of organisaties) {
+      const tweede = org.thema.accent_secundair;
+      if (!tweede) continue;
+      const palet = leidTweedePaletAf(tweede);
+      expect(
+        contrast(palet.waarde, PAPIER),
+        `${org.id}: waardekleur onleesbaar op papier`,
+      ).toBeGreaterThanOrEqual(AA_NORMAAL);
     }
   });
 });
