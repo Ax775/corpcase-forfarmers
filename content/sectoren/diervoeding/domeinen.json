@@ -1,115 +1,24 @@
 {
-  "toelichting": "Taxonomie van vakgebieden bij een mengvoerproducent, gebruikt als domein-lens en dekkingsmeter in de game. De acht vakgebieden die ForFarmers zelf noemt (Sales & Sales Support, Productie & Techniek, Inkoop & Formulering, Logistiek, Nutritie & Innovatie, Laboratorium, Marketing & Communicatie, Business Support) zijn hier uitgesplitst tot een volledige keten van grondstofinkoop tot boerenerf, en ingedeeld naar sturend, primair en ondersteunend. Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur; deze indeling is opgesteld op basis van de eigen publicaties van ForFarmers en moet naast de werkelijke organisatie-indeling gelegd worden.",
-  "bron": "https://www.werkenbijforfarmers.nl/over-forfarmers/organisatie.aspx (vakgebieden) en https://www.forfarmersgroup.eu/onze-strategie (ketenstappen)",
+  "toelichting": "Vakgebieden aan de voorkant van de dienstverlening en op de Future-of-Farming-agenda. Bewust geordend naar de reis van de boer — advies, contact, levering, beleving — in plaats van naar de interne waardeketen. De operationele kant (grondstofinkoop, formulering, productie, laboratorium, financiële administratie) valt buiten de scope van deze sessie en staat er daarom niet in. Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur; de indeling is opgesteld op basis van de eigen publicaties van ForFarmers en moet naast de werkelijke organisatie-indeling gelegd worden.",
+  "bron": "https://www.forfarmersgroup.eu/onze-strategie (Strategie 2030) en https://www.werkenbijforfarmers.nl/over-forfarmers/organisatie.aspx (vakgebieden)",
   "geverifieerd": false,
   "domeinen": [
-    {
-      "id": "besturing",
-      "naam": "Besturing",
-      "soort": "sturend",
-      "omschrijving": "Strategievorming, portfoliokeuzes en koersbepaling van de groep, inclusief overnames en joint ventures."
-    },
-    {
-      "id": "planning-control",
-      "naam": "Planning & Control",
-      "soort": "sturend",
-      "omschrijving": "Begroten, forecasten, sturen op volume en marge, en verantwoorden aan aandeelhouders en analisten."
-    },
-    {
-      "id": "risico-compliance",
-      "naam": "Risico & Compliance",
-      "soort": "sturend",
-      "omschrijving": "Voedsel- en voederveiligheid, GMP+, dierwelzijn, wet- en regelgeving, privacy en duurzaamheidsrapportage."
-    },
-    {
-      "id": "inkoop-grondstoffen",
-      "naam": "Grondstofinkoop",
-      "soort": "primair",
-      "omschrijving": "Inkoop en positiebeheer van granen, eiwitten, co-producten en additieven in een volatiele wereldmarkt."
-    },
-    {
-      "id": "formulering",
-      "naam": "Formulering & receptuur",
-      "soort": "primair",
-      "omschrijving": "Least-cost formulering binnen nutritionele specificaties: de knop waar centen per ton worden verdiend of verloren."
-    },
-    {
-      "id": "productie",
-      "naam": "Productie & Techniek",
-      "soort": "primair",
-      "omschrijving": "Malen, mengen, persen en pelleteren; fabrieksrendement, energieverbruik en onderhoud van 41 locaties."
-    },
-    {
-      "id": "kwaliteit-lab",
-      "naam": "Kwaliteit & Laboratorium",
-      "soort": "primair",
-      "omschrijving": "Monstername, analyse, borging en tracering van grondstof tot afgeleverde partij."
-    },
-    {
-      "id": "logistiek",
-      "naam": "Logistiek & distributie",
-      "soort": "primair",
-      "omschrijving": "Bulktransport naar het erf: ritplanning, beladingsgraad, silovoorraden en aflevermomenten."
-    },
-    {
-      "id": "verkoop-advies",
-      "naam": "Verkoop & bedrijfsadvies",
-      "soort": "primair",
-      "omschrijving": "De buitendienst en de specialisten op het erf: voeradvies, rantsoenen en het rendement van de boer."
-    },
-    {
-      "id": "klantbeheer",
-      "naam": "Klantbeheer & orderproces",
-      "soort": "primair",
-      "omschrijving": "Orders, contracten, klantenservice, facturatie en het digitale klantportaal."
-    },
-    {
-      "id": "nutritie-innovatie",
-      "naam": "Nutritie & Innovatie",
-      "soort": "primair",
-      "omschrijving": "Voedingskennis, proefonderzoek, nieuwe concepten en alternatieve eiwitbronnen."
-    },
-    {
-      "id": "duurzaamheid-keten",
-      "naam": "Duurzaamheid & reststromen",
-      "soort": "primair",
-      "omschrijving": "CO2-voetafdruk van het rantsoen, circulaire reststromen en verantwoorde herkomst van grondstoffen."
-    },
-    {
-      "id": "ketenintegratie",
-      "naam": "Ketenintegratie & partners",
-      "soort": "primair",
-      "omschrijving": "Samenwerking met slachterijen, zuivel, broederijen en joint ventures; regie over koppels en afzet."
-    },
-    {
-      "id": "financien",
-      "naam": "Financiën",
-      "soort": "ondersteunend",
-      "omschrijving": "Administratie, debiteuren en kredietrisico op boerenbedrijven, treasury en jaarrekening."
-    },
-    {
-      "id": "informatievoorziening",
-      "naam": "Informatievoorziening & ICT",
-      "soort": "ondersteunend",
-      "omschrijving": "ERP, koppelvlakken, datafundament en beveiliging over vier landenclusters met een decentrale historie."
-    },
-    {
-      "id": "inkoop-indirect",
-      "naam": "Indirecte inkoop & contracten",
-      "soort": "ondersteunend",
-      "omschrijving": "Energie, transportcontracten, verpakking, diensten en leveranciersmanagement buiten grondstoffen."
-    },
-    {
-      "id": "hrm",
-      "naam": "HRM",
-      "soort": "ondersteunend",
-      "omschrijving": "Werving, vakmanschap, opvolging en inzetbaarheid van circa 3.000 medewerkers."
-    },
-    {
-      "id": "marketing-communicatie",
-      "naam": "Marketing & Communicatie",
-      "soort": "ondersteunend",
-      "omschrijving": "Merk, vakinhoudelijke content richting boeren, interne communicatie en woordvoering."
-    }
+    { "id": "toekomst-veehouderij", "naam": "Toekomst van de veehouderij", "soort": "sturend", "omschrijving": "Waar de missie For the Future of Farming landt: welke boer bedienen we in 2030, en met welke propositie blijven we relevant als de sector verandert." },
+    { "id": "klantstrategie", "naam": "Klantstrategie & segmentatie", "soort": "sturend", "omschrijving": "Welke klantgroepen we willen winnen en behouden, welk aanbod daarbij hoort, en hoe we marktaandeel per gebied sturen." },
+
+    { "id": "bedrijfsadvies", "naam": "Bedrijfsadvies op het erf", "soort": "primair", "omschrijving": "De specialist bij de boer: voeradvies, rantsoenen en de vertaling naar het rendement van het bedrijf." },
+    { "id": "klantcontact", "naam": "Klantcontact & orderproces", "soort": "primair", "omschrijving": "Bestellen, vragen stellen, status opvragen en factureren — via telefoon, portaal, app of bericht." },
+    { "id": "levering-op-het-erf", "naam": "Levering op het erf", "soort": "primair", "omschrijving": "Het aflevermoment als servicemoment: aankomsttijd, de juiste silo, hygiëne en de chauffeur die op het erf staat." },
+    { "id": "klantbeleving", "naam": "Klantbeleving & retentie", "soort": "primair", "omschrijving": "Hoe het is om klant te zijn: klachten, verwachtingen, verloopsignalen en het gesprek dat te laat komt." },
+    { "id": "marketing-content", "naam": "Marketing & vakcontent", "soort": "primair", "omschrijving": "Merk, vakinhoudelijke kennis richting boeren, studieclubs, campagnes en de eerste kennismaking met een nieuwe klant." },
+
+    { "id": "duurzaamheid-op-het-erf", "naam": "Duurzaamheid op het erf", "soort": "primair", "omschrijving": "De voetafdruk van het rantsoen per bedrijf, kringlooplandbouw en dierwelzijn — en de verantwoording die de boer aan zíjn afnemer moet afleggen." },
+    { "id": "ketensamenwerking", "naam": "Ketensamenwerking", "soort": "primair", "omschrijving": "Samenwerken met zuivel, slachterij en broederij: koppels onder eigen regie, ketenafspraken en gedeelde cijfers." },
+    { "id": "on-farm-data", "naam": "On-farm datamanagement", "soort": "primair", "omschrijving": "Data uit stal en bedrijf van de boer benutten voor beter advies en betere prestaties. Strategie 2030 noemt dit expliciet als middel om 28.500 klanten optimaal te bedienen." },
+    { "id": "nieuwe-diensten", "naam": "Nieuwe diensten & verdienmodellen", "soort": "primair", "omschrijving": "Verbreding van het aanbod naast voer: advies, monitoring, begeleiding en concepten waar apart voor betaald wordt." },
+
+    { "id": "klantdata-systemen", "naam": "Klantdata & systemen", "soort": "ondersteunend", "omschrijving": "CRM, portaal en koppelvlakken, en de kwaliteit van de klantgegevens waar de hele voorkant op steunt — over vier landenclusters met een decentrale historie." },
+    { "id": "verantwoord-datagebruik", "naam": "Verantwoord datagebruik", "soort": "ondersteunend", "omschrijving": "Grondslag, transparantie en uitlegbaarheid bij het gebruik van klant- en dierdata. Wat je aan de keukentafel niet kunt uitleggen, moet je niet bouwen." },
+    { "id": "vakmanschap-voorkant", "naam": "Vakmanschap aan de voorkant", "soort": "ondersteunend", "omschrijving": "Kennis, opleiding en opvolging van de mensen die de klant zien: specialisten, binnendienst en chauffeurs." }
   ]
 }

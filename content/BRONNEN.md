@@ -48,7 +48,7 @@ afgelezen.
 | Onderwerp | Waarde in de game | Actie |
 |---|---|---|
 | Productielocaties | 41 fabrieken | Controleren in het jaarverslag 2025 |
-| Domeinmodel | 18 vakgebieden | Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur. De indeling is opgesteld op basis van de acht vakgebieden die ForFarmers zelf noemt, aangevuld tot een volledige keten van grondstofinkoop tot boerenerf. Leg hem naast de eigen organisatie-indeling |
+| Domeinmodel | 14 vakgebieden | Voor deze bedrijfstak bestaat geen publieke referentiearchitectuur. De indeling is opgesteld op basis van de vakgebieden die ForFarmers zelf noemt, en geordend naar de reis van de boer in plaats van naar de interne waardeketen. Beperkt tot de scope van deze sessie. Leg hem naast de eigen organisatie-indeling |
 | Verdeling medewerkers per cluster | NL 35%, UK 29%, DU 19%, PL 17%, BE 5 fte | Uit een zoekresultaatsamenvatting van het jaarverslag, niet tegen het origineel gecontroleerd. Staat niet in de game, wel in deze briefing |
 
 ## Afgeleide cijfers — reken ze na voordat je ze gebruikt
@@ -70,7 +70,6 @@ ForFarmers-cijfers:
 - Intern uurtarief all-in: € 65/uur
 - Bulkritten per jaar: 380.000 (afgeleid van 10,6 mln ton bij circa 28 ton per vracht)
 - Kosten per bulkrit: € 250
-- Afkeur en herbewerking: 0,5% van het volume
 - Klantcontacten per jaar: 500.000
 - Erfbezoeken per jaar: 150.000
 - Investeringsruimte: € 4.000.000 en 72 mensmaanden verandercapaciteit per jaar

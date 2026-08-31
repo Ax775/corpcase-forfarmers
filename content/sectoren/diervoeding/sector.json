@@ -1,10 +1,10 @@
 {
   "id": "diervoeding",
-  "naam": "Diervoeding & agrifood",
-  "omschrijving": "Producenten van mengvoer en complete voeroplossingen voor de veehouderij. Het spel kijkt door de vakgebieden van het bedrijf, de veehouder op het erf en de sectoruitdagingen naar use cases.",
+  "naam": "Diervoeding — voorkant en Future of Farming",
+  "omschrijving": "De voorkant van de dienstverlening aan veehouders, en de agenda achter For the Future of Farming. Het spel kijkt door de reis van de boer, de vakgebieden aan de voorkant en de sectoruitdagingen naar use cases. De operationele keten — grondstofinkoop, formulering, fabriek en laboratorium — valt bewust buiten scope.",
   "domeinmodel": {
     "naam": "vakgebieden",
-    "toelichting": "De vakgebieden zoals ForFarmers ze zelf benoemt, aangevuld tot een volledige keten van grondstofinkoop tot boerenerf en ingedeeld naar sturend, primair en ondersteunend."
+    "toelichting": "De vakgebieden aan de voorkant van de dienstverlening, plus de thema's van de Future-of-Farming-agenda. Geordend naar de reis van de boer in plaats van naar de interne waardeketen."
   },
   "klantlens": {
     "enkelvoud": "Veehouder",
@@ -20,9 +20,10 @@
     "contract",
     "order",
     "factuur",
-    "kredietlimiet",
+    "stal",
     "dierdata",
     "erfbezoek",
+    "bezoekverslag",
     "medewerker"
   ]
 }

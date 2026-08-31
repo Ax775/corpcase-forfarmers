@@ -385,6 +385,19 @@ export function beoordeelRolopdracht(state: SessieState, controle: string): Opdr
       };
     }
 
+    case "minimaal_een_hoge_medewerkerswaarde": {
+      const raakt = inPortfolio.filter(
+        (b) => (b.waardering?.kwalitatief.medewerkerswaarde ?? 0) >= 4,
+      );
+      return {
+        gehaald: raakt.length >= 1,
+        toelichting:
+          raakt.length >= 1
+            ? `${raakt.length} use ${raakt.length === 1 ? "case maakt" : "cases maken"} het werk aan de voorkant merkbaar lichter.`
+            : "Geen enkele use case in het portfolio maakt het werk van de eigen mensen lichter.",
+      };
+    }
+
     case "minimaal_een_hoge_duurzaamheid": {
       const raakt = inPortfolio.filter((b) => (b.waardering?.kwalitatief.duurzaamheid ?? 0) >= 4);
       return {

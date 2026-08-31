@@ -19,12 +19,18 @@ per ton en het volume per klant zijn daaruit afgeleide groepsgemiddelden die per
 land sterk afwijken. Noem dat hardop bij de eerste doorrekening — anders rekent het team met een
 gemiddelde alsof het hun situatie is.
 
+**Ken de scope, en bewaak hem.** Deze sessie gaat over For the Future of Farming en over de
+voorkant van de dienstverlening: het erf, het klantcontact, de levering, de beleving en de
+duurzaamheids- en ketenagenda. Grondstofinkoop, formulering, fabriek en laboratorium vallen
+erbuiten. Dat komt onherroepelijk ter sprake — daar zit immers ook geld — en dan is het jouw taak
+om te zeggen: goed punt, andere sessie. Noteer het en ga door.
+
 **Verdeel de rollen.** Acht rollen, elk met een eigen bril: bestuurder, commercieel directeur,
-directeur supply chain, manager nutritie & innovatie, CFO, informatiemanager, manager duurzaamheid
-en de stem van de veehouder. Zorg dat in elk geval de informatiemanager en die laatste
-vertegenwoordigd zijn — dat zijn de twee stemmen die anders het snelst wegvallen. De boer heeft
-geen stoel aan tafel tenzij iemand hem geeft, en zonder informatiemanager belanden er use cases in
-het portfolio waarvan niemand weet of de data er is.
+manager buitendienst, manager klantenservice, CFO, informatiemanager, manager duurzaamheid en de
+stem van de veehouder. Zorg dat in elk geval de informatiemanager en die laatste vertegenwoordigd
+zijn — dat zijn de twee stemmen die anders het snelst wegvallen. De boer heeft geen stoel aan tafel
+tenzij iemand hem geeft, en zonder informatiemanager belanden er use cases in het portfolio
+waarvan niemand weet of de data er is.
 
 **Stuur de link vooraf.** Fase 1 kan asynchroon: deelnemers markeren op hun eigen moment wat ze
 herkennen. Dat scheelt in de sessie een half uur en levert een beter startpunt op, omdat mensen
@@ -48,10 +54,11 @@ drie ergens anders zitten, is dat het moment om ze weer bij elkaar te roepen.
 
 Wat op het beheerscherm om aandacht vraagt:
 
-- **Het gesprek is nog smal.** Weinig domeinen geraakt betekent meestal dat het team praat over
+- **Het gesprek is nog smal.** Weinig vakgebieden geraakt betekent meestal dat het team praat over
   waar het toch al mee bezig was. Goede interventie: laat de domein-lens openslaan en vraag welk
-  domein het meest wordt overgeslagen. Bij een voerproducent zijn dat vaak grondstofinkoop en
-  formulering — precies waar de meeste marge zit.
+  vakgebied het meest wordt overgeslagen. In de praktijk zijn dat vaak de Future-of-Farming-thema's
+  — duurzaamheid op het erf en ketensamenwerking — omdat die minder tastbaar voelen dan een
+  verbetering in het orderproces.
 - **Klanttypen die nergens terugkomen.** Vraag wie er namens die klant aan tafel zit.
 - **Open hulpvragen.** Lees er één hardop voor. Meestal weet iemand aan tafel het antwoord binnen
   dertig seconden, en dat is precies het moment waarop het spel zijn werk doet.

@@ -4,20 +4,23 @@
 naar een doorgerekend, geprioriteerd AI-usecaseportfolio komt. Bestemming: een echte pitch/sessie,
 dus cijfers zijn geverifieerd tegen primaire bronnen waar dat kon.
 
+**Scope:** For the Future of Farming en de voorkant van de dienstverlening. De operationele keten
+— grondstofinkoop, formulering, productie, laboratorium — valt er bewust buiten.
+
 ## Stand
 
-Af en groen: `content:check`, `typecheck`, `lint`, 137 unittests en 5 e2e-tests, `build` slaagt.
+Af en groen: `content:check`, `typecheck`, `lint`, 138 unittests en 5 e2e-tests, `build` slaagt.
 De volledige sessie — drie browsers, alle vijf fases, rapport en beamerscherm — speelt door.
 
 | Onderdeel | Omvang |
 |---|---|
-| Vakgebieden (domeinmodel) | 18, alle met een bibliotheekkaart |
-| Use cases | 40 (23 bewezen, 15 opkomend, 2 verkennend) |
-| Waardedrivers | 7, waaronder formuleringsmarge, transport, afkeur en volumebehoud |
+| Vakgebieden (domeinmodel) | 14, alle met een bibliotheekkaart |
+| Use cases | 34 (18 bewezen, 12 opkomend, 4 verkennend) |
+| Waardedrivers | 7: tijdsbesparing, volumebehoud, klantgroei, extra afzet, dienstopbrengst, transport, vermeden kosten |
 | Rollen met privé-opdracht | 8 |
-| Realiteitschecks | 9 |
-| Signaalkaarten | 12 jaarverslag + 6 klantpersona's + 17 uitdagingen + 18 domeinen |
-| Geverifieerde kengetallen | 9 van de 10; 8 uitgangspunten zijn expliciet aanname |
+| Realiteitschecks | 10 |
+| Signaalkaarten | 12 jaarverslag + 6 klantpersona's + 17 uitdagingen + 14 vakgebieden |
+| Geverifieerde kengetallen | 9 van de 10; 7 uitgangspunten zijn expliciet aanname |
 
 ## Wat er nog moet
 

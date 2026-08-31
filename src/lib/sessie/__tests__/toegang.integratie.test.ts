@@ -122,7 +122,7 @@ describe.skipIf(!heeftOmgeving)("toegangsmodel", () => {
       sessieId: eerste.sessie.id,
       eigenaarId: tweede.deelnemer.id,
       titel: "Proactieve statusupdates",
-      domein: "klantbeheer",
+      domein: "klantcontact",
       bibliotheekId: "uc-04",
     });
 

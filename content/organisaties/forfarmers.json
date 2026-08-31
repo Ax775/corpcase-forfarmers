@@ -198,15 +198,6 @@
       "geverifieerd": false
     },
     {
-      "id": "afkeur_pct",
-      "label": "Afkeur en herbewerking",
-      "waarde": 0.5,
-      "eenheid": "%",
-      "notatie": "0,5% van het volume",
-      "bron": "aanname op plausibele ordegrootte; het echte cijfer staat in de kwaliteitsrapportage",
-      "geverifieerd": false
-    },
-    {
       "id": "klantcontacten_per_jaar",
       "label": "Klantcontacten per jaar",
       "waarde": 500000,

@@ -4,6 +4,14 @@ Serious business game waarmee bestuur en management van ForFarmers door de ogen 
 jaarverslag, de eigen veehouders en de eigen uitdagingen tot AI- en datause-cases komen — en die
 vervolgens waarderen, prioriteren en op een roadmap zetten.
 
+## De scope
+
+Twee dingen, en bewust niet meer: **For the Future of Farming** en de **voorkant van de
+dienstverlening**. Dus het advies op het erf, het klantcontact, de levering, de klantbeleving en de
+duurzaamheids- en ketenagenda. De operationele keten — grondstofinkoop, formulering, fabriek en
+laboratorium — valt erbuiten. Dat is niet vergeten maar weggelaten: een sessie die alles omvat,
+gaat over niets.
+
 De game doorloopt vijf fases: **verkennen → identificatie → waardebepaling → prioritering →
 roadmap**, en eindigt in een deelbaar rapport. Meerdere spelers spelen samen: één teamscore, geen
 ranglijst tussen collega's.
@@ -15,7 +23,7 @@ ranglijst tussen collega's.
 
 | Map | Inhoud |
 |---|---|
-| `content/sectoren/diervoeding/` | Alles wat aan de bedrijfstak vastzit: het vakgebiedenmodel, de waardedrivers, de uitdagingen, de rollen, de rolopdrachten, de realiteitschecks en de use-casebibliotheek. |
+| `content/sectoren/diervoeding/` | Alles wat aan de bedrijfstak vastzit: het vakgebiedenmodel (geordend naar de reis van de boer), de waardedrivers, de uitdagingen, de rollen, de rolopdrachten, de realiteitschecks en de use-casebibliotheek. |
 | `content/organisaties/`, `content/signalen/` | Wat aan ForFarmers zelf vastzit: het profiel met kengetallen, en de twee eigen signaallenzen (jaarverslag, klanten). |
 | `src/lib/content/` | Zod-schema's en de loader die de content valideert bij het inlezen. |
 | `src/lib/waarde/` | De rekenmotor voor business cases, scorekaarten, matrix en budget. |

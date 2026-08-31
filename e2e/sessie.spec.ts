@@ -62,7 +62,7 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   await it.getByRole("button", { name: "Toon jouw rol en opdracht" }).click();
   await it.getByRole("button", { name: /Toon mijn opdracht/ }).click();
   await expect(
-    it.getByText(/klant- of bedrijfsgegevens gebruikt een expliciet vastgelegde aanname/),
+    it.getByText(/geen enkele use case het portfolio in gaat zonder benoemde databron/),
   ).toBeVisible();
   await expect(it.getByText(/Zorg dat minstens twee use cases/)).toHaveCount(0);
 
@@ -77,7 +77,7 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
   await commercie.getByRole("button", { name: /Gerrit — melkveehouder/ }).click();
 
   await it.getByRole("button", { name: "Uitdaging", exact: true }).click();
-  await it.getByRole("button", { name: /Data staat in silo's/ }).click();
+  await it.getByRole("button", { name: /Klantgegevens kloppen niet altijd/ }).click();
 
   // Peter ziet op de kaart die Marieke markeerde dat een collega dit ook herkent. Dat is het
   // punt van de gezamenlijke verkenning: je ziet waar jullie beeld samenvalt.
@@ -185,7 +185,7 @@ test("drie spelers doorlopen samen een sessie tot en met de roadmap", async ({ b
 
   // Pas nu zijn de rolopdrachten van iedereen zichtbaar.
   await expect(
-    commercie.getByText(/klant- of bedrijfsgegevens gebruikt een expliciet vastgelegde aanname/),
+    commercie.getByText(/geen enkele use case het portfolio in gaat zonder benoemde databron/),
   ).toBeVisible();
 
   await commercie.goto(`/sessie/${sessieId}/rapport`);

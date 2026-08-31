@@ -91,18 +91,18 @@ export function HuisIcoon({ className = "h-4 w-4" }: IcoonProps) {
   );
 }
 
-export function FabriekIcoon({ className = "h-4 w-4" }: IcoonProps) {
+export function PlaatsIcoon({ className = "h-4 w-4" }: IcoonProps) {
   return (
     <svg aria-hidden viewBox={VIEWBOX} className={className} fill="currentColor">
-      <path d="M80-120v-500l200-100v100l200-100v100l200-100v180h200v420H80Zm80-80h640v-260H600v-118l-200 100v-100l-200 100v-100l-40 20v358Zm200-80h80v-160h-80v160Zm-160 0h80v-160h-80v160Zm320 0h80v-160h-80v160Zm160 0h80v-160h-80v160ZM800-460H160h640Z" />
+      <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Z" />
     </svg>
   );
 }
 
-export function KolfIcoon({ className = "h-4 w-4" }: IcoonProps) {
+export function PraatIcoon({ className = "h-4 w-4" }: IcoonProps) {
   return (
     <svg aria-hidden viewBox={VIEWBOX} className={className} fill="currentColor">
-      <path d="M200-120q-51 0-72.5-45.5T138-250l222-270v-240h-40q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760h-40v240l222 270q32 39 10.5 84.5T760-120H200Zm80-120h400L544-400H416L280-240Zm-80 40h560L520-492v-268h-80v268L200-200Zm280-280Z" />
+      <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Z" />
     </svg>
   );
 }
@@ -149,8 +149,9 @@ export function GroepenIcoon({ className = "h-4 w-4" }: IcoonProps) {
 export const ROL_ICONEN: Record<string, ComponentType<IcoonProps>> = {
   bestuurder: BestuurIcoon,
   "commercieel-directeur": GroepenIcoon,
-  "directeur-supplychain": FabriekIcoon,
-  "manager-nutritie": KolfIcoon,
+  // De buitendienst rijdt van erf naar erf; vandaar de plaatsaanduiding.
+  "manager-buitendienst": PlaatsIcoon,
+  "manager-klantenservice": PraatIcoon,
   cfo: BetalingenIcoon,
   informatiemanager: DatabaseIcoon,
   duurzaamheidsmanager: BladIcoon,
