@@ -24,10 +24,13 @@ De volledige sessie — drie browsers, alle vijf fases, rapport en beamerscherm 
 
 ## Wat er nog moet
 
-- [ ] Eigen Supabase-project aanmaken en `.env.local` vullen; `supabase/schema.sql` richt een leeg
-      project in één keer in. Vraagt een account, dus ligt bij de gebruiker. Zonder die variabelen
-      draait de app in de offline modus en is hij wel speelbaar.
-- [ ] Deploy (Vercel of anders) zodat deelnemers op hun eigen telefoon kunnen meedoen.
+- [ ] Eigen Supabase-project aanmaken en de twee omgevingsvariabelen zetten;
+      `supabase/schema.sql` richt een leeg project in één keer in. Vraagt een account, dus ligt bij
+      de gebruiker.
+- [ ] Deploy op Vercel zodat deelnemers op hun eigen telefoon kunnen meedoen. Zie de sectie
+      "Hosten op Vercel" in de README. **Zonder Supabase-variabelen valt de app terug op de offline
+      modus, en die werkt niet op een serverless host** — een sessie zou willekeurig verdwijnen.
+      De startpagina waarschuwt daarvoor.
 - [ ] De negen resterende cijfers verifiëren, met name de 41 productielocaties en het domeinmodel
       naast de echte organisatie-indeling van ForFarmers.
 - [ ] De rekenkundige uitgangspunten vervangen door de werkelijke cijfers. Dat is de grootste

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { opslag } from "@/lib/sessie/api";
+import { offlineModus, opslag } from "@/lib/sessie/api";
 import { bewaarIdentiteit } from "@/lib/sessie/identiteit";
 import { organisatie, organisaties, rollenVoorOrganisatie, speelmodi } from "@/lib/content";
 import { Knop, Melding, Veld, invoerStijl } from "@/components/basis";
@@ -80,6 +80,16 @@ export default function StartPagina() {
         ← Terug
       </Link>
       <h1 className="display mt-4 text-3xl text-inkt">Sessie starten</h1>
+
+      {offlineModus() ? (
+        <div className="mt-4">
+          <Melding toon="aandacht">
+            Offline modus: de sessie leeft in het geheugen van deze server. Hij is weg bij een
+            herstart, en deelnemers op een ander netwerk komen er niet bij. Prima om te oefenen,
+            niet om een echte sessie mee te draaien — zet daarvoor de Supabase-variabelen.
+          </Melding>
+        </div>
+      ) : null}
       <p className="mt-2 text-sm leading-relaxed text-inkt-zacht">
         Jij opent en sluit de fases. Kies hieronder of je daarnaast ook zelf een rol speelt, of
         alleen begeleidt.

@@ -81,6 +81,38 @@ Het schema staat in [`supabase/schema.sql`](supabase/schema.sql) en richt een le
 keer in. De inhoudelijke bibliotheek staat níét in de database — die leeft in `content/` en wordt
 met de applicatie meegebouwd, dus er is geen seed-stap.
 
+## Hosten op Vercel
+
+De app is een gewone Next.js-applicatie; Vercel herkent hem zonder configuratie. Er is één ding
+dat écht moet, en dat is Supabase.
+
+**De offline modus werkt niet op Vercel.** Die houdt de sessie in het geheugen van het
+serverproces, en op een serverless host deelt niet elke aanroep hetzelfde proces. Een sessie zou
+dan willekeurig verdwijnen, midden in een fase. De startpagina waarschuwt zichtbaar als de app in
+die modus draait — zie je die melding op de productie-URL, dan staan de omgevingsvariabelen niet
+goed.
+
+1. **Maak een Supabase-project.** Draai [`supabase/schema.sql`](supabase/schema.sql) in de
+   SQL-editor; dat richt een leeg project in één keer volledig in, inclusief de RLS-policies.
+2. **Haal de twee waarden op** bij Project Settings → API: de project-URL en de *publishable* key
+   (`sb_publishable_…`). De secret key heb je niet nodig en hoort er niet in.
+3. **Zet de code op GitHub** en importeer de repo in Vercel.
+4. **Zet de omgevingsvariabelen** in Vercel, voor Production, Preview én Development:
+
+   | Variabele | Waarde |
+   |---|---|
+   | `NEXT_PUBLIC_SUPABASE_URL` | `https://<project>.supabase.co` |
+   | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` |
+
+5. **Deploy**, open `/start` en controleer dat de offline-waarschuwing er níét staat.
+
+Beide variabelen zijn `NEXT_PUBLIC_`, dus ze komen in de browser terecht. Dat mag: toegang wordt in
+de database afgedwongen met RLS op basis van het deelnemertoken en de beheercode, niet met deze
+sleutel.
+
+Zet in Vercel ook de repo-instelling zo dat alleen de branch die je wilt tonen deployt, en deel de
+`/deelnemen`-link met de deelnemers — die hebben alleen de sessiecode nodig, geen account.
+
 ## Ontwikkelen
 
 ```bash
