@@ -33,8 +33,14 @@ async function projectBereikbaar(): Promise<boolean> {
   if (!url || !key) return false;
 
   try {
-    const antwoord = await fetch(`${url}/rest/v1/`, {
-      headers: { apikey: key },
+    /*
+     * Bevraag een echte tabel, niet de wortel van de REST-API. Die wortel antwoordt met 401 op een
+     * verzoek met alleen een apikey-header, ook als het project prima bereikbaar is — waardoor
+     * deze test zichzelf oversloeg terwijl alles werkte. Een select op `sessies` toetst meteen het
+     * enige dat er hier toe doet: is het project bereikbaar én staat het schema erin.
+     */
+    const antwoord = await fetch(`${url}/rest/v1/sessies?select=id&limit=1`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
       signal: AbortSignal.timeout(5000),
     });
     return antwoord.ok;
