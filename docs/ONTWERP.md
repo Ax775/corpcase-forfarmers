@@ -2,32 +2,34 @@
 
 De game is een instrument dat een dagdeel op tafel ligt bij een bestuur of MT. Het moet er dus
 uitzien als iets waar je tijd aan wijdt, niet als een intern formulier. De vormtaal is redactioneel:
-warm papier, één accentkleur, een display-serif tegenover kleine schreefloze tekst, en spaarzaam een
-houtskoolpaneel op de plek waar de beslissing valt.
+warm papier, één accentkleur, koppen die door gewicht en letterafstand van de lopende tekst
+verschillen, en spaarzaam een houtskoolpaneel op de plek waar de beslissing valt.
 
 ## Eén kleur per organisatie, de rest afgeleid
 
 Een organisatieprofiel levert **één** hex in `content/organisaties/<naam>.json`:
 
 ```json
-"thema": { "accent": "#00337F", "bron": "…", "geverifieerd": true }
+"thema": { "accent": "#99BA16", "accent_secundair": "#00337F", "bron": "…", "geverifieerd": true }
 ```
 
-`src/lib/thema/kleur.ts` leidt daaruit vier varianten af, elk gemeten tegen de ondergrond waarop
+`src/lib/thema/kleur.ts` leidt daaruit vijf varianten af, elk gemeten tegen de ondergrond waarop
 hij daadwerkelijk komt te staan:
 
 | Variant | Waarvoor | Eis |
 |---|---|---|
-| `accent` | grote vormen: cijfers, cirkels, matrixpunten | geen (haalt bewust niet de norm voor kleine tekst) |
+| `accent` | vlakken zonder tekst: cirkels, matrixpunten, balken | geen |
+| `accent-groot` | grote cijfers op papier | ≥ 3,0 op papier (norm voor grote tekst) |
 | `accent-sterk` | knopvullingen met witte tekst | ≥ 4,5 met wit erop |
 | `accent-diep` | kleine tekst in de accentkleur op papier | ≥ 4,5 op papier |
 | `accent-op-donker` | tekst op een houtskoolpaneel | ≥ 4,5 op houtskool |
 
 De afleiding verschuift de lichtheid net zolang tot de **gemeten** verhouding de drempel haalt,
 in plaats van een vast percentage te verdonkeren. Dat verschil telt: een vast percentage werkt
-toevallig bij koraal, maar zou bij een geel of lichtgroen logo alsnog onleesbare knoptekst
-opleveren, en bij het diepe marineblauw van ForFarmers zou tekst op een houtskoolpaneel juist te
-donker blijven. Er wordt bovendien hoger gemikt dan het minimum, omdat precies op 4,5 landen broos is
+toevallig bij één vertrekpunt, maar zou bij een geel of lichtgroen logo alsnog onleesbare knoptekst
+opleveren, en bij een diep marineblauw zou tekst op een houtskoolpaneel juist te donker blijven.
+Het limegroen van ForFarmers is precies zo'n lastig vertrekpunt: als knopvulling wordt het
+`#657A0E`, als kleine tekst `#586C0D`, en op het houtskoolpaneel mag het onveranderd blijven. Er wordt bovendien hoger gemikt dan het minimum, omdat precies op 4,5 landen broos is
 en kleine tekst op het minimum nog steeds onprettig leest.
 
 `src/lib/thema/__tests__/kleur.test.ts` toetst dit voor elke organisatie in `content/` én voor een
@@ -40,18 +42,22 @@ wordt.
 - **Serif** is voor display: koppen, grote cijfers, de sessietitel. Nooit voor lopende tekst,
   labels of invoervelden.
 - **Het felle accent** is voor grote vormen. Kleine tekst in de accentkleur gebruikt `accent-diep`.
-- **De sessiecode staat bewust in een monospace**, niet in de display-serif. Die code wordt
-  overgetypt, en de hoge contrasten van een serif maken letters juist dubbelzinnig. Het
+- **De sessiecode staat bewust in een monospace**, niet in de displaystijl. Die code wordt
+  overgetypt, en een letter die op een cijfer lijkt kost dan een mislukte poging. Het
   code-alfabet zelf sluit al verwarrende tekens uit (geen I/1, geen O/0).
 - **Groen betekent waarde, niet accent.** Een negatieve netto baat wordt daarom in de risicokleur
   getoond; anders leest een verliesgevende use case als winst.
 
   Precies daarom mag een organisatie optioneel een **tweede** huisstijlkleur aanleveren
-  (`accent_secundair`): die doet niet mee als tweede accent, maar neemt de waardekleur over. Bij
-  ForFarmers is dat hun limegroen `#99BA16`, dat op crème 2,09 haalt en dus wordt verdiept tot
-  `#586C0D` op 5,51 — met behoud van tint, zodat het hún groen blijft. Een tweede kleur die wél
-  als accent mee zou doen, haalt de functie uit het eerste accent: dan is niets meer bijzonder.
-  Wie geen tweede kleur opgeeft, houdt het standaardgroen.
+  (`accent_secundair`): die doet niet mee als tweede accent, maar neemt de waardekleur over. Een
+  tweede kleur die wél als accent mee zou doen, haalt de functie uit het eerste accent: dan is
+  niets meer bijzonder. Wie geen tweede kleur opgeeft, houdt het standaardgroen.
+
+  Bij ForFarmers zijn dat de twee kleuren uit hun logo, en die dwingen een keuze af: met hun
+  limegroen als accent kan groen niet tegelijk "waarde" betekenen, want dan valt niets meer op.
+  Het navy `#00337F` neemt die rol daarom over. Het semantische paar blijft intact — navy voor een
+  positieve netto baat, de risicokleur voor een negatieve — alleen is de positieve kant niet langer
+  groen. Dat is de prijs van een groene huisstijl, en hij is bewust betaald.
 - **Eén houtskoolpaneel per scherm**, op de plek waar de beslissing valt: het uitkomstblok bij de
   waardebepaling, de investeringsruimte bij de prioritering, de grote getallen bij de opbrengst,
   en de matrix op de beamer. Geen invoervelden op donker.
@@ -68,27 +74,31 @@ Die stapeling brengt drie regels mee. Ze zijn geen smaak: ze komen alle drie uit
 tijdens het bouwen is gemeten of gezien, en ze staan hier omdat het er goed uitzag toen het fout
 was.
 
-### 1. Vol koraal verdraagt geen tekst
+### 1. Het volle accent verdraagt geen tekst
 
-Wit haalt op `#E8524A` 3,66, de donkerste inkt 4,44 — allebei onder de norm. De accentcirkel mag
-dus alleen in een zone waar geen tekst komt. Waar tekst overheen kan lopen is het de zachte tint,
-die inkt (13,5) en inkt-zacht (6,7) ruim draagt.
+Het limegroen `#99BA16` uit het ForFarmers-logo haalt op papier 2,09 en op wit nog minder. De
+accentcirkel mag dus alleen in een zone waar geen tekst komt. Waar tekst overheen kan lopen is het
+de zachte tint, die inkt en inkt-zacht ruim draagt.
 
-Twee uitzonderingen, allebei bewust:
+Alleen vlakken zonder tekst gebruiken het volle accent: matrixpunten, voortgangsbalken, de
+accentcirkel zelf.
 
-- **Het cijfer.** `Cijfer toon="accent"` zet vol koraal op papier (3,43). Dat mag omdat het
-  kleinste formaat 30 px is, en daarboven geldt de norm voor grote tekst (3,0). Zakt dat formaat
-  ooit, dan moet `Cijfer` naar `accent-diep`.
-- **Vlakken zonder tekst**: matrixpunten, voortgangsbalken, de accentcirkel zelf.
+**Ook het grote cijfer niet meer.** Dat was eerder de enige uitzondering: `Cijfer toon="accent"`
+zette het volle accent op papier, met de redenering dat het kleinste formaat 30 px is en daarboven
+de norm voor grote tekst (3,0) geldt. Bij het koraal van de eerste versie klopte dat op het randje
+(3,43). Bij dit groen zakt het naar 2,09, en toen de kleurtest daarop omviel bleek de redenering te
+broos: hij hing aan één kleur. Er is nu een aparte variant `accent-groot`, die net zolang verdiept
+tot de norm gehaald wordt en verder niets doet — bij een donkere huisstijl is hij gelijk aan het
+accent zelf. Voor ForFarmers levert dat `#7A9512` op, contrast 3,20.
 
-Dezelfde rekensom geldt andersom: `text-accent` als **tekstkleur** haalt op papier 3,43. Kleine
-tekst in de accentkleur is daarom `accent-diep` (5,54).
+Kleine tekst in de accentkleur is `accent-diep` (5,51).
 
-Deze regel is met het oog niet te controleren — vol koraal *ziet er gewoon goed uit* — en dat is te
-merken: hij zat onder drie geselecteerde filterchipjes en onder zes bijschriften en links van 12 en
-14 px. Beide kanten worden daarom getoetst in `src/lib/thema/__tests__/vormgevingsregels.test.ts`,
-dat de bronbestanden scant op `bg-accent` met een tekstkleur ernaast, en op `text-accent` zonder
-een groot lettergrootte-token in dezelfde klassenlijst.
+Deze regel is met het oog niet te controleren — een vol, helder accent *ziet er gewoon goed uit* —
+en dat is te merken: bij de eerste versie zat het onder drie geselecteerde filterchipjes en onder
+zes bijschriften van 12 en 14 px. Beide kanten worden daarom getoetst in
+`src/lib/thema/__tests__/vormgevingsregels.test.ts`, dat de bronbestanden scant op `bg-accent` met
+een tekstkleur ernaast, en op `text-accent` zonder een groot lettergrootte-token in dezelfde
+klassenlijst.
 
 ### 2. Op de zachte tint is `inkt-licht` niet genoeg
 
@@ -115,9 +125,20 @@ blijft de cirkel onder de haarlijnkop of onder de teamscore, in plaats van erond
 
 ## Lettertypen
 
-Playfair Display voor display, Inter voor de rest, allebei via `next/font/google`. Die haalt ze bij
-de build binnen en serveert ze vanaf het eigen domein — er gaat dus geen bezoekersdata naar Google.
-Voor een organisatie die in deze game zelf over privacy bij klantdata praat, is dat geen detail.
+**Lexend**, het lettertype dat ForFarmers zelf gebruikt — op hun site in de gewichten 300 tot 600.
+Via `next/font/google`, dat het bij de build binnenhaalt en vanaf het eigen domein serveert; er
+gaat dus geen bezoekersdata naar Google. Voor een organisatie die in deze game zelf over privacy
+bij klantdata praat, is dat geen detail.
+
+Eén familie voor alles, waar hier eerder een display-serif tegenover een schreefloze stond. Dat
+onderscheid draagt nu het gewicht: `.display` en `.cijfer` staan op 300 met strakkere
+letterafstand, de lopende tekst op 400. Bij een geometrische schreefloze als Lexend geeft een licht
+gewicht op groot formaat de rust die de serif eerder bracht — een kop in hetzelfde gewicht als de
+tekst eronder zou juist druk worden.
+
+De regelhoogte van `.cijfer` staat op 0,9 en niet lager. Bij 0,85 was de regelbox korter dan de
+cijfers zelf, en liep een toelichting eronder dwars door het getal heen; de onderruimte in `em`
+vangt de rest op.
 
 ## Iconen
 

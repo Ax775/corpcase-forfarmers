@@ -133,17 +133,31 @@ describe("de zachte tint draagt tekst", () => {
   );
 
   /**
-   * Eén uitzondering op die regel: het cijfer. `Cijfer toon="accent"` zet het volle accent op
-   * papier, en dat mag omdat het kleinste formaat 30 px is — daarboven geldt de norm voor grote
-   * tekst (3,0) en niet 4,5. Zakt dat formaat ooit, dan valt deze test niet om; dan moet
-   * `Cijfer` naar accent-diep. De test bewaakt dus alleen de kleurkant.
+   * Het cijfer. `Cijfer toon="accent"` zet een variant van het accent op papier, en die moet de
+   * norm voor grote tekst halen (3,0) omdat het kleinste formaat 30 px is. Zakt dat formaat ooit,
+   * dan valt deze test niet om; dan moet `Cijfer` naar accent-diep.
+   *
+   * Dit toetste eerder de rauwe accentkleur, met de redenering dat die het bij koraal net haalde
+   * (3,43). Dat hield geen stand: het limegroen van ForFarmers haalt 2,09, en toen deze test
+   * daarop omviel bleek dat het cijfer een eigen, bewaakte variant nodig had. Vandaar dat hier nu
+   * `accentGroot` staat en niet het accent zelf — de test toetst wat er werkelijk op het scherm
+   * komt.
    */
   it.each(organisaties.map((o) => [o.naam, o.thema.accent] as const))(
     "%s: het accentcijfer haalt de norm voor grote tekst op papier",
     (_naam, accent) => {
-      expect(contrast(accent, PAPIER)).toBeGreaterThanOrEqual(AA_GROOT);
+      expect(contrast(leidPaletAf(accent).accentGroot, PAPIER)).toBeGreaterThanOrEqual(AA_GROOT);
     },
   );
+
+  /**
+   * En de variant blijft zo dicht mogelijk bij de merkkleur: waar het accent de norm al haalt,
+   * verandert er niets. Anders zou een donkere huisstijl onnodig verder verdiept worden.
+   */
+  it("laat een accent dat de norm al haalt ongemoeid", () => {
+    const donker = "#00337F";
+    expect(leidPaletAf(donker).accentGroot).toBe(donker);
+  });
 
   it("het volle accent verdraagt juist géén tekst, en daarom bestaat de tint", () => {
     // Deze verwachting legt de ontwerpregel vast: geen kleine tekst op het volle koraal.

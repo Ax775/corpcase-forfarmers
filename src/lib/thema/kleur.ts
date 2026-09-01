@@ -26,9 +26,12 @@ export type Hsl = { h: number; s: number; l: number };
  * minimum nog steeds onprettig. Kleine tekst krijgt daarom de meeste marge.
  */
 const AA_NORMAAL = 4.5;
+/** De norm voor grote tekst (18pt en op). Grote cijfers vallen hieronder. */
+const AA_GROOT = 3.0;
 const DOEL_VULLING = 4.8;
 const DOEL_KLEINE_TEKST = 5.5;
 const DOEL_OP_DONKER = 5.0;
+const DOEL_GROTE_TEKST = 3.2;
 
 export function hexNaarRgb(hex: string): Rgb {
   const schoon = hex.trim().replace("#", "");
@@ -187,8 +190,18 @@ export type TweedePalet = {
 };
 
 export type Palet = {
-  /** De aangeleverde kleur. Alleen voor grote vormen: cijfers, cirkels, matrixpunten. */
+  /** De aangeleverde kleur. Alleen voor vlakken zonder tekst: cirkels, matrixpunten, balken. */
   accent: string;
+  /**
+   * Grote cijfers op de papieren ondergrond.
+   *
+   * Dit was eerder de rauwe accentkleur, met de redenering dat het kleinste cijferformaat 30 px is
+   * en daarboven de norm voor grote tekst (3,0) geldt. Bij koraal klopte dat op het randje (3,43);
+   * bij het limegroen van ForFarmers haalt de rauwe kleur maar 2,09 en zou het cijfer dus onder de
+   * norm zakken. Deze variant verdiept net zolang tot de norm gehaald wordt en blijft anders
+   * gelijk aan het accent zelf.
+   */
+  accentGroot: string;
   /** Vulling met witte tekst erop, bijvoorbeeld knoppen. */
   accentSterk: string;
   /** Kleine tekst in de accentkleur op de papieren ondergrond. */
@@ -210,13 +223,14 @@ export const WIT = "#FFFFFF";
  * Elke variant wordt getoetst tegen de ondergrond waarop hij daadwerkelijk komt te staan, niet
  * tegen een aanname. `kleur.test.ts` controleert dat voor elke organisatie in content/.
  */
-export { AA_NORMAAL };
+export { AA_NORMAAL, AA_GROOT };
 
 export function leidPaletAf(accent: string): Palet {
   const genormaliseerd = rgbNaarHex(hexNaarRgb(accent));
 
   return {
     accent: genormaliseerd,
+    accentGroot: zoekVariant(genormaliseerd, PAPIER, DOEL_GROTE_TEKST, "donkerder"),
     accentSterk: zoekVariant(genormaliseerd, WIT, DOEL_VULLING, "donkerder"),
     accentDiep: zoekVariant(genormaliseerd, PAPIER, DOEL_KLEINE_TEKST, "donkerder"),
     accentOpDonker: zoekVariant(genormaliseerd, HOUTSKOOL, DOEL_OP_DONKER, "lichter"),
@@ -244,6 +258,7 @@ export function leidTweedePaletAf(tweede: string): TweedePalet {
 export function paletAlsVariabelen(palet: Palet): Record<string, string> {
   return {
     "--color-accent": palet.accent,
+    "--color-accent-groot": palet.accentGroot,
     "--color-accent-sterk": palet.accentSterk,
     "--color-accent-diep": palet.accentDiep,
     "--color-accent-op-donker": palet.accentOpDonker,

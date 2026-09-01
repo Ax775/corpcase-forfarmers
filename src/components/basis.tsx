@@ -258,13 +258,12 @@ export function Cijfer({
   /** Eén korte regel onder het getal die uitlegt wat het meet — niet elk cijfer heeft dat nodig. */
   toelichting?: string;
 }) {
-  // Vol koraal haalt op papier 3,43. Dat is genoeg voor grote tekst (norm 3,0) en niet voor
-  // kleine, en daarom begint het kleinste formaat hieronder op 30px. Zolang dat zo blijft mag
-  // `accent` hier het volle koraal zijn; wordt er ooit een kleiner formaat bijgezet, dan moet
-  // dat `accent-diep` gebruiken.
+  // Grote cijfers gebruiken `accent-groot`, niet de rauwe accentkleur: die haalt bij een lichte
+  // huisstijl de norm voor grote tekst (3,0) niet. De afleiding verdiept alleen waar dat nodig is,
+  // dus bij een donkere huisstijlkleur zijn beide gelijk. Zie kleur.ts.
   const kleuren: Record<string, string> = {
     inkt: "text-inkt",
-    accent: "text-accent",
+    accent: "text-accent-groot",
     "op-donker": "text-accent-op-donker",
     gedempt: "text-houtskool-zacht",
   };

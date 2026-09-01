@@ -5,10 +5,10 @@
   "sector": "diervoeding",
   "pitch": "Vooraanstaande Europese voerproducent met een recordjaar achter de rug: 10,6 miljoen ton voer voor 28.500 boeren, vanuit 41 fabrieken in vier landen. Decentraal georganiseerd, centraal ondersteund, met de missie For the Future of Farming.",
   "thema": {
-    "accent": "#00337F",
-    "accent_secundair": "#99BA16",
-    "toelichting": "De twee huisstijlkleuren van ForFarmers. Het navy is het hoofdaccent; uit die ene kleur worden de varianten voor knoppen, kleine tekst en donkere panelen afgeleid met een gemeten contrasttoets. Het limegroen neemt de waardekleur over — het groen dat in dit ontwerp \"dit levert op\" betekent — en wordt daarvoor verdiept tot het als kleine tekst op crème leesbaar is.",
-    "bron": "CSS-variabelen --primary-color en --alt-color op forfarmersgroup.eu, afgelezen 31-08-2026",
+    "accent": "#99BA16",
+    "accent_secundair": "#00337F",
+    "toelichting": "De twee kleuren uit het ForFarmers-logo. Het groen is het hoofdaccent; uit die ene kleur worden de varianten voor knoppen, grote cijfers, kleine tekst en donkere panelen afgeleid, elk met een gemeten contrasttoets. Het navy neemt de waardekleur over — het kleurmerk dat \"dit levert op\" betekent. Dat moet ook: met groen als accent kan groen niet tegelijk waarde betekenen, want dan valt niets meer op.",
+    "bron": "Officieel logo 00-FF-Group_2024-RGB.svg van forfarmersgroup.eu, afgelezen 01-09-2026; dezelfde twee kleuren als de CSS-variabelen --alt-color en --primary-color",
     "geverifieerd": true
   },
   "jaarverslag": {

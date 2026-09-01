@@ -36,6 +36,7 @@
    * de norm voor kleine tekst. Daarvoor zijn accent-diep en accent-sterk.
    */
   --color-accent: #e8524a;
+  --color-accent-groot: #d0342c;
   --color-accent-sterk: #dd261c;
   --color-accent-diep: #c32119;
   --color-accent-op-donker: #ec736d;
@@ -49,9 +50,14 @@
   --color-risico: #93332f;
   --color-risico-zacht: #fbeceb;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+  /*
+   * Eén familie: Lexend, het lettertype van ForFarmers zelf. Kop en lopende tekst verschillen in
+   * gewicht en letterafstand, niet in familie.
+   */
+  --font-sans: var(--font-lexend), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-lexend), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --radius-kaart: 0.625rem;
@@ -141,19 +147,22 @@ label.keuze:active {
 }
 
 /*
- * Display-tekst. Playfair heeft van zichzelf ruime letterafstand bij grote formaten; die wordt
- * hier ingehaald zodat koppen als één geheel lezen in plaats van als losse letters.
+ * Zonder een tweede familie moet het gewicht het onderscheid dragen: koppen staan lichter en
+ * strakker dan de lopende tekst, wat bij een geometrische schreefloze als Lexend de rust geeft
+ * die de display-serif eerder bracht.
  */
 .display {
   font-family: var(--font-display);
-  letter-spacing: -0.015em;
+  font-weight: 300;
+  letter-spacing: -0.025em;
 }
 
 .cijfer {
   font-family: var(--font-display);
+  font-weight: 300;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-  line-height: 0.85;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
 }
 
 /* Tabellen en matrixen mogen zelf scrollen; de pagina nooit horizontaal. */
