@@ -9,7 +9,7 @@ dus cijfers zijn geverifieerd tegen primaire bronnen waar dat kon.
 
 ## Stand
 
-Af en groen: `content:check`, `typecheck`, `lint`, 138 unittests en 5 e2e-tests, `build` slaagt.
+Af en groen: `content:check`, `typecheck`, `lint`, 185 unittests en 6 e2e-tests, `build` slaagt.
 De volledige sessie — drie browsers, alle vijf fases, rapport en beamerscherm — speelt door.
 
 | Onderdeel | Omvang |
@@ -22,6 +22,24 @@ De volledige sessie — drie browsers, alle vijf fases, rapport en beamerscherm 
 | Signaalkaarten | 12 jaarverslag + 6 klantpersona's + 17 uitdagingen + 14 vakgebieden |
 | Geverifieerde kengetallen | 9 van de 10; 7 uitgangspunten zijn expliciet aanname |
 
+## Optimalisatieronde (2026-09-01)
+
+Gekozen op wat een echte sessie scherper maakt, niet op wat er kán.
+
+- [x] O1 **Timers tot leven.** `zetFaseDeadline` wordt nergens aangeroepen: de timers uit de
+      speelmodi zijn dood, en daarmee ook de "loopt uit"-interventie. Bij het openen van een fase
+      wordt de deadline gezet; beheerscherm en beamer tonen een aflopende teller.
+- [x] O2 **Cijfers checken vóór de sessie.** De rekenkundige uitgangspunten zijn aannames die de
+      facilitator "per sessie kan aanpassen" — maar alleen door JSON te bewerken en te deployen.
+      De startpagina krijgt een stap waar je ze voor déze sessie overschrijft; het rapport meldt
+      wat er is aangepast.
+- [x] O3 **Realiteitschecks die het portfolio raken.** Nu pseudo-willekeurig op sessie-id; het veld
+      `raakt` is dood. Elke check krijgt `scherp_bij` (domeinen, budgetdruk) en de selectie kiest
+      wat het portfolio het hardst raakt, met de reden op de kaart. Checks met een besluit blijven
+      staan.
+- [x] O4 **Rapport opent met één zin.** De RvC-lezer krijgt eerst de conclusie, dan de cijfers.
+- [x] O5 **Lexend als variabel lettertype.** Vijf losse gewichten worden één bestand.
+
 ## Wat er nog moet
 
 - [ ] Eigen Supabase-project aanmaken en de twee omgevingsvariabelen zetten;
@@ -33,9 +51,9 @@ De volledige sessie — drie browsers, alle vijf fases, rapport en beamerscherm 
       De startpagina waarschuwt daarvoor.
 - [ ] De negen resterende cijfers verifiëren, met name de 41 productielocaties en het domeinmodel
       naast de echte organisatie-indeling van ForFarmers.
-- [ ] De rekenkundige uitgangspunten vervangen door de werkelijke cijfers. Dat is de grootste
-      sprong in scherpte die met de minste moeite te maken is: uurtarief, kosten per rit,
-      afkeurpercentage, aantal klantcontacten en erfbezoeken.
+- [ ] De rekenkundige uitgangspunten vervangen door de werkelijke cijfers van ForFarmers. Kan nu
+      per sessie op `/start` onder "Cijfers voor deze sessie", zonder deploy; de content-defaults
+      blijven aannames tot er echte cijfers zijn.
 - [ ] De klantpersona's naast de echte klantsegmentatie leggen. Het zijn nu samengestelde typen
       op basis van de segmenten waarin ForFarmers publiek zegt te werken.
 

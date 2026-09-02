@@ -76,9 +76,12 @@ export async function maakSessie(invoer: NieuweSessie): Promise<Toegang> {
   const joinCode = maakJoinCode();
   const beheerCode = maakBeheerCode();
 
-  const uitgangspunten = Object.fromEntries(
-    [...org.rekenkundige_uitgangspunten, ...org.kengetallen].map((k) => [k.id, k.waarde]),
-  );
+  const uitgangspunten = {
+    ...Object.fromEntries(
+      [...org.rekenkundige_uitgangspunten, ...org.kengetallen].map((k) => [k.id, k.waarde]),
+    ),
+    ...(invoer.uitgangspunten ?? {}),
+  };
 
   const anoniem = maakClient({ beheerCode });
 

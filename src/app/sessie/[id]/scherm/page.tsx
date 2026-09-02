@@ -15,6 +15,7 @@ import { formatteerBandbreedte, formatteerEuro } from "@/lib/waarde/berekening";
 import { Matrix } from "@/components/matrix";
 import { Cijfer, DonkerPaneel, Melding } from "@/components/basis";
 import { Cirkel, Halftoon } from "@/components/decoratie";
+import { FaseTimer } from "@/components/fasetimer";
 import { Thema } from "@/components/thema";
 
 /**
@@ -74,13 +75,16 @@ export default function SchermPagina() {
           </p>
           <h1 className="display mt-1 text-4xl leading-tight text-inkt">{state.sessie.titel}</h1>
         </div>
-        <Cijfer
-          waarde={score.totaal}
-          label="Teamscore"
-          toon="accent"
-          formaat="groot"
-          toelichting="Meet de breedte en onderbouwing van het gesprek, niet wie er wint."
-        />
+        <div className="flex items-start gap-10">
+          <FaseTimer deadline={state.sessie.fase_deadline} groot />
+          <Cijfer
+            waarde={score.totaal}
+            label="Teamscore"
+            toon="accent"
+            formaat="groot"
+            toelichting="Meet de breedte en onderbouwing van het gesprek, niet wie er wint."
+          />
+        </div>
       </header>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[3fr_2fr]">

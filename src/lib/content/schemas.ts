@@ -299,8 +299,24 @@ export const realiteitscheckSchema = z.object({
   id: z.string().min(1),
   titel: z.string().min(1),
   scenario: z.string().min(1),
+  /** Welke fases het scenario raakt. Informatief; de selectie loopt via `scherp_bij`. */
   raakt: z.array(z.string()).min(1),
   zwaarte: z.number().int().min(1).max(3),
+  /**
+   * Wanneer dit scenario het hardst binnenkomt. De selectie kiest de checks die het portfolio
+   * van dít team raken, in plaats van een vaste of willekeurige set. Een check zonder
+   * `scherp_bij` is altijd plausibel en vult aan op zwaarte. Zie lib/sessie/realiteitschecks.ts.
+   */
+  scherp_bij: z
+    .object({
+      /** Het portfolio bevat een use case in een van deze domeinen. */
+      domeinen: z.array(z.string()).optional(),
+      /** Zoveel procent van de investeringsruimte is al vergeven. */
+      budget_boven_pct: z.number().min(0).max(100).optional(),
+      /** Het portfolio bevat een bibliotheekkaart met deze volwassenheid. */
+      volwassenheid: z.enum(["bewezen", "opkomend", "verkennend"]).optional(),
+    })
+    .optional(),
 });
 
 export const realiteitschecksBestandSchema = z.object({

@@ -139,9 +139,12 @@ export function maakSessie(invoer: NieuweSessie): Toegang {
     budget_geld: invoer.budgetGeld ?? org.budget_defaults.geld_eur,
     budget_capaciteit:
       invoer.budgetCapaciteit ?? org.budget_defaults.verandercapaciteit_mensmaanden,
-    uitgangspunten: Object.fromEntries(
-      [...org.rekenkundige_uitgangspunten, ...org.kengetallen].map((k) => [k.id, k.waarde]),
-    ),
+    uitgangspunten: {
+      ...Object.fromEntries(
+        [...org.rekenkundige_uitgangspunten, ...org.kengetallen].map((k) => [k.id, k.waarde]),
+      ),
+      ...(invoer.uitgangspunten ?? {}),
+    },
     onzekerheid_pct: 30,
     fase_deadline: null,
     aangemaakt_op: nu(),

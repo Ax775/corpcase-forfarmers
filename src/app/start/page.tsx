@@ -24,6 +24,8 @@ export default function StartPagina() {
   const [naam, setNaam] = useState("");
   const [speeltMee, setSpeeltMee] = useState(true);
   const [rolId, setRolId] = useState(rollen.rollen[0].id);
+  /** Tekstuele invoer per uitgangspunt-id; leeg betekent "laat de standaard staan". */
+  const [cijfers, setCijfers] = useState<Record<string, string>>({});
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState<string | null>(null);
 
@@ -34,6 +36,20 @@ export default function StartPagina() {
    * staan. Afleiden in plaats van bijhouden: dan kan de keuze niet stilzwijgend ongeldig worden.
    */
   const gekozenRol = rollen.rollen.some((r) => r.id === rolId) ? rolId : rollen.rollen[0].id;
+
+  /**
+   * Alleen wat de facilitator daadwerkelijk heeft ingevuld en dat afwijkt van de standaard gaat
+   * mee. Zo blijft in het rapport zichtbaar wat een aanname uit de content was en wat een cijfer
+   * van de organisatie zelf.
+   */
+  const overschrevenCijfers = Object.fromEntries(
+    org.rekenkundige_uitgangspunten.flatMap((u) => {
+      const tekst = cijfers[u.id]?.trim().replace(",", ".");
+      if (!tekst) return [];
+      const getal = Number(tekst);
+      return Number.isFinite(getal) && getal >= 0 && getal !== u.waarde ? [[u.id, getal]] : [];
+    }),
+  );
 
   function kiesOrganisatie(nieuwId: string) {
     const vorige = organisatie(orgId);
@@ -56,6 +72,7 @@ export default function StartPagina() {
         speelmodusId: modusId,
         facilitatorNaam: naam.trim(),
         facilitatorRolId: speeltMee ? gekozenRol : null,
+        uitgangspunten: overschrevenCijfers,
       });
       bewaarIdentiteit(toegang.sessie.id, {
         ...toegang.identiteit,
@@ -178,6 +195,47 @@ export default function StartPagina() {
             ))}
           </div>
         </Veld>
+
+        {/*
+          De rekenkundige uitgangspunten zijn aannames op ordegrootte. Hier vervang je ze door de
+          echte cijfers van de organisatie, voor deze sessie. Dat is de grootste sprong in scherpte
+          die met de minste moeite te maken is — en hij hoorde niet in een JSON-bestand te zitten.
+        */}
+        <details className="rounded-kaart border border-rand bg-vlak">
+          <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-inkt">
+            Cijfers voor deze sessie
+            <span className="ml-2 font-normal text-inkt-licht">
+              {org.rekenkundige_uitgangspunten.length} uitgangspunten zijn aannames — vervang ze
+              door de echte
+            </span>
+          </summary>
+          <div className="space-y-3 border-t border-rand px-4 py-3">
+            {org.rekenkundige_uitgangspunten.map((u) => (
+              <div key={u.id} className="grid gap-1 sm:grid-cols-[1fr_9rem] sm:items-center">
+                <label htmlFor={`cijfer-${u.id}`} className="min-w-0">
+                  <span className="block text-sm text-inkt">{u.label}</span>
+                  <span className="block text-[11px] leading-snug text-inkt-licht">
+                    Nu {u.notatie ?? u.waarde} · {u.bron}
+                  </span>
+                </label>
+                <input
+                  id={`cijfer-${u.id}`}
+                  inputMode="decimal"
+                  className={`${invoerStijl} text-right tabular-nums`}
+                  placeholder={String(u.waarde)}
+                  value={cijfers[u.id] ?? ""}
+                  onChange={(e) => setCijfers((c) => ({ ...c, [u.id]: e.target.value }))}
+                />
+              </div>
+            ))}
+            {Object.keys(overschrevenCijfers).length > 0 ? (
+              <p className="text-xs text-inkt-zacht">
+                {Object.keys(overschrevenCijfers).length} aangepast voor deze sessie. Het rapport
+                vermeldt welke.
+              </p>
+            ) : null}
+          </div>
+        </details>
 
         <Veld label="Jouw naam">
           <input

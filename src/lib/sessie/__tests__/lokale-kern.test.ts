@@ -34,3 +34,37 @@ describe("maakSessie zonder facilitatorrol", () => {
     expect(toegang.deelnemer.rol_id).toBe("bestuurder");
   });
 });
+
+describe("uitgangspunten per sessie", () => {
+  it("neemt de standaard van de organisatie als er niets is overschreven", () => {
+    const org = organisaties[0];
+    const toegang = maakSessie({
+      titel: "Standaard",
+      organisatieId: org.id,
+      speelmodusId: speelmodi.modi[0].id,
+      facilitatorNaam: "Test",
+      facilitatorRolId: null,
+    });
+    const eerste = org.rekenkundige_uitgangspunten[0];
+    expect(toegang.sessie.uitgangspunten[eerste.id]).toBe(eerste.waarde);
+  });
+
+  /**
+   * De aannames uit de content moeten per sessie te vervangen zijn door de echte cijfers van de
+   * organisatie — zonder deploy. Wat niet is overschreven, blijft de standaard.
+   */
+  it("laat de facilitator een uitgangspunt voor deze sessie overschrijven", () => {
+    const org = organisaties[0];
+    const [eerste, tweede] = org.rekenkundige_uitgangspunten;
+    const toegang = maakSessie({
+      titel: "Eigen cijfers",
+      organisatieId: org.id,
+      speelmodusId: speelmodi.modi[0].id,
+      facilitatorNaam: "Test",
+      facilitatorRolId: null,
+      uitgangspunten: { [eerste.id]: eerste.waarde + 17 },
+    });
+    expect(toegang.sessie.uitgangspunten[eerste.id]).toBe(eerste.waarde + 17);
+    expect(toegang.sessie.uitgangspunten[tweede.id]).toBe(tweede.waarde);
+  });
+});

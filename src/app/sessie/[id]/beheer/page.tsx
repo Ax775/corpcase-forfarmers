@@ -6,6 +6,7 @@ import { useState } from "react";
 import { FASES, FASE_LABELS, type Fase } from "@/lib/supabase/types";
 import { rolNaam, speelmodus } from "@/lib/content";
 import { interventies } from "@/lib/sessie/interventies";
+import { FaseTimer } from "@/components/fasetimer";
 import { telwoord } from "@/lib/tekst/meervoud";
 import { opslag } from "@/lib/sessie/api";
 import { useAanwezigheid, useSessie } from "@/lib/sessie/gebruik";
@@ -63,7 +64,14 @@ export default function BeheerPagina() {
   const huidigeIndex = FASES.indexOf(state.sessie.fase);
 
   async function naarFase(fase: Fase) {
-    await doe(() => opslag.zetFase(identiteit!, sessieId, fase));
+    await doe(async () => {
+      await opslag.zetFase(identiteit!, sessieId, fase);
+      // De speelmodus geeft per fase een tijd. Die deadline stond al in het datamodel maar werd
+      // nooit gezet, waardoor de teller en de "loopt uit"-interventie nooit iets deden.
+      const minuten = modus.timers_minuten[fase];
+      const deadline = minuten ? new Date(Date.now() + minuten * 60_000) : null;
+      await opslag.zetFaseDeadline(identiteit!, sessieId, deadline);
+    });
   }
 
   async function kopieerUitnodiging() {
@@ -220,7 +228,10 @@ export default function BeheerPagina() {
       ) : null}
 
       <section>
-        <h2 className="display text-lg text-inkt">Fase</h2>
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="display text-lg text-inkt">Fase</h2>
+          <FaseTimer deadline={state.sessie.fase_deadline} />
+        </div>
         <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
           {FASES.map((fase, index) => {
             const actief = fase === state.sessie.fase;

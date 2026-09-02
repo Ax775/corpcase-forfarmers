@@ -65,6 +65,11 @@ export default function RapportPagina() {
   // De verantwoording leest de vlaggen uit de content in plaats van een vaste zin te herhalen:
   // anders blijft er staan dat niets geverifieerd is terwijl het merendeel dat wel is.
   const kengetallenOpen = org.kengetallen.filter((k) => !k.geverifieerd).length;
+  // Uitgangspunten die de facilitator voor deze sessie heeft overschreven: de sessie rekent dan
+  // met een cijfer van de organisatie zelf in plaats van met de aanname uit de content.
+  const aangepast = org.rekenkundige_uitgangspunten.filter(
+    (u) => state.sessie.uitgangspunten[u.id] !== undefined && state.sessie.uitgangspunten[u.id] !== u.waarde,
+  );
   const kanttekeningen = aannames(state);
   const onvolledig = onvolledigeBusinessCases(state);
 
@@ -75,6 +80,10 @@ export default function RapportPagina() {
   );
   // Een negatieve uitkomst is een bevinding, geen reden om het vakje leeg te laten.
   const heeftDoorrekening = doorgerekend.length > 0;
+  const portfolioIds = new Set(inPortfolio.map((b) => b.usecase.id));
+  const nuStart = state.roadmap.filter(
+    (r) => r.horizon === "nu" && portfolioIds.has(r.usecase_id),
+  ).length;
 
   function csvDownloaden() {
     const datum = new Date(state!.sessie.aangemaakt_op).toISOString().slice(0, 10);
@@ -132,7 +141,26 @@ export default function RapportPagina() {
       </header>
 
       <section className="print-blok mt-8">
-        <h2 className="display text-2xl text-inkt">In het kort</h2>
+        {/*
+          Eerst de conclusie, dan de cijfers. Wie dit in een RvC-vergadering openslaat, leest de
+          eerste zin en beslist dan of de rest de moeite is. Alles hierin is afgeleid, niets
+          bedacht: de bedragen zijn bandbreedtes en dat blijft zo.
+        */}
+        <p className="display text-xl leading-snug text-inkt sm:text-2xl">
+          {inPortfolio.length === 0
+            ? "Er is nog geen portfolio: de sessie is niet tot een keuze gekomen."
+            : `Het team kiest ${telwoord(inPortfolio.length, "use case", "use cases")}${
+                heeftDoorrekening
+                  ? `, samen goed voor een verwachte netto waarde van ${formatteerEuro(totaleBaat)} per jaar`
+                  : ""
+              }${
+                nuStart > 0
+                  ? `, waarvan ${nuStart === 1 ? "er één" : nuStart} binnen zes maanden ${nuStart === 1 ? "start" : "starten"}`
+                  : ""
+              }.`}
+        </p>
+
+        <h2 className="display mt-6 text-2xl text-inkt">In het kort</h2>
         <dl className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
             { label: "In het portfolio", waarde: String(inPortfolio.length) },
@@ -401,9 +429,13 @@ export default function RapportPagina() {
                 } gecontroleerd tegen de primaire bron; ${
                   kengetallenOpen === 1 ? "één is dat nog niet" : `${kengetallenOpen} nog niet`
                 }.`}{" "}
-            De {org.rekenkundige_uitgangspunten.length} rekenkundige uitgangspunten waarmee de
-            business cases rekenen, zijn bewust ingevulde aannames op ordegrootte — geen cijfers
-            van {org.naam}.
+            {aangepast.length === 0
+              ? `De ${org.rekenkundige_uitgangspunten.length} rekenkundige uitgangspunten waarmee de business cases rekenen, zijn bewust ingevulde aannames op ordegrootte — geen cijfers van ${org.naam}.`
+              : `Van de ${org.rekenkundige_uitgangspunten.length} rekenkundige uitgangspunten waarmee de business cases rekenen, ${
+                  aangepast.length === 1 ? "is er 1" : `zijn er ${aangepast.length}`
+                } voor deze sessie vervangen door een cijfer van ${org.naam} zelf: ${aangepast
+                  .map((u) => `${u.label.toLowerCase()} (${u.waarde} → ${state.sessie.uitgangspunten[u.id]})`)
+                  .join(", ")}. De overige ${org.rekenkundige_uitgangspunten.length - aangepast.length} zijn aannames op ordegrootte.`}
           </li>
 
           {onvolledig.length > 0 ? (

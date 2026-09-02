@@ -8,11 +8,12 @@ Praktische handleiding voor wie Corpcase inzet bij ForFarmers.
 discussie, hele dag laat je alles doorrekenen. De app past kaartaantallen, verplichte velden en de
 investeringsruimte hierop aan.
 
-**Loop de cijfers na.** De gegevens komen uit publieke bronnen; de rekenkundige uitgangspunten
-(uurtarief, kosten per eenheid, volumes) zijn aannames op ordegrootte. Zie
-[`content/BRONNEN.md`](../content/BRONNEN.md), waar per organisatie staat wat geverifieerd is en
-wat niet. Vervang de aannames door de echte cijfers en de sessie wordt meteen een stuk scherper.
-Dat kan zonder code aan te raken.
+**Loop de cijfers na — op de startpagina.** De gegevens komen uit publieke bronnen; de
+rekenkundige uitgangspunten (uurtarief, kosten per rit, volumes) zijn aannames op ordegrootte.
+Onder "Cijfers voor deze sessie" op `/start` vervang je ze door de echte cijfers van de
+organisatie, alleen voor deze sessie. Het rapport vermeldt daarna welke je hebt aangepast, zodat
+een lezer ziet wat een aanname was en wat een eigen cijfer. Zie
+[`content/BRONNEN.md`](../content/BRONNEN.md) voor de herkomst van alles.
 
 Voor ForFarmers zijn de jaarcijfers 2025 geverifieerd tegen het eigen persbericht; de brutomarge
 per ton en het volume per klant zijn daaruit afgeleide groepsgemiddelden die per segment en per
@@ -44,6 +45,11 @@ hapert. Bewaar ook de beheercode die daar onder "Beheertoegang" staat — daarme
 ander apparaat, in een nieuwe browser, of nadat je een collega het laat overnemen, weer als
 facilitator binnen via `/facilitator`. Anders dan de sessiecode is dit geen code om rond te
 sturen: wie hem heeft, kan de fase verzetten en de sessie verwijderen.
+
+**De teller loopt mee.** Elke fase heeft een tijd uit de speelduur die je koos; bij het openen
+van een fase gaat de teller lopen, op je beheerscherm en groot op de beamer. Onder de drie minuten
+kleurt hij aandacht, voorbij de tijd telt hij door in rood. Dat is het moment om te zeggen "nog
+vijf minuten, dan ronden we af" — vóórdat het een kwartier is.
 
 **Jij zet de gezamenlijke stand.** Deelnemers volgen die automatisch mee, maar kunnen ook zelf
 door de fasetabs klikken — vooruitbladeren om te zien wat eraan komt, of terugbladeren naar iets
@@ -82,8 +88,10 @@ dus andere kaarten bovenaan dan de informatiemanager.
 1. **De eerste doorrekening.** Zodra er een bedrag met een bandbreedte op het scherm staat, komt
    het gesprek over aannames vanzelf. Laat het team de driverwaarden aanpassen tot ze er zelf
    achter staan — dat invullen ís de oefening, niet de uitkomst.
-2. **De realiteitscheck.** Wanneer het budget halveert, de grondstofmarkt keert of een uitbraak een
-   regio stillegt, blijkt of de prioritering echt gedragen is. Dwing een besluit af: aanpassen of
+2. **De realiteitscheck.** De checks die het team krijgt zijn niet willekeurig: ze worden gekozen
+   op wat het portfolio raakt. Een team met on-farm-data in het portfolio krijgt "de boeren willen
+   hun data niet delen"; een team dat het budget bijna vol heeft, krijgt "het budget wordt
+   gehalveerd". Op de kaart staat waarom hij getrokken is. Dwing een besluit af: aanpassen of
    onderbouwd handhaven. Niet beslissen is de enige verkeerde uitkomst.
 3. **De onthulling van de rolopdrachten.** Elke rol had een geheime opdracht. Als die van de
    informatiemanager niet gehaald is, staan er use cases in het portfolio zonder benoemde

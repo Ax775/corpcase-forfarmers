@@ -25,6 +25,12 @@ export type NieuweSessie = {
   facilitatorRolId: string | null;
   budgetGeld?: number;
   budgetCapaciteit?: number;
+  /**
+   * Rekenkundige uitgangspunten die de facilitator voor déze sessie overschrijft, op id. Wat hier
+   * niet staat, komt uit het organisatieprofiel. Zo worden de aannames uit de content vervangen
+   * door de echte cijfers zonder dat er iets gedeployd hoeft te worden.
+   */
+  uitgangspunten?: Record<string, number>;
 };
 
 export type Toegang = {

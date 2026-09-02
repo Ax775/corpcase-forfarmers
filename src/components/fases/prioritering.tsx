@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { realiteitschecksVoorOrganisatie, speelmodus } from "@/lib/content";
+import { speelmodus } from "@/lib/content";
+import { kiesRealiteitschecks } from "@/lib/sessie/realiteitschecks";
 import type { Realiteitscheck } from "@/lib/content/schemas";
 import { opslag } from "@/lib/sessie/api";
 import { alleBeelden, budgetStand, type UsecaseBeeld } from "@/lib/sessie/afgeleid";
@@ -349,15 +350,11 @@ function Realiteitschecks({
 }) {
   const modus = speelmodus(state.sessie.speelmodus);
 
-  const gekozenChecks = useMemo(() => {
-    const zaad = [...state.sessie.id].reduce((som, teken) => som + teken.charCodeAt(0), 0);
-    const gesorteerd = [...realiteitschecksVoorOrganisatie(state.sessie.organisatie_id).checks].sort(
-      (a, b) => a.id.localeCompare(b.id),
-    );
-    return Array.from({ length: modus.aantal_realiteitschecks }, (_, i) => {
-      return gesorteerd[(zaad + i * 3) % gesorteerd.length];
-    });
-  }, [state.sessie.id, state.sessie.organisatie_id, modus.aantal_realiteitschecks]);
+  // Gekozen op wat het portfolio raakt, niet op toeval; zie lib/sessie/realiteitschecks.ts.
+  const gekozenChecks = useMemo(
+    () => kiesRealiteitschecks(state, modus.aantal_realiteitschecks),
+    [state, modus.aantal_realiteitschecks],
+  );
 
   if (gekozenChecks.length === 0) return null;
 
@@ -370,9 +367,9 @@ function Realiteitschecks({
       </p>
 
       <ul className="mt-3 space-y-2.5">
-        {gekozenChecks.map((check) => (
+        {gekozenChecks.map(({ check, reden }) => (
           <li key={check.id}>
-            <Check state={state} identiteit={identiteit} doe={doe} check={check} />
+            <Check state={state} identiteit={identiteit} doe={doe} check={check} reden={reden} />
           </li>
         ))}
       </ul>
@@ -385,11 +382,14 @@ function Check({
   identiteit,
   doe,
   check,
+  reden,
 }: {
   state: SessieState;
   identiteit: BewaardeIdentiteit;
   doe: (actie: () => Promise<unknown>) => Promise<void>;
   check: Realiteitscheck;
+  /** Waarom juist deze check is getrokken; null als hij op zwaarte is aangevuld. */
+  reden: string | null;
 }) {
   const bestaand = state.besluiten.find((b) => b.check_id === check.id);
   const [motivatie, setMotivatie] = useState(bestaand?.motivatie ?? "");
@@ -416,6 +416,9 @@ function Check({
         ) : null}
       </div>
       <p className="mt-1.5 text-sm leading-relaxed text-inkt-zacht">{check.scenario}</p>
+      {reden ? (
+        <p className="mt-1.5 text-[11px] leading-snug text-inkt-licht">Getrokken omdat: {reden}</p>
+      ) : null}
 
       <textarea
         className={`${invoerStijl} mt-3 min-h-16 !text-sm`}

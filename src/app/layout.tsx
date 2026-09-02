@@ -14,9 +14,10 @@ import "./globals.css";
  * elkaar zette. Het onderscheid tussen kop en lopende tekst komt nu uit gewicht en letterafstand
  * in plaats van uit een tweede familie; zie `.display` en `.cijfer` in globals.css.
  */
+// Geen `weight`-lijst: dan komt de variabele versie mee, één bestand voor alle gewichten in
+// plaats van vijf losse. Op een telefoon in een vergaderzaal met matige wifi telt dat.
 const lexend = Lexend({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-lexend",
   display: "swap",
 });
